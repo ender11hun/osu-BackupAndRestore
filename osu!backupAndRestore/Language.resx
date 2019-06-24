@@ -1,0 +1,402 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AbortedEng" xml:space="preserve">
+    <value>Aborted</value>
+  </data>
+  <data name="AbortedHun" xml:space="preserve">
+    <value>Elvetve</value>
+  </data>
+  <data name="AwaitKeyToastEng" xml:space="preserve">
+    <value>Press a key to continue...</value>
+  </data>
+  <data name="AwaitKeyToastHun" xml:space="preserve">
+    <value>Nyomj egy gombot a folytatáshoz...</value>
+  </data>
+  <data name="BackupDirNotFoundEng" xml:space="preserve">
+    <value>Last operation file doesn't exist!\nPlease specify backup directory by hand first!</value>
+  </data>
+  <data name="BackupDirNotFoundHun" xml:space="preserve">
+    <value>Utolsó mentés fájlja nem létezik!\nAdja meg a biztonsági  mentés helyét kézzel előbb!</value>
+  </data>
+  <data name="CommandsEng" xml:space="preserve">
+    <value>Commands:\nB - Backup  R - Restore  P - Repair  L - Launch\nE - Catch game process  C - Change backup dir\nF1 - Change language  Q - Exit\nShift + L \  Autoclose after\nShift + B /  the game ended</value>
+  </data>
+  <data name="CommandsHun" xml:space="preserve">
+    <value>Parancsok:\nB - Biztosági mentés  R - Helyreállítás  P - Javítás  L - Indítás\nE - Játékfolyamat elfogása  C - Bizt.mentés könyvtárának megadása\nF1 - Nyelv váltása  Q - Kilépés\nShift + L \  Auto-bezárás\nShift + B /  miután a játék leállt</value>
+  </data>
+  <data name="CopyToastEng" xml:space="preserve">
+    <value>Copying files to %d...</value>
+  </data>
+  <data name="CopyToastHun" xml:space="preserve">
+    <value>Fájlok másolása %d helyre...</value>
+  </data>
+  <data name="CorrectQuestionStrEng" xml:space="preserve">
+    <value>Is that correct? [(Y)es/(N)o]</value>
+  </data>
+  <data name="CorrectQuestionStrHun" xml:space="preserve">
+    <value>Ez megfelelő? [(I)gen/(N)em]</value>
+  </data>
+  <data name="CreateNewEng" xml:space="preserve">
+    <value>Directory does not exits!\nCreate one? [(Y)es/(N)o]</value>
+  </data>
+  <data name="CreateNewHun" xml:space="preserve">
+    <value>Könyvtár nem létezik!\nCreate one? [(I)gen/(N)em]</value>
+  </data>
+  <data name="CurrentBackupDirEng" xml:space="preserve">
+    <value>Current backup dir</value>
+  </data>
+  <data name="CurrentBackupDirHun" xml:space="preserve">
+    <value>Mentés jelenelegi helye</value>
+  </data>
+  <data name="DoneEng" xml:space="preserve">
+    <value>Done!</value>
+  </data>
+  <data name="DoneHun" xml:space="preserve">
+    <value>Kész!</value>
+  </data>
+  <data name="EnvVarInfoEng" xml:space="preserve">
+    <value>You can use enviromental variables!</value>
+  </data>
+  <data name="EnvVarInfoHun" xml:space="preserve">
+    <value>Használhatsz környezetiváltozókat is!</value>
+  </data>
+  <data name="ErrorDetailsEng" xml:space="preserve">
+    <value>Error details</value>
+  </data>
+  <data name="ErrorDetailsHun" xml:space="preserve">
+    <value>Hiba részletei</value>
+  </data>
+  <data name="ErrorPrefixEng" xml:space="preserve">
+    <value>[ERROR]</value>
+  </data>
+  <data name="ErrorPrefixHun" xml:space="preserve">
+    <value>[HIBA]</value>
+  </data>
+  <data name="FileInfoPart1Eng" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="FileInfoPart1Hun" xml:space="preserve">
+    <value>Fájl</value>
+  </data>
+  <data name="FileInfoPart2Eng" xml:space="preserve">
+    <value>found at</value>
+  </data>
+  <data name="FileInfoPart2Hun" xml:space="preserve">
+    <value>megtalálva</value>
+  </data>
+  <data name="FileInfoPart3Eng" xml:space="preserve">
+    <value>with</value>
+  </data>
+  <data name="FileInfoPart3Hun" xml:space="preserve">
+    <value>helyen, mérete</value>
+  </data>
+  <data name="FileInfoPart4Eng" xml:space="preserve">
+    <value>size</value>
+  </data>
+  <data name="FileInfoPart4Hun" xml:space="preserve">
+    <value />
+  </data>
+  <data name="FileNotFoundExEng" xml:space="preserve">
+    <value>Launch target not found! Is the game installed?</value>
+  </data>
+  <data name="FileNotFoundExHun" xml:space="preserve">
+    <value>Indítási cél nem találtható! Telepítve van a játék?</value>
+  </data>
+  <data name="FinalSizePart1Eng" xml:space="preserve">
+    <value>Final size</value>
+  </data>
+  <data name="FinalSizePart1Hun" xml:space="preserve">
+    <value>Végső méret</value>
+  </data>
+  <data name="FinalSizePart2Eng" xml:space="preserve">
+    <value>in </value>
+  </data>
+  <data name="FinalSizePart2Hun" xml:space="preserve">
+    <value />
+  </data>
+  <data name="FinalSizePart3Eng" xml:space="preserve">
+    <value>files</value>
+  </data>
+  <data name="FinalSizePart3Hun" xml:space="preserve">
+    <value>fájlban</value>
+  </data>
+  <data name="GettingFilesEng" xml:space="preserve">
+    <value>Getting files...</value>
+  </data>
+  <data name="GettingFilesHun" xml:space="preserve">
+    <value>Fájlok beszerzése...</value>
+  </data>
+  <data name="HeadLineEng" xml:space="preserve">
+    <value>osu! backup, restore and repair tool</value>
+  </data>
+  <data name="HeadLineHun" xml:space="preserve">
+    <value>osu! biztonsági mentés, helyreállító és javító eszköz</value>
+  </data>
+  <data name="LastOpEng" xml:space="preserve">
+    <value>Last operation</value>
+  </data>
+  <data name="LastOpHun" xml:space="preserve">
+    <value>Utolsó művelet</value>
+  </data>
+  <data name="LastOpTimeEng" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="LastOpTimeHun" xml:space="preserve">
+    <value>Ideje</value>
+  </data>
+  <data name="LaunchToastEng" xml:space="preserve">
+    <value>Launching osu!...</value>
+  </data>
+  <data name="LaunchToastHun" xml:space="preserve">
+    <value>osu! indítása...</value>
+  </data>
+  <data name="MissingLastRunInfoEng" xml:space="preserve">
+    <value>No last run info file found!\nThis file will be created after a backup or restore.</value>
+  </data>
+  <data name="MissingLastRunInfoHun" xml:space="preserve">
+    <value>Utolsó futást tartalmazó fájl hiányzik!\nEz a fájl egy bizt.mentés vagy visszaállítás után elkészítésre kerül. </value>
+  </data>
+  <data name="MultiProcessWeirdnessEng" xml:space="preserve">
+    <value>Multiple running processes are found! (Something's not right here...)</value>
+  </data>
+  <data name="MultiProcessWeirdnessHun" xml:space="preserve">
+    <value>Több futó folyamatot találtam! (Valami itt nem stimmel...)</value>
+  </data>
+  <data name="NewDirEng" xml:space="preserve">
+    <value>New backup directory</value>
+  </data>
+  <data name="NewDirHun" xml:space="preserve">
+    <value>Új bizt.mentés könyvtára</value>
+  </data>
+  <data name="NoBackupDirEng" xml:space="preserve">
+    <value>No directory specified</value>
+  </data>
+  <data name="NoBackupDirHun" xml:space="preserve">
+    <value>Nincs könyvtár megadva</value>
+  </data>
+  <data name="NoCurrentBackupDirEng" xml:space="preserve">
+    <value>Does not exist!</value>
+  </data>
+  <data name="NoCurrentBackupDirHun" xml:space="preserve">
+    <value>Nem létezik!</value>
+  </data>
+  <data name="NoProcessEng" xml:space="preserve">
+    <value>No running instance of the game has been found!</value>
+  </data>
+  <data name="NoProcessHun" xml:space="preserve">
+    <value>Nem találtam egy futó példányát sem a játéknak!</value>
+  </data>
+  <data name="NoSourceFoundEng" xml:space="preserve">
+    <value>Source directory not found! Game installation or backup directory not found.\nInstall the game first or make sure that it is at the right place!</value>
+  </data>
+  <data name="NoSourceFoundHun" xml:space="preserve">
+    <value>Forrás könyvtár nem található! Játék telepítés vagy bizt.mentés könyvtára nem található!\nTelepítsd a játékot elősször vagy bizonyosodj meg róla, hogy jó helyen van!</value>
+  </data>
+  <data name="PartialDownloadedMapsEng" xml:space="preserve">
+    <value>maps are downloaded!</value>
+  </data>
+  <data name="PartialDownloadedMapsHun" xml:space="preserve">
+    <value>pályák letöltve!</value>
+  </data>
+  <data name="PartialNewMapsEng" xml:space="preserve">
+    <value>new maps found!</value>
+  </data>
+  <data name="PartialNewMapsHun" xml:space="preserve">
+    <value>új pályát találtam!</value>
+  </data>
+  <data name="ProcessCaughtEng" xml:space="preserve">
+    <value>Proccess caught, waiting for exit...</value>
+  </data>
+  <data name="ProcessCaughtHun" xml:space="preserve">
+    <value>Folyamat elfogva, várakozás kilépésre...</value>
+  </data>
+  <data name="ProcessEndedEng" xml:space="preserve">
+    <value>Process ended. Press a key in 6 seconds if not a restart!</value>
+  </data>
+  <data name="ProcessEndedHun" xml:space="preserve">
+    <value>Folyamat befejeződött. Nyomj egy gombot 6mp-n ha nem újraindítás!</value>
+  </data>
+  <data name="PromptEng" xml:space="preserve">
+    <value>Response</value>
+  </data>
+  <data name="PromptHun" xml:space="preserve">
+    <value>Válasz</value>
+  </data>
+  <data name="QueryProcessEng" xml:space="preserve">
+    <value>Looking for running game proccess...</value>
+  </data>
+  <data name="QueryProcessHun" xml:space="preserve">
+    <value>Játékfolyamat keresése...</value>
+  </data>
+  <data name="QuestionLaunchEng" xml:space="preserve">
+    <value>Want to launch? [(Y)es/(N)o]</value>
+  </data>
+  <data name="QuestionLaunchHun" xml:space="preserve">
+    <value>Szeretnéd indítani? [(I)gen/(N)em]</value>
+  </data>
+  <data name="QuestionSureEng" xml:space="preserve">
+    <value>Are sure? [(Y)es/(N)o]</value>
+  </data>
+  <data name="QuestionSureHun" xml:space="preserve">
+    <value>Biztos vagy benne? [(I)gen/(N)em]</value>
+  </data>
+  <data name="RepairToastEng" xml:space="preserve">
+    <value>Starting repair...</value>
+  </data>
+  <data name="RepairToastHun" xml:space="preserve">
+    <value>Javítás megkezdése...</value>
+  </data>
+  <data name="SafeguardFoundEng" xml:space="preserve">
+    <value>[ATTENTION]: The game did not exited safely! Restoring backup is highly recommended!</value>
+  </data>
+  <data name="SafeguardFoundHun" xml:space="preserve">
+    <value>[FIGYELEM]: A játék nem záródott be megfelelően! A bizt.mentés helyreállítása nagyon ajánlott!</value>
+  </data>
+  <data name="SeeYaEng" xml:space="preserve">
+    <value>See ya'! :D</value>
+  </data>
+  <data name="SeeYaHun" xml:space="preserve">
+    <value>Csáó! :D</value>
+  </data>
+  <data name="WarnPrefixEng" xml:space="preserve">
+    <value>[WARN]</value>
+  </data>
+  <data name="WarnPrefixHun" xml:space="preserve">
+    <value>[FIGYELEM]</value>
+  </data>
+  <data name="WhatTheFuckWasThatEng" xml:space="preserve">
+    <value>Unknown exception!</value>
+  </data>
+  <data name="WhatTheFuckWasThatHun" xml:space="preserve">
+    <value>Ismeretlen hiba</value>
+  </data>
+  <data name="Win32ExEng" xml:space="preserve">
+    <value>Process could not be launched! Execution failure!</value>
+  </data>
+  <data name="Win32ExHun" xml:space="preserve">
+    <value>Folyamat nem indítható el! Végrehajtási hiba!</value>
+  </data>
+  <data name="WindowTitleEng" xml:space="preserve">
+    <value>osu! Game Tools</value>
+  </data>
+  <data name="WindowTitleHun" xml:space="preserve">
+    <value>osu! Játék Eszközök</value>
+  </data>
+</root>
