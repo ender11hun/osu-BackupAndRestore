@@ -2,7 +2,7 @@
 
 namespace osu_backupAndRestore
 {
-    class Questions
+    static class Questions
     {
         //public static bool GoBack()
         //{

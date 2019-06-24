@@ -9,7 +9,7 @@ using ThreadState = System.Threading.ThreadState;
 
 namespace osu_backupAndRestore
 {
-    class KeyEventArgs
+    sealed class KeyEventArgs
     {
         public ConsoleKeyInfo ConsoleKey { get; }
         public KeyEventArgs(ConsoleKeyInfo consoleKey)
@@ -18,7 +18,7 @@ namespace osu_backupAndRestore
         }
     }
     
-    class Operations
+    static class Operations
     {
         #region eventDeclaration
         private static event KeyEventHandler KeyEvent;

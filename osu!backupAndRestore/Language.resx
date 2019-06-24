@@ -136,10 +136,10 @@
     <value>Utolsó mentés fájlja nem létezik!\nAdja meg a biztonsági  mentés helyét kézzel előbb!</value>
   </data>
   <data name="CommandsEng" xml:space="preserve">
-    <value>Commands:\nB - Backup  R - Restore  P - Repair  L - Launch\nE - Catch game process  C - Change backup dir\nF1 - Change language  Q - Exit\nShift + L \  Autoclose after\nShift + B /  the game ended</value>
+    <value>Commands:\nB - Backup  R - Restore  P - Repair  L - Launch\nE - Catch game process  C - Change backup dir\nEnter - backup and go  F1 - Change language  Q - Exit\nShift + L \  Autoclose after\nShift + B /  the game ended</value>
   </data>
   <data name="CommandsHun" xml:space="preserve">
-    <value>Parancsok:\nB - Biztosági mentés  R - Helyreállítás  P - Javítás  L - Indítás\nE - Játékfolyamat elfogása  C - Bizt.mentés könyvtárának megadása\nF1 - Nyelv váltása  Q - Kilépés\nShift + L \  Auto-bezárás\nShift + B /  miután a játék leállt</value>
+    <value>Parancsok:\nB - Biztosági mentés  R - Helyreállítás  P - Javítás  L - Indítás\nE - Játékfolyamat elfogása  C - Bizt.mentés könyvtárának megadása\nEnter - Mentés és indítás  F1 - Nyelv váltása  Q - Kilépés\nShift + L \  Auto-bezárás\nShift + B /  miután a játék leállt</value>
   </data>
   <data name="CopyToastEng" xml:space="preserve">
     <value>Copying files to %d...</value>

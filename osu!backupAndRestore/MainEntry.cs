@@ -5,57 +5,6 @@ using System.Threading;
 
 namespace osu_backupAndRestore
 {
-    enum UIElements
-        {
-            WindowTitle,
-            HeadLine,
-            CurrentBackupDir,
-            BackupDirNotFound,
-            NoBackupDir,
-            NoSourceFound,
-            Commands,
-            LastOp,
-            LastOpTime,
-            MissingLastRunInfo,
-            SafeguardFound,
-            Prompt,
-            SeeYa,
-            ErrorPrefix,
-            GettingFiles,
-            LaunchToast,
-            AwaitKeyToast,
-            RepairToast,
-            CopyToast,
-            FileNotFoundEx,
-            Win32Ex,
-            ProcessEnded,
-            FileInfoPart1,
-            FileInfoPart2,
-            FileInfoPart3,
-            FileInfoPart4,
-            FinalSizePart1,
-            FinalSizePart2,
-            FinalSizePart3,
-            ErrorDetails,
-            NoCurrentBackupDir,
-            EnvVarInfo,
-            NewDir,
-            CorrectQuestionStr,
-            CreateNew,
-            WarnPrefix,
-            QueryProcess,
-            MultiProcessWeirdness,
-            NoProcess,
-            WhatTheFuckWasThat,
-            ProcessCaught,
-            PartialDownloadedMaps,
-            PartialNewMaps,
-            QuestionLaunch,
-            QuestionSure,
-            Done,
-            Aborted
-        }
-
     class MainEntry
     {
         
@@ -68,6 +17,17 @@ namespace osu_backupAndRestore
             do
             {
                 IO.LastRunReader(out bool exist, ref data);
+                try
+                {
+                    if (!bool.Parse(data.lastRunContent[3]))
+                    {
+                        data.isEng = false;
+                        LangInit();
+                    }
+                }
+                catch (Exception)
+                {
+                }
                 int cursorTop;
                 
                 if (data.debug)
@@ -441,8 +401,9 @@ namespace osu_backupAndRestore
 
         static void LangInit()
         {
+            //Clear Dictionary
             langDict.Clear();
-            //Dictionary filler
+            //Fill Dictionary
             if (data.isEng)
             {
                 //langDict.Add(UIElements, Language);
@@ -547,11 +508,11 @@ namespace osu_backupAndRestore
         }
     }
 
-    class MainData
+    sealed class MainData
     {
         internal string dir = Utils.EnvExpand(@"%userprofile%\AppData\Local\osu!");
         internal string lastRunInfo;
-        internal string[] lastRunContent = new string[4];
+        internal string[] lastRunContent = new string[5];
         internal string backupDir;
         internal bool stay = true, qln = false, debug = false;
         internal readonly string debugMsg = "DEBUG MODE";

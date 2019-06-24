@@ -115,7 +115,7 @@ namespace osu_backupAndRestore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Commands:\nB - Backup  R - Restore  P - Repair  L - Launch\nE - Catch game process  C - Change backup dir\nF1 - Change language  Q - Exit\nShift + L \  Autoclose after\nShift + B /  the game ended.
+        ///   Looks up a localized string similar to Commands:\nB - Backup  R - Restore  P - Repair  L - Launch\nE - Catch game process  C - Change backup dir\nEnter - backup and go  F1 - Change language  Q - Exit\nShift + L \  Autoclose after\nShift + B /  the game ended.
         /// </summary>
         internal static string CommandsEng {
             get {
@@ -124,7 +124,7 @@ namespace osu_backupAndRestore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parancsok:\nB - Biztosági mentés  R - Helyreállítás  P - Javítás  L - Indítás\nE - Játékfolyamat elfogása  C - Bizt.mentés könyvtárának megadása\nF1 - Nyelv váltása  Q - Kilépés\nShift + L \  Auto-bezárás\nShift + B /  miután a játék leállt.
+        ///   Looks up a localized string similar to Parancsok:\nB - Biztosági mentés  R - Helyreállítás  P - Javítás  L - Indítás\nE - Játékfolyamat elfogása  C - Bizt.mentés könyvtárának megadása\nEnter - Mentés és indítás  F1 - Nyelv váltása  Q - Kilépés\nShift + L \  Auto-bezárás\nShift + B /  miután a játék leállt.
         /// </summary>
         internal static string CommandsHun {
             get {

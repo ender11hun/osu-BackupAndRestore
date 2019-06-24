@@ -38,5 +38,55 @@ namespace osu_backupAndRestore
             return unformated.Replace("\\n", Environment.NewLine);
         }
     }
-    
+
+    enum UIElements
+    {
+        WindowTitle,
+        HeadLine,
+        CurrentBackupDir,
+        BackupDirNotFound,
+        NoBackupDir,
+        NoSourceFound,
+        Commands,
+        LastOp,
+        LastOpTime,
+        MissingLastRunInfo,
+        SafeguardFound,
+        Prompt,
+        SeeYa,
+        ErrorPrefix,
+        GettingFiles,
+        LaunchToast,
+        AwaitKeyToast,
+        RepairToast,
+        CopyToast,
+        FileNotFoundEx,
+        Win32Ex,
+        ProcessEnded,
+        FileInfoPart1,
+        FileInfoPart2,
+        FileInfoPart3,
+        FileInfoPart4,
+        FinalSizePart1,
+        FinalSizePart2,
+        FinalSizePart3,
+        ErrorDetails,
+        NoCurrentBackupDir,
+        EnvVarInfo,
+        NewDir,
+        CorrectQuestionStr,
+        CreateNew,
+        WarnPrefix,
+        QueryProcess,
+        MultiProcessWeirdness,
+        NoProcess,
+        WhatTheFuckWasThat,
+        ProcessCaught,
+        PartialDownloadedMaps,
+        PartialNewMaps,
+        QuestionLaunch,
+        QuestionSure,
+        Done,
+        Aborted
+    }
 }

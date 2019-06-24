@@ -4,7 +4,7 @@ using System.IO;
 
 namespace osu_backupAndRestore
 {
-    class IO
+    static class IO
     {
         public static void SettingsSaver(bool isBackup, bool isUpdate, ref MainData data)
         {
@@ -13,6 +13,7 @@ namespace osu_backupAndRestore
                 outFile.WriteLine(isUpdate ? data.lastRunContent[0] : (isBackup ? "backup" : "restore"));
                 outFile.WriteLine(isUpdate ? data.lastRunContent[1] : DateTime.Now.ToString());
                 outFile.WriteLine(data.backupDir);
+                outFile.WriteLine(data.isEng);
             }
         }
         public static void LastRunReader(out bool exist, ref MainData data)
