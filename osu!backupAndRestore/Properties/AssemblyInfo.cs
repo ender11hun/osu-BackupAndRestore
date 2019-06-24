@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("osu!backupAndRestore")]
-[assembly: AssemblyCopyright("No Copyright registered 2018-2019")]
+[assembly: AssemblyCopyright("No Copyright registered")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
