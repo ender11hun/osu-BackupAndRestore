@@ -54,9 +54,11 @@ namespace osu_backupAndRestore
                 Utils.WriteColoredLine(data.backupDir.Equals(string.Empty) ? langDict[UIElements.NoBackupDir] : data.backupDir, ConsoleColor.Magenta);
                 Console.WriteLine(langDict[UIElements.Commands].Beautify());
                 bool safeguardFound = System.IO.File.Exists($@"{data.dir}\safeguard.lock");
-                Console
                 if (safeguardFound)
+                {
+                    Console.WriteLine(langDict[UIElements.SafeguardDeleteCmd]);
                     Utils.WriteColoredLine(langDict[UIElements.SafeguardFound], ConsoleColor.Red);
+                }
                 Console.Write($@"{langDict[UIElements.Prompt]}> ");
                 ConsoleKeyInfo input = Console.ReadKey(true);
                 switch (input.Key)
