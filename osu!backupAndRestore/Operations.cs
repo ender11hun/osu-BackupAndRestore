@@ -17,7 +17,7 @@ namespace osu_backupAndRestore
             this.ConsoleKey = consoleKey;
         }
     }
-    
+
     static class Operations
     {
         #region eventDeclaration
@@ -94,7 +94,7 @@ namespace osu_backupAndRestore
                 {
                     Launch();
                 }
-                else if (Questions.WantLaunch())
+                else if (Dialogs.GeneralAskDialog(DialogMode.Launch))
                 {
                     Launch();
                 }
@@ -114,13 +114,13 @@ namespace osu_backupAndRestore
             Process process = null;
             try
             {
-                process = Process.Start(Utils.EnvExpand($@"{MainEntry.data.dir}\osu!.exe"));
+                process = Process.Start(Environment.ExpandEnvironmentVariables($@"{MainEntry.data.dir}\osu!.exe"));
                 Safeguard();
                 process.WaitForExit();
             }
             catch (FileNotFoundException e)
             {
-                Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(MainEntry.langDict[UIElements.FileNotFoundEx]+(MainEntry.data.debug ?$"\n{MainEntry.langDict[UIElements.ErrorDetails]}:":string.Empty));
+                Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(MainEntry.langDict[UIElements.FileNotFoundEx] + (MainEntry.data.debug ? $"\n{MainEntry.langDict[UIElements.ErrorDetails]}:" : string.Empty));
                 if (MainEntry.data.debug)
                 {
                     Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Message);
@@ -246,7 +246,7 @@ namespace osu_backupAndRestore
                     }
                     a = Console.ReadKey().Key;
                 } while (!(a.Equals(MainEntry.data.isEng ? ConsoleKey.Y : ConsoleKey.I) || a.Equals(ConsoleKey.N)));
-                if (!exist) Directory.CreateDirectory(Utils.EnvExpand(newDir));
+                if (!exist) Directory.CreateDirectory(Environment.ExpandEnvironmentVariables(newDir));
                 isCorrect = a.Equals(MainEntry.data.isEng ? ConsoleKey.Y : ConsoleKey.I);
             } while (!isCorrect);
             MainEntry.data.backupDir = newDir;
@@ -325,15 +325,15 @@ namespace osu_backupAndRestore
             {
                 mapIDs.Add(dir.Name.Split(' ')[0]);
             }
-            foreach (var file in mapsDirectroy.GetFiles("*.osz",SearchOption.TopDirectoryOnly))
+            foreach (var file in mapsDirectroy.GetFiles("*.osz", SearchOption.TopDirectoryOnly))
             {
                 newMaps.Add(file.Name.Split(' ')[0]);
             }
             File.WriteAllLines($@"{MainEntry.data.backupDir}\mapdump.log", mapIDs.ToArray(), Encoding.UTF8);
             Utils.WriteColored($"{mapIDs.Count}", ConsoleColor.Blue);
-            Console.WriteLine(" "+MainEntry.langDict[UIElements.PartialDownloadedMaps]);
-            Utils.WriteColored($"{newMaps.Count}",ConsoleColor.Green);
-            Console.WriteLine(" "+MainEntry.langDict[UIElements.PartialNewMaps]);
+            Console.WriteLine(" " + MainEntry.langDict[UIElements.PartialDownloadedMaps]);
+            Utils.WriteColored($"{newMaps.Count}", ConsoleColor.Green);
+            Console.WriteLine(" " + MainEntry.langDict[UIElements.PartialNewMaps]);
         }
         private static void Safeguard()
         {
@@ -341,6 +341,14 @@ namespace osu_backupAndRestore
             GC.SuppressFinalize(fs);
             fs.Dispose();
             fs = null;
+        }
+        public static void ConfirmDelete()
+        {
+            if (Dialogs.GeneralAskDialog(DialogMode.Delete))
+            {
+                File.Delete($"{MainEntry.data.dir}/safeguard.lock");
+            }
+            else { Console.WriteLine(MainEntry.langDict[UIElements.Aborted]); }
         }
     }
 }

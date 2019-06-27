@@ -345,6 +345,12 @@
   <data name="QueryProcessHun" xml:space="preserve">
     <value>Játékfolyamat keresése...</value>
   </data>
+  <data name="QuestionDeleteEng" xml:space="preserve">
+    <value>Are you sure you want to delete the safeguard.lock file? [(Y)es/(N)o]</value>
+  </data>
+  <data name="QuestionDeleteHun" xml:space="preserve">
+    <value>Biztosan törölni akarod a biztosági fájlt (safeguard.lock) [(I)gen/(N)em]</value>
+  </data>
   <data name="QuestionLaunchEng" xml:space="preserve">
     <value>Want to launch? [(Y)es/(N)o]</value>
   </data>
@@ -362,6 +368,12 @@
   </data>
   <data name="RepairToastHun" xml:space="preserve">
     <value>Javítás megkezdése...</value>
+  </data>
+  <data name="SafeguardCommandEng" xml:space="preserve">
+    <value>Alt + D - Delete residual safeguard file (at your own risk)</value>
+  </data>
+  <data name="SafeguardCommandHun" xml:space="preserve">
+    <value>Alt + D - Visszamaradt biztonsági fájl törlése (saját felelősségre!)</value>
   </data>
   <data name="SafeguardFoundEng" xml:space="preserve">
     <value>[ATTENTION]: The game did not exited safely! Restoring backup is highly recommended!</value>

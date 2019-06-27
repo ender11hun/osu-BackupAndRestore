@@ -51,7 +51,7 @@
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
-    <ApplicationIcon>icon01.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\icon01.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>osu_backupAndRestore.MainEntry</StartupObject>
@@ -82,7 +82,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Questions.cs" />
+    <Compile Include="Dialogs.cs" />
     <Compile Include="Language.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

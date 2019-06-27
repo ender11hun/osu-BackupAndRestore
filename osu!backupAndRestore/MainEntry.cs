@@ -7,7 +7,7 @@ namespace osu_backupAndRestore
 {
     class MainEntry
     {
-        
+
         internal static Dictionary<UIElements, string> langDict = new Dictionary<UIElements, string>();
         internal static MainData data = null;
 
@@ -29,7 +29,7 @@ namespace osu_backupAndRestore
                 {
                 }
                 int cursorTop;
-                
+
                 if (data.debug)
                 {
                     cursorTop = Console.CursorTop;
@@ -53,7 +53,9 @@ namespace osu_backupAndRestore
                 Console.Write($"{langDict[UIElements.CurrentBackupDir]}: ");
                 Utils.WriteColoredLine(data.backupDir.Equals(string.Empty) ? langDict[UIElements.NoBackupDir] : data.backupDir, ConsoleColor.Magenta);
                 Console.WriteLine(langDict[UIElements.Commands].Beautify());
-                if (System.IO.File.Exists($@"{data.dir}\safeguard.lock"))
+                bool safeguardFound = System.IO.File.Exists($@"{data.dir}\safeguard.lock");
+                Console
+                if (safeguardFound)
                     Utils.WriteColoredLine(langDict[UIElements.SafeguardFound], ConsoleColor.Red);
                 Console.Write($@"{langDict[UIElements.Prompt]}> ");
                 ConsoleKeyInfo input = Console.ReadKey(true);
@@ -87,7 +89,7 @@ namespace osu_backupAndRestore
                         break;
                     case ConsoleKey.P:
                         Console.WriteLine(input.KeyChar);
-                        Questions.AreYouSure();
+                        Dialogs.AreYouSure();
                         break;
                     case ConsoleKey.F2:
                         data.debug = !data.debug;
@@ -108,6 +110,11 @@ namespace osu_backupAndRestore
                     case ConsoleKey.F1:
                         data.isEng = !data.isEng;
                         LangInit();
+                        IO.SettingsSaver(data.lastRunContent[0].Equals("backup"), true, ref data);
+                        break;
+                    case ConsoleKey.D:
+                        if (input.Modifiers.HasFlag(ConsoleModifiers.Alt) && safeguardFound)
+                            Operations.ConfirmDelete();
                         break;
                     #region Unused      
                     case ConsoleKey.Backspace:
@@ -173,8 +180,6 @@ namespace osu_backupAndRestore
                     case ConsoleKey.D9:
                         break;
                     case ConsoleKey.A:
-                        break;
-                    case ConsoleKey.D:
                         break;
                     case ConsoleKey.F:
                         break;
@@ -378,7 +383,7 @@ namespace osu_backupAndRestore
                         break;
                     case ConsoleKey.OemClear:
                         break;
-                #endregion
+                    #endregion
                     default:
                         break;
                 }
@@ -391,8 +396,17 @@ namespace osu_backupAndRestore
             }
         }
 
+        /// <summary>
+        /// Adattároló objektum példányosítása, UTF8 kényszerítése konzol kimentere (stdout),
+        /// Ctrl+C kezelése, mint bemenet és nyelv kezdeti inícializálása. Valamint kilépés ha nem Windows NT rendszer.
+        /// </summary>
         static void Init()
         {
+
+            if (!Environment.OSVersion.Platform.Equals(PlatformID.Win32NT))
+            {
+                throw new PlatformNotSupportedException("Only Windows NT or later supported");
+            }
             data = new MainData();
             Console.OutputEncoding = Encoding.UTF8;
             Console.TreatControlCAsInput = true;
@@ -454,6 +468,8 @@ namespace osu_backupAndRestore
                 langDict.Add(UIElements.Done, Language.DoneEng);
                 langDict.Add(UIElements.Aborted, Language.AbortedEng);
                 langDict.Add(UIElements.BackupDirNotFound, Language.BackupDirNotFoundEng);
+                langDict.Add(UIElements.QuestionDelete, Language.QueryProcessEng);
+                langDict.Add(UIElements.SafeguardDeleteCmd, Language.SafeguardCommandEng);
             }
             else
             {
@@ -504,15 +520,17 @@ namespace osu_backupAndRestore
                 langDict.Add(UIElements.Done, Language.DoneHun);
                 langDict.Add(UIElements.Aborted, Language.AbortedHun);
                 langDict.Add(UIElements.BackupDirNotFound, Language.BackupDirNotFoundHun);
+                langDict.Add(UIElements.QuestionDelete, Language.QuestionDeleteHun);
+                langDict.Add(UIElements.SafeguardDeleteCmd, Language.SafeguardCommandHun);
             }
         }
     }
 
     sealed class MainData
     {
-        internal string dir = Utils.EnvExpand(@"%userprofile%\AppData\Local\osu!");
+        internal string dir = Environment.ExpandEnvironmentVariables(@"%userprofile%\AppData\Local\osu!");
         internal string lastRunInfo;
-        internal string[] lastRunContent = new string[5];
+        internal string[] lastRunContent = { "backup", DateTime.MinValue.ToString(), null, "true", "" };
         internal string backupDir;
         internal bool stay = true, qln = false, debug = false;
         internal readonly string debugMsg = "DEBUG MODE";

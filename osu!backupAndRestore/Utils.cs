@@ -8,10 +8,6 @@ namespace osu_backupAndRestore
 {
     static class Utils
     {
-        public static string EnvExpand(string path)
-        {
-            return Environment.ExpandEnvironmentVariables(path);
-        }
         public static string SizeSuffixer(long bytes)
         {
             if (((bytes / 1024f) / 1024f) >= 1)
@@ -35,7 +31,7 @@ namespace osu_backupAndRestore
         }
         public static string Beautify(this string unformated)
         {
-            return unformated.Replace("\\n", Environment.NewLine);
+            return unformated.Replace("\\n", Environment.NewLine).Replace("\\t", "\t");
         }
     }
 
@@ -87,6 +83,8 @@ namespace osu_backupAndRestore
         QuestionLaunch,
         QuestionSure,
         Done,
-        Aborted
+        Aborted,
+        QuestionDelete,
+        SafeguardDeleteCmd
     }
 }

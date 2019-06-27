@@ -745,6 +745,24 @@ namespace osu_backupAndRestore {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete the safeguard.lock file? [(Y)es/(N)o].
+        /// </summary>
+        internal static string QuestionDeleteEng {
+            get {
+                return ResourceManager.GetString("QuestionDeleteEng", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Biztosan törölni akarod a biztosági fájlt (safeguard.lock) [(I)gen/(N)em].
+        /// </summary>
+        internal static string QuestionDeleteHun {
+            get {
+                return ResourceManager.GetString("QuestionDeleteHun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Want to launch? [(Y)es/(N)o].
         /// </summary>
         internal static string QuestionLaunchEng {
@@ -795,6 +813,24 @@ namespace osu_backupAndRestore {
         internal static string RepairToastHun {
             get {
                 return ResourceManager.GetString("RepairToastHun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alt + D - Delete residual safeguard file (at your own risk).
+        /// </summary>
+        internal static string SafeguardCommandEng {
+            get {
+                return ResourceManager.GetString("SafeguardCommandEng", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alt + D - Visszamaradt biztonsági fájl törlése (saját felelősségre!).
+        /// </summary>
+        internal static string SafeguardCommandHun {
+            get {
+                return ResourceManager.GetString("SafeguardCommandHun", resourceCulture);
             }
         }
         
