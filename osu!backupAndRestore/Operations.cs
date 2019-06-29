@@ -167,7 +167,6 @@ namespace osu_backupAndRestore
             {
                 ConsoleKeyInfo keyInfo = Console.ReadKey();
                 KeyEvent?.Invoke(new KeyEventArgs(keyInfo));
-                //Thread.CurrentThread.Abort();
             }
 
             Console.Clear();
