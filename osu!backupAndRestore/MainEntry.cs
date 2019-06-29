@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace osu_backupAndRestore
 {
-    class MainEntry
+    static class MainEntry
     {
 
         internal static Dictionary<UIElements, string> langDict = new Dictionary<UIElements, string>();
