@@ -2,25 +2,12 @@
 
 namespace osu_backupAndRestore
 {
-    enum DialogMode
-    {
-        Launch,
-        Repair,
-        Delete
-    }
-
     static class Dialogs
     {
-        private static readonly System.Collections.Generic.Dictionary<DialogMode, UIElements> questionLookUp = new System.Collections.Generic.Dictionary<DialogMode, UIElements>()
-        {
-            { DialogMode.Launch, UIElements.QuestionLaunch },
-            { DialogMode.Repair, UIElements.QuestionSure },
-            { DialogMode.Delete, UIElements.QuestionDelete }
-        };
-        public static bool GeneralAskDialog(DialogMode mode)
+        public static bool GeneralAskDialog(UIElements element)
         {
             ConsoleKey a;
-            Console.Write(MainEntry.langDict[questionLookUp[mode]] + ": ");
+            Console.Write("\n" + MainEntry.langDict[element] + ": ");
             do
             {
                 a = Console.ReadKey().Key;
@@ -30,7 +17,7 @@ namespace osu_backupAndRestore
         }
         public static void AreYouSure()
         {
-            bool permited = GeneralAskDialog(DialogMode.Repair);
+            bool permited = GeneralAskDialog(UIElements.QuestionSure);
             Console.WriteLine();
             if (permited)
             {

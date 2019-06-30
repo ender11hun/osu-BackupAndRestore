@@ -33,6 +33,41 @@ namespace osu_backupAndRestore
         {
             return unformated.Replace("\\n", Environment.NewLine).Replace("\\t", "\t");
         }
+        public static void WriteColorFormated(string text, ConsoleColor? foreColor, ConsoleColor? backColor)
+        {
+            bool noFormating = true;
+            int cycle = 0;
+            int offset = 0;
+            while (text.Contains("%f") || text.Contains("%b"))
+            {
+                noFormating = false;
+                int index = text.IndexOf('%', offset++);
+                if (text[index + 1] == 'f')
+                {
+                    Console.ForegroundColor = !foreColor.HasValue ? Console.ForegroundColor : (ConsoleColor)foreColor;
+                    text = text.Remove(index, 2);
+                    if (text[index] != '%')
+                    {
+                        Console.Write(text[cycle++]);
+                        Console.ResetColor();
+                    }
+                    continue;
+                }
+                if (text[index + 1] == 'b')
+                {
+                    Console.BackgroundColor = !backColor.HasValue ? Console.BackgroundColor : (ConsoleColor)backColor;
+                    text = text.Remove(index, 2);
+                    if (text[index] != '%')
+                    {
+                        Console.Write(text[cycle++]);
+                        Console.ResetColor();
+                    }
+                    continue;
+                }
+            }
+            if (noFormating) Console.Write(text);
+            else Console.Write(text.Remove(0, offset));
+        }
     }
 
     enum UIElements

@@ -94,7 +94,7 @@ namespace osu_backupAndRestore
                 {
                     Launch();
                 }
-                else if (Dialogs.GeneralAskDialog(DialogMode.Launch))
+                else if (Dialogs.GeneralAskDialog(UIElements.QuestionLaunch))
                 {
                     Launch();
                 }
@@ -343,7 +343,7 @@ namespace osu_backupAndRestore
         }
         public static void ConfirmDelete()
         {
-            if (Dialogs.GeneralAskDialog(DialogMode.Delete))
+            if (Dialogs.GeneralAskDialog(UIElements.QuestionDelete))
             {
                 File.Delete($"{MainEntry.data.dir}/safeguard.lock");
             }

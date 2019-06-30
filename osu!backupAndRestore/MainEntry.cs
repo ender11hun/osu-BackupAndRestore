@@ -64,20 +64,21 @@ namespace osu_backupAndRestore
                 switch (input.Key)
                 {
                     case ConsoleKey.B:
-                        Console.WriteLine(input.KeyChar);
                         if (input.Modifiers.HasFlag(ConsoleModifiers.Shift))
                         {
                             data.qln = true;
                             data.stay = false;
+                            Utils.WriteColorFormated("%fS%fh%fi%ff%ft + B", ConsoleColor.Green, null);
                         }
+                        else Console.WriteLine('B');
                         Operations.BackupAndRestore(true, ref exist);
                         break;
                     case ConsoleKey.R:
-                        Console.WriteLine(input.KeyChar);
+                        Console.WriteLine('R');
                         Operations.BackupAndRestore(false, ref exist);
                         break;
                     case ConsoleKey.C:
-                        Console.WriteLine(input.KeyChar);
+                        Console.WriteLine('C');
                         Operations.ChangeBackupDir();
                         break;
                     case ConsoleKey.L:
@@ -85,23 +86,24 @@ namespace osu_backupAndRestore
                         {
                             data.qln = true;
                             data.stay = false;
+                            Utils.WriteColorFormated("%fS%fh%fi%ff%ft + L", ConsoleColor.Green, null);
                         }
-                        Console.WriteLine(input.KeyChar);
+                        else Console.WriteLine('L');
                         Operations.Launch();
                         break;
                     case ConsoleKey.P:
-                        Console.WriteLine(input.KeyChar);
+                        Console.WriteLine('P');
                         Dialogs.AreYouSure();
                         break;
                     case ConsoleKey.F2:
                         data.debug = !data.debug;
                         break;
                     case ConsoleKey.Q:
-                        Console.WriteLine(input.KeyChar);
+                        Console.WriteLine('Q');
                         data.stay = false;
                         break;
                     case ConsoleKey.E:
-                        Console.WriteLine(input.KeyChar);
+                        Console.WriteLine('E');
                         Operations.CatchGameProcess(false);
                         break;
                     case ConsoleKey.Enter:
@@ -116,7 +118,10 @@ namespace osu_backupAndRestore
                         break;
                     case ConsoleKey.D:
                         if (input.Modifiers.HasFlag(ConsoleModifiers.Alt) && safeguardFound)
+                        {
+                            Utils.WriteColorFormated("%fA%fl%ft + D", ConsoleColor.Green, null);
                             Operations.ConfirmDelete();
+                        }
                         break;
                     #region Unused      
                     case ConsoleKey.Backspace:
@@ -470,7 +475,7 @@ namespace osu_backupAndRestore
                 langDict.Add(UIElements.Done, Language.DoneEng);
                 langDict.Add(UIElements.Aborted, Language.AbortedEng);
                 langDict.Add(UIElements.BackupDirNotFound, Language.BackupDirNotFoundEng);
-                langDict.Add(UIElements.QuestionDelete, Language.QueryProcessEng);
+                langDict.Add(UIElements.QuestionDelete, Language.QuestionDeleteEng);
                 langDict.Add(UIElements.SafeguardDeleteCmd, Language.SafeguardCommandEng);
             }
             else
