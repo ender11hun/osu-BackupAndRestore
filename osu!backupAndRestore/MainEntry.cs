@@ -19,7 +19,7 @@ namespace osu_backupAndRestore
                 IO.LastRunReader(out bool exist, ref data);
                 try
                 {
-                    if (!bool.Parse(data.lastRunContent[3]))
+                    if (data.lastRunContent[3] != "eng")
                     {
                         data.isEng = false;
                         LangInit();
@@ -404,8 +404,7 @@ namespace osu_backupAndRestore
         }
 
         /// <summary>
-        /// Adattároló objektum példányosítása, UTF8 kényszerítése konzol kimentere (stdout),
-        /// Ctrl+C kezelése, mint bemenet és nyelv kezdeti inícializálása. Valamint kilépés ha nem Windows NT rendszer.
+        /// Programkezdeti inícializálás
         /// </summary>
         static void Init()
         {
@@ -417,9 +416,10 @@ namespace osu_backupAndRestore
             data = new MainData();
             Console.OutputEncoding = Encoding.UTF8;
             Console.TreatControlCAsInput = true;
+            Console.SetWindowSize(80, 24);
+            Console.SetBufferSize(80, 9999);
             LangInit();
         }
-
         static void LangInit()
         {
             //Clear Dictionary
@@ -537,7 +537,7 @@ namespace osu_backupAndRestore
     {
         internal string dir = Environment.ExpandEnvironmentVariables(@"%userprofile%\AppData\Local\osu!");
         internal string lastRunInfo;
-        internal string[] lastRunContent = { "backup", DateTime.MinValue.ToString(), null, "true", "" };
+        internal string[] lastRunContent = { "backup", DateTime.MinValue.ToString(), null, "eng", "" };
         internal string backupDir;
         internal bool stay = true, qln = false, debug = false;
         internal readonly string debugMsg = "DEBUG MODE";

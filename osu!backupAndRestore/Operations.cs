@@ -21,8 +21,8 @@ namespace osu_backupAndRestore
     static class Operations
     {
         #region eventDeclaration
-        private static event KeyEventHandler KeyEvent;
-        private delegate void KeyEventHandler(KeyEventArgs e);
+        public delegate void KeyEventHandler(KeyEventArgs e);
+        public static event KeyEventHandler KeyEvent;
         #endregion
         private static readonly string errorPrefix = $"{MainEntry.langDict[UIElements.ErrorPrefix]} ";
         public static void BackupAndRestore(bool isBackup, ref bool exist)
@@ -107,7 +107,8 @@ namespace osu_backupAndRestore
             #region eventInit
             int threadCounter = 0;
             Thread thread = new Thread(RaiseKeyEvent);
-            KeyEvent += delegate (KeyEventArgs e) { thread.Abort(); };
+            void @delegate(KeyEventArgs e) { thread.Abort(); }
+            KeyEvent += @delegate;
             #endregion
 
             Console.WriteLine($"{MainEntry.langDict[UIElements.LaunchToast]}");
@@ -160,14 +161,13 @@ namespace osu_backupAndRestore
                         break;
                     Thread.Sleep(500);
                 }
-                if (thread.ThreadState != ThreadState.Aborted || thread.ThreadState != ThreadState.Stopped) thread.Abort();
+                if (thread.ThreadState != ThreadState.Aborted || thread.ThreadState != ThreadState.Stopped)
+                {
+                    thread.Abort();
+                    KeyEvent -= @delegate;
+                }
             }
 
-            void RaiseKeyEvent()
-            {
-                ConsoleKeyInfo keyInfo = Console.ReadKey();
-                KeyEvent?.Invoke(new KeyEventArgs(keyInfo));
-            }
 
             Console.Clear();
         }
@@ -219,6 +219,11 @@ namespace osu_backupAndRestore
 
             File.Delete($@"{MainEntry.data.dir}\safeguard.lock");
             Console.Clear();
+        }
+        public static void RaiseKeyEvent()
+        {
+            ConsoleKeyInfo keyInfo = Console.ReadKey();
+            KeyEvent?.Invoke(new KeyEventArgs(keyInfo));
         }
         public static void ChangeBackupDir()
         {
