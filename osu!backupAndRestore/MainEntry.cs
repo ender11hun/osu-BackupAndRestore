@@ -416,8 +416,8 @@ namespace osu_backupAndRestore
             data = new MainData();
             Console.OutputEncoding = Encoding.UTF8;
             Console.TreatControlCAsInput = true;
-            Console.SetWindowSize(80, 24);
-            Console.SetBufferSize(80, 9999);
+            Console.SetWindowSize(95, 24);
+            Console.SetBufferSize(95, 9999);
             LangInit();
         }
         static void LangInit()
