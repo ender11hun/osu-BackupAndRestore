@@ -3,6 +3,10 @@ using System.Text;
 using System.Timers;
 using System.Globalization;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using System.Threading;
+#pragma warning disable CS1998
 
 namespace osu_backupAndRestore
 {
@@ -65,11 +69,52 @@ namespace osu_backupAndRestore
                     continue;
                 }
             }
+            
             if (noFormating) Console.Write(text);
             else Console.Write(text.Remove(0, offset));
         }
+        public static async Task<int> BringMainWindowToFront(IntPtr hwnd)
+        {
+            // check if the window is hidden / minimized
+            if (hwnd == IntPtr.Zero)
+            {
+                // the window is hidden so try to restore it before setting focus.
+                for (int i = 0; i < 4; i++)
+                {
+                    if (ShowWindow(hwnd, ShowWindowEnum.Restore))
+                        return 0;
+                    Thread.Sleep(1000);
+                }
+            }
+
+            // set user the focus to the window
+            for (int i = 0; i < 4; i++)
+            {
+                if (SetForegroundWindow(hwnd) == 0)
+                    return 0;
+                Thread.Sleep(1000);
+            }
+            //throw new InvalidOperationException("Window is UAC protected or its parent process has closed");
+            return int.MaxValue;
+        }
+        #region Interop
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool ShowWindow(IntPtr hWnd, ShowWindowEnum flags);
+
+        [DllImport("user32.dll")]
+        private static extern int SetForegroundWindow(IntPtr hwnd);
+        #endregion
     }
 
+    enum ShowWindowEnum
+        {
+            Hide = 0,
+            ShowNormal = 1, ShowMinimized = 2, ShowMaximized = 3,
+            Maximize = 3, ShowNormalNoActivate = 4, Show = 5,
+            Minimize = 6, ShowMinNoActivate = 7, ShowNoActivate = 8,
+            Restore = 9, ShowDefault = 10, ForceMinimized = 11
+        };
     enum UIElements
     {
         WindowTitle,

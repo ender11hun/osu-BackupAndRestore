@@ -101,7 +101,7 @@ namespace osu_backupAndRestore
             }
 
         }
-        public static void Launch()
+        public static async void Launch()
         {
             bool error = false;
             #region eventInit
@@ -117,6 +117,7 @@ namespace osu_backupAndRestore
             {
                 process = Process.Start(Environment.ExpandEnvironmentVariables($@"{MainEntry.data.dir}\osu!.exe"));
                 Safeguard();
+                int x = await Utils.BringMainWindowToFront(process.MainWindowHandle);
                 process.WaitForExit();
             }
             catch (FileNotFoundException e)
@@ -341,10 +342,8 @@ namespace osu_backupAndRestore
         }
         private static void Safeguard()
         {
-            FileStream fs = File.Create(MainEntry.data.dir + @"\safeguard.lock");
-            GC.SuppressFinalize(fs);
-            fs.Dispose();
-            fs = null;
+            using (FileStream fs = File.Create(MainEntry.data.dir + @"\safeguard.lock"))
+            { return; }
         }
         public static void ConfirmDelete()
         {
