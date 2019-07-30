@@ -115,7 +115,7 @@ namespace osu_backupAndRestore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Commands:\nB - Backup  R - Restore  P - Repair  L - Launch\nE - Catch game process  C - Change backup dir\nEnter - backup and go  F1 - Change language  Q - Exit\nShift + L \  Autoclose after\nShift + B /  the game ended.
+        ///   Looks up a localized string similar to Commands:\n%fB - Backup  %fR - Restore  %fP - Repair  %fL - Launch\n%fE - Catch game process  %fC - Change backup dir  %fV - Show version number\n%fE%fn%ft%fe%fr - backup and go  %fF%f1 - Change language  %fQ - Exit\n%fS%fh%fi%ff%ft %f+ %fL \  Autoclose after\n%fS%fh%fi%ff%ft %f+ %fB /  the game ended.
         /// </summary>
         internal static string CommandsEng {
             get {
@@ -124,7 +124,7 @@ namespace osu_backupAndRestore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parancsok:\nB - Biztosági mentés  R - Helyreállítás  P - Javítás  L - Indítás\nE - Játékfolyamat elfogása  C - Bizt.mentés könyvtárának megadása\nEnter - Mentés és indítás  F1 - Nyelv váltása  Q - Kilépés\nShift + L \  Auto-bezárás\nShift + B /  miután a játék leállt.
+        ///   Looks up a localized string similar to Parancsok:\n%fB - Biztosági mentés  %fR - Helyreállítás  %fP - Javítás  %fL - Indítás\n%fE - Játékfolyamat elfogása  %fC - Bizt.mentés könyvtárának megadása  %fV - Verziószám megtekintése\n%fE%fn%ft%fe%fr - Mentés és indítás  %fF%f1 - Nyelv váltása  %fQ - Kilépés\n%fS%fh%fi%ff%ft %f+ %fL \  Auto-bezárás\n%fS%fh%fi%ff%ft %f+ %fB /  miután a játék leállt.
         /// </summary>
         internal static string CommandsHun {
             get {
@@ -877,6 +877,24 @@ namespace osu_backupAndRestore {
         internal static string SeeYaHun {
             get {
                 return ResourceManager.GetString("SeeYaHun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tool binary version: %d.
+        /// </summary>
+        internal static string VersionToastEng {
+            get {
+                return ResourceManager.GetString("VersionToastEng", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eszköz bináris verziója: %d.
+        /// </summary>
+        internal static string VersionToastHun {
+            get {
+                return ResourceManager.GetString("VersionToastHun", resourceCulture);
             }
         }
         

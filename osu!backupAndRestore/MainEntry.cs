@@ -52,7 +52,7 @@ namespace osu_backupAndRestore
                 }
                 Console.Write($"{langDict[UIElements.CurrentBackupDir]}: ");
                 Utils.WriteColoredLine(data.backupDir.Equals(string.Empty) ? langDict[UIElements.NoBackupDir] : data.backupDir, ConsoleColor.Magenta);
-                Console.WriteLine(langDict[UIElements.Commands].Beautify());
+                Utils.WriteColorFormated(langDict[UIElements.Commands].Beautify() + "\n", ConsoleColor.DarkCyan, null);
                 bool safeguardFound = System.IO.File.Exists($@"{data.dir}\safeguard.lock");
                 if (safeguardFound)
                 {
@@ -122,6 +122,9 @@ namespace osu_backupAndRestore
                             Utils.WriteColorFormated("%fA%fl%ft + D", ConsoleColor.Green, null);
                             Operations.ConfirmDelete();
                         }
+                        break;
+                    case ConsoleKey.V:
+                        Utils.Version();
                         break;
                     #region Unused      
                     case ConsoleKey.Backspace:
@@ -211,8 +214,6 @@ namespace osu_backupAndRestore
                     case ConsoleKey.T:
                         break;
                     case ConsoleKey.U:
-                        break;
-                    case ConsoleKey.V:
                         break;
                     case ConsoleKey.W:
                         break;
@@ -477,6 +478,7 @@ namespace osu_backupAndRestore
                 langDict.Add(UIElements.BackupDirNotFound, Language.BackupDirNotFoundEng);
                 langDict.Add(UIElements.QuestionDelete, Language.QuestionDeleteEng);
                 langDict.Add(UIElements.SafeguardDeleteCmd, Language.SafeguardCommandEng);
+                langDict.Add(UIElements.VersionToast, Language.VersionToastEng);
             }
             else
             {
@@ -529,6 +531,7 @@ namespace osu_backupAndRestore
                 langDict.Add(UIElements.BackupDirNotFound, Language.BackupDirNotFoundHun);
                 langDict.Add(UIElements.QuestionDelete, Language.QuestionDeleteHun);
                 langDict.Add(UIElements.SafeguardDeleteCmd, Language.SafeguardCommandHun);
+                langDict.Add(UIElements.VersionToast, Language.VersionToastHun);
             }
         }
     }

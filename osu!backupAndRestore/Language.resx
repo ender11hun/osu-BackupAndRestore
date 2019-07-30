@@ -136,10 +136,10 @@
     <value>Utolsó mentés fájlja nem létezik!\nAdja meg a biztonsági  mentés helyét kézzel előbb!</value>
   </data>
   <data name="CommandsEng" xml:space="preserve">
-    <value>Commands:\nB - Backup  R - Restore  P - Repair  L - Launch\nE - Catch game process  C - Change backup dir\nEnter - backup and go  F1 - Change language  Q - Exit\nShift + L \  Autoclose after\nShift + B /  the game ended</value>
+    <value>Commands:\n%fB - Backup  %fR - Restore  %fP - Repair  %fL - Launch\n%fE - Catch game process  %fC - Change backup dir  %fV - Show version number\n%fE%fn%ft%fe%fr - backup and go  %fF%f1 - Change language  %fQ - Exit\n%fS%fh%fi%ff%ft %f+ %fL \  Autoclose after\n%fS%fh%fi%ff%ft %f+ %fB /  the game ended</value>
   </data>
   <data name="CommandsHun" xml:space="preserve">
-    <value>Parancsok:\nB - Biztosági mentés  R - Helyreállítás  P - Javítás  L - Indítás\nE - Játékfolyamat elfogása  C - Bizt.mentés könyvtárának megadása\nEnter - Mentés és indítás  F1 - Nyelv váltása  Q - Kilépés\nShift + L \  Auto-bezárás\nShift + B /  miután a játék leállt</value>
+    <value>Parancsok:\n%fB - Biztosági mentés  %fR - Helyreállítás  %fP - Javítás  %fL - Indítás\n%fE - Játékfolyamat elfogása  %fC - Bizt.mentés könyvtárának megadása  %fV - Verziószám megtekintése\n%fE%fn%ft%fe%fr - Mentés és indítás  %fF%f1 - Nyelv váltása  %fQ - Kilépés\n%fS%fh%fi%ff%ft %f+ %fL \  Auto-bezárás\n%fS%fh%fi%ff%ft %f+ %fB /  miután a játék leállt</value>
   </data>
   <data name="CopyToastEng" xml:space="preserve">
     <value>Copying files to %d...</value>
@@ -414,5 +414,11 @@
   </data>
   <data name="WindowTitleHun" xml:space="preserve">
     <value>osu! Játék Eszközök</value>
+  </data>
+  <data name="VersionToastEng" xml:space="preserve">
+    <value>Tool binary version: %d</value>
+  </data>
+  <data name="VersionToastHun" xml:space="preserve">
+    <value>Eszköz bináris verziója: %d</value>
   </data>
 </root>

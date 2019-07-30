@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Reflection;
 #pragma warning disable CS1998
 
 namespace osu_backupAndRestore
@@ -39,9 +40,26 @@ namespace osu_backupAndRestore
         }
         public static void WriteColorFormated(string text, ConsoleColor? foreColor, ConsoleColor? backColor)
         {
-            bool noFormating = true;
-            int cycle = 0;
-            int offset = 0;
+            int variableTextLength = text.Length;
+            for (int i = 0; i < variableTextLength; i++)
+            {
+                if (text[i] == '%')
+                {
+                    if (text[i + 1] == 'f')
+                    {
+                        Console.ForegroundColor = !foreColor.HasValue ? Console.ForegroundColor : (ConsoleColor)foreColor;
+                    }
+                    if (text[i + 1] == 'b')
+                    {
+                        Console.BackgroundColor = !backColor.HasValue ? Console.BackgroundColor : (ConsoleColor)backColor;
+                    }
+                    text = text.Remove(i, 2);
+                    variableTextLength -= 2;
+                }
+                Console.Write(text[i]);
+                Console.ResetColor();
+            }
+            /*
             while (text.Contains("%f") || text.Contains("%b"))
             {
                 noFormating = false;
@@ -68,10 +86,12 @@ namespace osu_backupAndRestore
                     }
                     continue;
                 }
+
             }
-            
+
             if (noFormating) Console.Write(text);
             else Console.Write(text.Remove(0, offset));
+            */
         }
         public static async Task<int> BringMainWindowToFront(IntPtr hwnd)
         {
@@ -97,6 +117,45 @@ namespace osu_backupAndRestore
             //throw new InvalidOperationException("Window is UAC protected or its parent process has closed");
             return int.MaxValue;
         }
+        public static void Version()
+        {
+            string versionString = MainEntry.langDict[UIElements.VersionToast].Replace("%d", System.Diagnostics.FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion);
+            int strLength = versionString.Length;
+            strLength += strLength == 32 ? 4 : 0;
+            int left = (Console.WindowWidth % 2 == 1 ? Console.WindowWidth + 1 : Console.WindowWidth) / 2 - 4 - strLength / 2,
+                top = (Console.WindowHeight % 2 == 1 ? Console.WindowHeight + 1 : Console.WindowHeight) / 2 - 3;
+            Console.SetCursorPosition(left, top);
+
+            for (int i = 0; i < 5; i++)
+            {
+                Console.SetCursorPosition(left, top + i);
+                for (int j = 0; j < strLength + 4; j++)
+                {
+                    if (i == 0 || i == 4)
+                    {
+                        Console.Write('*');
+                    }
+                    else
+                    {
+                        Console.Write("* ");
+                        if (i == 1 || i == 3)
+                            for (int k = 0; k < strLength; k++)
+                            {
+                                Console.Write(' ');
+                            }
+                        if (i == 2)
+                        {
+                            Console.SetCursorPosition(left + 2, top + i);
+                            Console.Write(versionString);
+                        }
+                        Console.SetCursorPosition(left * 2 + (strLength == 36 ? 12 : 0), top + i);
+                        Console.Write(" *");
+                        break;
+                    }
+                }
+            }
+            Console.ReadKey(true);
+        }
         #region Interop
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -108,13 +167,13 @@ namespace osu_backupAndRestore
     }
 
     enum ShowWindowEnum
-        {
-            Hide = 0,
-            ShowNormal = 1, ShowMinimized = 2, ShowMaximized = 3,
-            Maximize = 3, ShowNormalNoActivate = 4, Show = 5,
-            Minimize = 6, ShowMinNoActivate = 7, ShowNoActivate = 8,
-            Restore = 9, ShowDefault = 10, ForceMinimized = 11
-        };
+    {
+        Hide = 0,
+        ShowNormal = 1, ShowMinimized = 2, ShowMaximized = 3,
+        Maximize = 3, ShowNormalNoActivate = 4, Show = 5,
+        Minimize = 6, ShowMinNoActivate = 7, ShowNoActivate = 8,
+        Restore = 9, ShowDefault = 10, ForceMinimized = 11
+    };
     enum UIElements
     {
         WindowTitle,
@@ -165,6 +224,7 @@ namespace osu_backupAndRestore
         Done,
         Aborted,
         QuestionDelete,
-        SafeguardDeleteCmd
+        SafeguardDeleteCmd,
+        VersionToast
     }
 }
