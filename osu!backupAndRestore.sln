@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2043
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "osu!backupAndRestore", "osu!backupAndRestore\osu!backupAndRestore.csproj", "{C3F9FA01-D172-4F51-9804-52735796AE5A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnderCode.osu!backupAndRestore", "osu!backupAndRestore\EnderCode.osu!backupAndRestore.csproj", "{C3F9FA01-D172-4F51-9804-52735796AE5A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnderCode.Utils", "Utils\EnderCode.Utils.csproj", "{0DB758F4-D15E-4F6D-8B91-EE9482B7BFE3}"
 EndProject
