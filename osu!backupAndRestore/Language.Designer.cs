@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace osu_backupAndRestore {
+namespace EnderCode.osu_backupAndRestore {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace osu_backupAndRestore {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("osu_backupAndRestore.Language", typeof(Language).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EnderCode.osu_backupAndRestore.Language", typeof(Language).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

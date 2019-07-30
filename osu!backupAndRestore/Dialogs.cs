@@ -1,10 +1,11 @@
 ﻿using System;
+using EnderCode.Utils;
 
-namespace osu_backupAndRestore
+namespace EnderCode.osu_backupAndRestore
 {
     static class Dialogs
     {
-        public static bool GeneralAskDialog(UIElements element)
+        internal static bool GeneralAskDialog(UIElements element)
         {
             ConsoleKey a;
             Console.Write("\n" + MainEntry.langDict[element] + ": ");
@@ -15,7 +16,7 @@ namespace osu_backupAndRestore
             Console.WriteLine();
             return a.Equals(MainEntry.data.isEng ? ConsoleKey.Y : ConsoleKey.I) ? true : false;
         }
-        public static void AreYouSure()
+        internal static void AreYouSure()
         {
             bool permited = GeneralAskDialog(UIElements.QuestionSure);
             Console.WriteLine();
@@ -25,7 +26,7 @@ namespace osu_backupAndRestore
             }
             else
             {
-                Utils.WriteColoredLine(MainEntry.langDict[UIElements.Aborted], ConsoleColor.Red);
+                Util.WriteColoredLine(MainEntry.langDict[UIElements.Aborted], ConsoleColor.Red);
             }
         }
     }

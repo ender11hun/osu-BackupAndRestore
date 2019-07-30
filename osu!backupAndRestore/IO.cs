@@ -2,11 +2,11 @@
 using System.Text;
 using System.IO;
 
-namespace osu_backupAndRestore
+namespace EnderCode.osu_backupAndRestore
 {
     static class IO
     {
-        public static void SettingsSaver(bool isBackup, bool isUpdate, ref MainData data)
+        internal static void SettingsSaver(bool isBackup, bool isUpdate, ref MainData data)
         {
             using (StreamWriter outFile = new StreamWriter(data.lastRunInfo, false, Encoding.UTF8))
             {
@@ -16,7 +16,7 @@ namespace osu_backupAndRestore
                 outFile.WriteLine(data.isEng ? "eng" : "hun");
             }
         }
-        public static void LastRunReader(out bool exist, ref MainData data)
+        internal static void LastRunReader(out bool exist, ref MainData data)
         {
             exist = false;
             if (File.Exists(data.lastRunInfo))

@@ -6,13 +6,14 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Text;
 using ThreadState = System.Threading.ThreadState;
+using EnderCode.Utils;
 
-namespace osu_backupAndRestore
+namespace EnderCode.osu_backupAndRestore
 {
     sealed class KeyEventArgs
     {
-        public ConsoleKeyInfo ConsoleKey { get; }
-        public KeyEventArgs(ConsoleKeyInfo consoleKey)
+        internal ConsoleKeyInfo ConsoleKey { get; }
+        internal KeyEventArgs(ConsoleKeyInfo consoleKey)
         {
             this.ConsoleKey = consoleKey;
         }
@@ -21,11 +22,11 @@ namespace osu_backupAndRestore
     static class Operations
     {
         #region eventDeclaration
-        public delegate void KeyEventHandler(KeyEventArgs e);
-        public static event KeyEventHandler KeyEvent;
+        internal delegate void KeyEventHandler(KeyEventArgs e);
+        internal static event KeyEventHandler KeyEvent;
         #endregion
         private static readonly string errorPrefix = $"{MainEntry.langDict[UIElements.ErrorPrefix]} ";
-        public static void BackupAndRestore(bool isBackup, ref bool exist)
+        internal static void BackupAndRestore(bool isBackup, ref bool exist)
         {
             DirectoryInfo destDir;
             string fileName, destFile;
@@ -50,7 +51,7 @@ namespace osu_backupAndRestore
             Console.WriteLine($"{MainEntry.langDict[UIElements.GettingFiles]}");
             if (!Directory.Exists(src))
             {
-                Utils.WriteColored(errorPrefix, ConsoleColor.Red);
+                Util.WriteColored(errorPrefix, ConsoleColor.Red);
                 Console.WriteLine(MainEntry.langDict[UIElements.NoSourceFound].Beautify());
                 Console.ReadKey();
             }
@@ -62,11 +63,11 @@ namespace osu_backupAndRestore
                 {
                     fileName = item.Name;
                     Console.Write($"{MainEntry.langDict[UIElements.FileInfoPart1]} ");
-                    Utils.WriteColored(fileName, ConsoleColor.Cyan);
+                    Util.WriteColored(fileName, ConsoleColor.Cyan);
                     Console.Write($" {MainEntry.langDict[UIElements.FileInfoPart2]} ");
-                    Utils.WriteColored(src, ConsoleColor.Cyan);
+                    Util.WriteColored(src, ConsoleColor.Cyan);
                     Console.Write($" {MainEntry.langDict[UIElements.FileInfoPart3]} ");
-                    Utils.WriteColored(Utils.SizeSuffixer(item.Length), ConsoleColor.Green);
+                    Util.WriteColored(Util.SizeSuffixer(item.Length), ConsoleColor.Green);
                     Console.WriteLine($" {MainEntry.langDict[UIElements.FileInfoPart4]}...");
                 }
                 Console.Write($"{MainEntry.langDict[UIElements.CopyToast].Replace(@"%d", dst)}");
@@ -85,7 +86,7 @@ namespace osu_backupAndRestore
                     sizeFinal += item.Length;
                 }
                 Console.Write($"{MainEntry.langDict[UIElements.FinalSizePart1]}: ");
-                Utils.WriteColored(Utils.SizeSuffixer(sizeFinal) + " ", ConsoleColor.Green);
+                Util.WriteColored(Util.SizeSuffixer(sizeFinal) + " ", ConsoleColor.Green);
                 Console.WriteLine($"{MainEntry.langDict[UIElements.FinalSizePart2]}{destFiles.Length} {MainEntry.langDict[UIElements.FinalSizePart3]}");
                 if (File.Exists(MainEntry.data.dir + @"\safeguard.lock"))
                     File.Delete(MainEntry.data.dir + @"\safeguard.lock");
@@ -101,7 +102,7 @@ namespace osu_backupAndRestore
             }
 
         }
-        public static async void Launch()
+        internal static async void Launch()
         {
             bool error = false;
             #region eventInit
@@ -117,17 +118,17 @@ namespace osu_backupAndRestore
             {
                 process = Process.Start(Environment.ExpandEnvironmentVariables($@"{MainEntry.data.dir}\osu!.exe"));
                 Safeguard();
-                int x = await Utils.BringMainWindowToFront(process.MainWindowHandle);
+                int x = await Util.BringMainWindowToFront(process.MainWindowHandle);
                 process.WaitForExit();
             }
             catch (FileNotFoundException e)
             {
-                Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(MainEntry.langDict[UIElements.FileNotFoundEx] + (MainEntry.data.debug ? $"\n{MainEntry.langDict[UIElements.ErrorDetails]}:" : string.Empty));
+                Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(MainEntry.langDict[UIElements.FileNotFoundEx] + (MainEntry.data.debug ? $"\n{MainEntry.langDict[UIElements.ErrorDetails]}:" : string.Empty));
                 if (MainEntry.data.debug)
                 {
-                    Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Message);
-                    Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Source);
-                    Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
+                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Message);
+                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Source);
+                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
                 }
                 Console.Write($"{MainEntry.langDict[UIElements.AwaitKeyToast]}");
                 Console.ReadKey();
@@ -135,13 +136,13 @@ namespace osu_backupAndRestore
             }
             catch (Win32Exception e)
             {
-                Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(MainEntry.langDict[UIElements.Win32Ex]);
+                Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(MainEntry.langDict[UIElements.Win32Ex]);
                 if (MainEntry.data.debug)
                 {
-                    Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Message);
-                    Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Source);
-                    Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
-                    Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine("ErrorCode: " + e.ErrorCode);
+                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Message);
+                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Source);
+                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
+                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine("ErrorCode: " + e.ErrorCode);
                 }
                 Console.Write($"{MainEntry.langDict[UIElements.AwaitKeyToast]}");
                 Console.ReadKey();
@@ -172,7 +173,7 @@ namespace osu_backupAndRestore
 
             Console.Clear();
         }
-        public static void Repair()
+        internal static void Repair()
         {
             Console.WriteLine(MainEntry.langDict[UIElements.RepairToast]);
             try
@@ -186,9 +187,9 @@ namespace osu_backupAndRestore
                 Console.WriteLine(MainEntry.langDict[UIElements.Win32Ex] + (MainEntry.data.debug ? $"\n{MainEntry.langDict[UIElements.ErrorDetails]}:" : string.Empty));
                 if (MainEntry.data.debug)
                 {
-                    Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Message);
-                    Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Source);
-                    Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
+                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Message);
+                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Source);
+                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
                 }
                 Console.Write($"{MainEntry.langDict[UIElements.AwaitKeyToast]}");
                 Console.ReadKey();
@@ -198,9 +199,9 @@ namespace osu_backupAndRestore
                 Console.WriteLine(MainEntry.langDict[UIElements.FileNotFoundEx] + (MainEntry.data.debug ? $"\n{MainEntry.langDict[UIElements.ErrorDetails]}:" : string.Empty));
                 if (MainEntry.data.debug)
                 {
-                    Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Message);
-                    Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Source);
-                    Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
+                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Message);
+                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Source);
+                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
                 }
                 Console.Write($"{MainEntry.langDict[UIElements.AwaitKeyToast]}");
                 Console.ReadKey();
@@ -210,9 +211,9 @@ namespace osu_backupAndRestore
                 Console.WriteLine(MainEntry.langDict[UIElements.WhatTheFuckWasThat] + (MainEntry.data.debug ? $"\n{MainEntry.langDict[UIElements.ErrorDetails]}:" : string.Empty));
                 if (MainEntry.data.debug)
                 {
-                    Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Message);
-                    Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Source);
-                    Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
+                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Message);
+                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Source);
+                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
                 }
                 Console.Write($"{MainEntry.langDict[UIElements.AwaitKeyToast]}");
                 Console.ReadKey();
@@ -221,12 +222,12 @@ namespace osu_backupAndRestore
             File.Delete($@"{MainEntry.data.dir}\safeguard.lock");
             Console.Clear();
         }
-        public static void RaiseKeyEvent()
+        internal static void RaiseKeyEvent()
         {
             ConsoleKeyInfo keyInfo = Console.ReadKey();
             KeyEvent?.Invoke(new KeyEventArgs(keyInfo));
         }
-        public static void ChangeBackupDir()
+        internal static void ChangeBackupDir()
         {
             Console.WriteLine($"{MainEntry.langDict[UIElements.CurrentBackupDir]}: {(MainEntry.data.backupDir.Equals(string.Empty) ? MainEntry.langDict[UIElements.NoCurrentBackupDir] : MainEntry.data.backupDir)}");
             Console.WriteLine(MainEntry.langDict[UIElements.EnvVarInfo]);
@@ -257,7 +258,7 @@ namespace osu_backupAndRestore
             MainEntry.data.backupDir = newDir;
             IO.SettingsSaver(true, true, ref MainEntry.data);
         }
-        public static void CatchGameProcess(bool isAutorun)
+        internal static void CatchGameProcess(bool isAutorun)
         {
             bool noError = true;
             Console.WriteLine("");
@@ -267,7 +268,7 @@ namespace osu_backupAndRestore
                 Process[] processes = Process.GetProcessesByName("osu!");
                 if (processes.Length > 1)
                 {
-                    Utils.WriteColored($"{MainEntry.langDict[UIElements.WarnPrefix]}: ", ConsoleColor.Yellow);
+                    Util.WriteColored($"{MainEntry.langDict[UIElements.WarnPrefix]}: ", ConsoleColor.Yellow);
                     Console.WriteLine(MainEntry.langDict[UIElements.MultiProcessWeirdness]);
                     Thread.Sleep(1500);
                 }
@@ -281,12 +282,12 @@ namespace osu_backupAndRestore
             {
                 noError = false;
                 if (!isAutorun)
-                    Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(MainEntry.langDict[UIElements.NoProcess]);
+                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(MainEntry.langDict[UIElements.NoProcess]);
                 if (MainEntry.data.debug)
                 {
-                    Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Message);
-                    Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Source);
-                    Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
+                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Message);
+                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Source);
+                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
                 }
                 if (!isAutorun)
                 {
@@ -297,12 +298,12 @@ namespace osu_backupAndRestore
             catch (Exception e)
             {
                 noError = false;
-                Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine($"{MainEntry.langDict[UIElements.WhatTheFuckWasThat]} {(!MainEntry.data.debug ? MainEntry.langDict[UIElements.ErrorDetails] : string.Empty)}");
+                Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine($"{MainEntry.langDict[UIElements.WhatTheFuckWasThat]} {(!MainEntry.data.debug ? MainEntry.langDict[UIElements.ErrorDetails] : string.Empty)}");
                 if (MainEntry.data.debug)
                 {
-                    Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Message);
-                    Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Source);
-                    Utils.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
+                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Message);
+                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Source);
+                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
                 }
             }
 
@@ -321,7 +322,7 @@ namespace osu_backupAndRestore
                 }
             }
         }
-        public static void DumpMapIDs()
+        internal static void DumpMapIDs()
         {
             DirectoryInfo mapsDirectroy = new DirectoryInfo(MainEntry.data.dir + @"\Songs");
             List<string> mapIDs = new List<string>();
@@ -335,9 +336,9 @@ namespace osu_backupAndRestore
                 newMaps.Add(file.Name.Split(' ')[0]);
             }
             File.WriteAllLines($@"{MainEntry.data.backupDir}\mapdump.log", mapIDs.ToArray(), Encoding.UTF8);
-            Utils.WriteColored($"{mapIDs.Count}", ConsoleColor.Blue);
+            Util.WriteColored($"{mapIDs.Count}", ConsoleColor.Blue);
             Console.WriteLine(" " + MainEntry.langDict[UIElements.PartialDownloadedMaps]);
-            Utils.WriteColored($"{newMaps.Count}", ConsoleColor.Green);
+            Util.WriteColored($"{newMaps.Count}", ConsoleColor.Green);
             Console.WriteLine(" " + MainEntry.langDict[UIElements.PartialNewMaps]);
         }
         private static void Safeguard()
@@ -345,7 +346,7 @@ namespace osu_backupAndRestore
             using (FileStream fs = File.Create(MainEntry.data.dir + @"\safeguard.lock"))
             { return; }
         }
-        public static void ConfirmDelete()
+        internal static void ConfirmDelete()
         {
             if (Dialogs.GeneralAskDialog(UIElements.QuestionDelete))
             {

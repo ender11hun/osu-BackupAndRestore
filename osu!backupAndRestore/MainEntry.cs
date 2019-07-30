@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using EnderCode.Utils;
 
-namespace osu_backupAndRestore
+
+namespace EnderCode.osu_backupAndRestore
 {
     static class MainEntry
     {
-
         internal static Dictionary<UIElements, string> langDict = new Dictionary<UIElements, string>();
         internal static MainData data = null;
 
@@ -34,7 +35,7 @@ namespace osu_backupAndRestore
                 {
                     cursorTop = Console.CursorTop;
                     Console.SetCursorPosition(Console.WindowWidth - data.debugMsg.Length - 1, 0);
-                    Utils.WriteColored(data.debugMsg, ConsoleColor.DarkYellow);
+                    Util.WriteColored(data.debugMsg, ConsoleColor.DarkYellow);
                     Console.SetCursorPosition(0, cursorTop);
                 }
                 Console.Title = langDict[UIElements.WindowTitle];
@@ -42,22 +43,22 @@ namespace osu_backupAndRestore
                 if (exist)
                 {
                     Console.Write($"{langDict[UIElements.LastOp]}: ");
-                    Utils.WriteColored(data.lastRunContent[0], ConsoleColor.Cyan);
+                    Util.WriteColored(data.lastRunContent[0], ConsoleColor.Cyan);
                     Console.Write($" {langDict[UIElements.LastOpTime]}: ");
-                    Utils.WriteColoredLine(data.lastRunContent[1], ConsoleColor.Cyan);
+                    Util.WriteColoredLine(data.lastRunContent[1], ConsoleColor.Cyan);
                 }
                 else
                 {
                     Console.WriteLine(langDict[UIElements.MissingLastRunInfo].Beautify());
                 }
                 Console.Write($"{langDict[UIElements.CurrentBackupDir]}: ");
-                Utils.WriteColoredLine(data.backupDir.Equals(string.Empty) ? langDict[UIElements.NoBackupDir] : data.backupDir, ConsoleColor.Magenta);
-                Utils.WriteColorFormated(langDict[UIElements.Commands].Beautify() + "\n", ConsoleColor.DarkCyan, null);
+                Util.WriteColoredLine(data.backupDir.Equals(string.Empty) ? langDict[UIElements.NoBackupDir] : data.backupDir, ConsoleColor.Magenta);
+                Util.WriteColorFormated(langDict[UIElements.Commands].Beautify() + "\n", ConsoleColor.DarkCyan, null);
                 bool safeguardFound = System.IO.File.Exists($@"{data.dir}\safeguard.lock");
                 if (safeguardFound)
                 {
                     Console.WriteLine(langDict[UIElements.SafeguardDeleteCmd]);
-                    Utils.WriteColoredLine(langDict[UIElements.SafeguardFound], ConsoleColor.Red);
+                    Util.WriteColoredLine(langDict[UIElements.SafeguardFound], ConsoleColor.Red);
                 }
                 Console.Write($@"{langDict[UIElements.Prompt]}> ");
                 ConsoleKeyInfo input = Console.ReadKey(true);
@@ -68,7 +69,7 @@ namespace osu_backupAndRestore
                         {
                             data.qln = true;
                             data.stay = false;
-                            Utils.WriteColorFormated("%fS%fh%fi%ff%ft + B", ConsoleColor.Green, null);
+                            Util.WriteColorFormated("%fS%fh%fi%ff%ft + B", ConsoleColor.Green, null);
                         }
                         else Console.WriteLine('B');
                         Operations.BackupAndRestore(true, ref exist);
@@ -86,7 +87,7 @@ namespace osu_backupAndRestore
                         {
                             data.qln = true;
                             data.stay = false;
-                            Utils.WriteColorFormated("%fS%fh%fi%ff%ft + L", ConsoleColor.Green, null);
+                            Util.WriteColorFormated("%fS%fh%fi%ff%ft + L", ConsoleColor.Green, null);
                         }
                         else Console.WriteLine('L');
                         Operations.Launch();
@@ -119,12 +120,12 @@ namespace osu_backupAndRestore
                     case ConsoleKey.D:
                         if (input.Modifiers.HasFlag(ConsoleModifiers.Alt) && safeguardFound)
                         {
-                            Utils.WriteColorFormated("%fA%fl%ft + D", ConsoleColor.Green, null);
+                            Util.WriteColorFormated("%fA%fl%ft + D", ConsoleColor.Green, null);
                             Operations.ConfirmDelete();
                         }
                         break;
                     case ConsoleKey.V:
-                        Utils.Version();
+                        Version();
                         break;
                     #region Unused      
                     case ConsoleKey.Backspace:
@@ -534,6 +535,50 @@ namespace osu_backupAndRestore
                 langDict.Add(UIElements.VersionToast, Language.VersionToastHun);
             }
         }
+        static void Version()
+        {
+            string versionString = MainEntry.langDict[UIElements.VersionToast].Replace("%d", System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).FileVersion);
+            int strLength = versionString.Length;
+            strLength += strLength == 32 ? 4 : 0;
+            int left = (Console.WindowWidth % 2 == 1 ? Console.WindowWidth + 1 : Console.WindowWidth) / 2 - strLength / 2,
+                top = (Console.WindowHeight % 2 == 1 ? Console.WindowHeight + 1 : Console.WindowHeight) / 2 - 3;
+            Console.SetCursorPosition(left, top);
+
+            for (int i = 0; i < 5; i++)
+            {
+                Console.SetCursorPosition(left, top + i);
+                for (int j = 0; j < strLength + 4; j++)
+                {
+                    if (i == 0 || i == 4)
+                    {
+                        Console.Write('*');
+                    }
+                    else
+                    {
+                        Console.Write("* ");
+                        if (i == 1 || i == 3)
+                            for (int k = 0; k < strLength; k++)
+                            {
+                                Console.Write(' ');
+                            }
+                        if (i == 2)
+                        {
+                            Console.SetCursorPosition(left + 2, top + i);
+                            Console.Write(versionString);
+                        }
+                        Console.SetCursorPosition(left * 2 + (strLength == 36 ? 8 : 0), top + i);
+                        Console.Write(" *");
+                        break;
+                    }
+                }
+            }
+            Console.ReadKey(true);
+        }
+        public static string Beautify(this string unformated)
+        {
+            return unformated.Replace(@"\n", Environment.NewLine).Replace(@"\t", "\t");
+        }
+
     }
 
     sealed class MainData
@@ -551,4 +596,59 @@ namespace osu_backupAndRestore
             lastRunInfo = $@"{dir}\settings.obr";
         }
     }
+
+    enum UIElements
+    {
+        WindowTitle,
+        HeadLine,
+        CurrentBackupDir,
+        BackupDirNotFound,
+        NoBackupDir,
+        NoSourceFound,
+        Commands,
+        LastOp,
+        LastOpTime,
+        MissingLastRunInfo,
+        SafeguardFound,
+        Prompt,
+        SeeYa,
+        ErrorPrefix,
+        GettingFiles,
+        LaunchToast,
+        AwaitKeyToast,
+        RepairToast,
+        CopyToast,
+        FileNotFoundEx,
+        Win32Ex,
+        ProcessEnded,
+        FileInfoPart1,
+        FileInfoPart2,
+        FileInfoPart3,
+        FileInfoPart4,
+        FinalSizePart1,
+        FinalSizePart2,
+        FinalSizePart3,
+        ErrorDetails,
+        NoCurrentBackupDir,
+        EnvVarInfo,
+        NewDir,
+        CorrectQuestionStr,
+        CreateNew,
+        WarnPrefix,
+        QueryProcess,
+        MultiProcessWeirdness,
+        NoProcess,
+        WhatTheFuckWasThat,
+        ProcessCaught,
+        PartialDownloadedMaps,
+        PartialNewMaps,
+        QuestionLaunch,
+        QuestionSure,
+        Done,
+        Aborted,
+        QuestionDelete,
+        SafeguardDeleteCmd,
+        VersionToast
+    }
+
 }
