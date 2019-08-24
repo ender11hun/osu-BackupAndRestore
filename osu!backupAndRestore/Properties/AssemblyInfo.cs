@@ -16,7 +16,7 @@ using System.Runtime.InteropServices;
 [assembly: Guid("c3f9fa01-d172-4f51-9804-52735796ae5a")]
 
 [assembly: AssemblyVersion("1.9.*")]
-[assembly: AssemblyFileVersion("1.9.6.1")]
+[assembly: AssemblyFileVersion("1.9.7.1")]
 // Suffixes
 // T - Test version*
 // A - Alpha

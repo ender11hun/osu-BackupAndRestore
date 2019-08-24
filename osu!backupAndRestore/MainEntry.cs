@@ -128,6 +128,8 @@ namespace EnderCode.osu_backupAndRestore
                         Version();
                         break;
                     #region Unused      
+                    case ConsoleKey.F:
+                        break;
                     case ConsoleKey.Backspace:
                         break;
                     case ConsoleKey.Tab:
@@ -191,8 +193,6 @@ namespace EnderCode.osu_backupAndRestore
                     case ConsoleKey.D9:
                         break;
                     case ConsoleKey.A:
-                        break;
-                    case ConsoleKey.F:
                         break;
                     case ConsoleKey.G:
                         break;
@@ -480,6 +480,8 @@ namespace EnderCode.osu_backupAndRestore
                 langDict.Add(UIElements.QuestionDelete, Language.QuestionDeleteEng);
                 langDict.Add(UIElements.SafeguardDeleteCmd, Language.SafeguardCommandEng);
                 langDict.Add(UIElements.VersionToast, Language.VersionToastEng);
+                langDict.Add(UIElements.MapIDCollusion, Language.MapIDCollusionEng);
+                langDict.Add(UIElements.CollusionDialog, Language.CollusionDialogEng);
             }
             else
             {
@@ -533,6 +535,8 @@ namespace EnderCode.osu_backupAndRestore
                 langDict.Add(UIElements.QuestionDelete, Language.QuestionDeleteHun);
                 langDict.Add(UIElements.SafeguardDeleteCmd, Language.SafeguardCommandHun);
                 langDict.Add(UIElements.VersionToast, Language.VersionToastHun);
+                langDict.Add(UIElements.MapIDCollusion, Language.MapIDCollusionHun);
+                langDict.Add(UIElements.CollusionDialog, Language.CollusionDialogHun);
             }
         }
         static void Version()
@@ -648,7 +652,9 @@ namespace EnderCode.osu_backupAndRestore
         Aborted,
         QuestionDelete,
         SafeguardDeleteCmd,
-        VersionToast
+        VersionToast,
+        MapIDCollusion,
+        CollusionDialog
     }
 
 }

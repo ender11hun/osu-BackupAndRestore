@@ -136,7 +136,7 @@
     <value>Utolsó mentés fájlja nem létezik!\nAdja meg a biztonsági  mentés helyét kézzel előbb!</value>
   </data>
   <data name="CommandsEng" xml:space="preserve">
-    <value>Commands:\n%fB - Backup  %fR - Restore  %fP - Repair  %fL - Launch\n%fE - Catch game process  %fC - Change backup dir  %fV - Show version number\n%fE%fn%ft%fe%fr - backup and go  %fF%f1 - Change language  %fQ - Exit\n%fS%fh%fi%ff%ft %f+ %fL \  Autoclose after\n%fS%fh%fi%ff%ft %f+ %fB /  the game ended</value>
+    <value>Commands:\n%fB - Backup  %fR - Restore  %fP - Repair  %fL - Launch \n%fE - Catch game process  %fC - Change backup dir  %fV - Show version number\n%fE%fn%ft%fe%fr - backup and go  %fF%f1 - Change language  %fQ - Exit\n%fS%fh%fi%ff%ft %f+ %fL \  Autoclose after\n%fS%fh%fi%ff%ft %f+ %fB /  the game ended</value>
   </data>
   <data name="CommandsHun" xml:space="preserve">
     <value>Parancsok:\n%fB - Biztosági mentés  %fR - Helyreállítás  %fP - Javítás  %fL - Indítás\n%fE - Játékfolyamat elfogása  %fC - Bizt.mentés könyvtárának megadása  %fV - Verziószám megtekintése\n%fE%fn%ft%fe%fr - Mentés és indítás  %fF%f1 - Nyelv váltása  %fQ - Kilépés\n%fS%fh%fi%ff%ft %f+ %fL \  Auto-bezárás\n%fS%fh%fi%ff%ft %f+ %fB /  miután a játék leállt</value>
@@ -401,7 +401,7 @@
     <value>Unknown exception!</value>
   </data>
   <data name="WhatTheFuckWasThatHun" xml:space="preserve">
-    <value>Ismeretlen hiba</value>
+    <value>Ismeretlen hiba!</value>
   </data>
   <data name="Win32ExEng" xml:space="preserve">
     <value>Process could not be launched! Execution failure!</value>
@@ -420,5 +420,17 @@
   </data>
   <data name="VersionToastHun" xml:space="preserve">
     <value>Eszköz bináris verziója: %d</value>
+  </data>
+  <data name="MapIDCollusionHun" xml:space="preserve">
+    <value>importálatlan pálya azonosítója ütközik már meglévő pályákéval.</value>
+  </data>
+  <data name="MapIDCollusionEng" xml:space="preserve">
+    <value>unimported map ID(s) collide with already imported ones.</value>
+  </data>
+  <data name="CollusionDialogEng" xml:space="preserve">
+    <value>Do you wish to filter them out? [(Y)es/(N)o]</value>
+  </data>
+  <data name="CollusionDialogHun" xml:space="preserve">
+    <value>Ki szeretnéd szűrni őket? [(I)gen/(N)em]</value>
   </data>
 </root>

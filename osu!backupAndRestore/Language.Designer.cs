@@ -115,7 +115,25 @@ namespace EnderCode.osu_backupAndRestore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Commands:\n%fB - Backup  %fR - Restore  %fP - Repair  %fL - Launch\n%fE - Catch game process  %fC - Change backup dir  %fV - Show version number\n%fE%fn%ft%fe%fr - backup and go  %fF%f1 - Change language  %fQ - Exit\n%fS%fh%fi%ff%ft %f+ %fL \  Autoclose after\n%fS%fh%fi%ff%ft %f+ %fB /  the game ended.
+        ///   Looks up a localized string similar to Do you wish to filter them out? [(Y)es/(N)o].
+        /// </summary>
+        internal static string CollusionDialogEng {
+            get {
+                return ResourceManager.GetString("CollusionDialogEng", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ki szeretnéd szűrni őket? [(I)gen/(N)em].
+        /// </summary>
+        internal static string CollusionDialogHun {
+            get {
+                return ResourceManager.GetString("CollusionDialogHun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Commands:\n%fB - Backup  %fR - Restore  %fP - Repair  %fL - Launch \n%fE - Catch game process  %fC - Change backup dir  %fV - Show version number\n%fE%fn%ft%fe%fr - backup and go  %fF%f1 - Change language  %fQ - Exit\n%fS%fh%fi%ff%ft %f+ %fL \  Autoclose after\n%fS%fh%fi%ff%ft %f+ %fB /  the game ended.
         /// </summary>
         internal static string CommandsEng {
             get {
@@ -517,6 +535,24 @@ namespace EnderCode.osu_backupAndRestore {
         internal static string LaunchToastHun {
             get {
                 return ResourceManager.GetString("LaunchToastHun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to unimported map ID(s) collide with already imported ones..
+        /// </summary>
+        internal static string MapIDCollusionEng {
+            get {
+                return ResourceManager.GetString("MapIDCollusionEng", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to importálatlan pálya azonosítója ütközik már meglévő pályákéval..
+        /// </summary>
+        internal static string MapIDCollusionHun {
+            get {
+                return ResourceManager.GetString("MapIDCollusionHun", resourceCulture);
             }
         }
         
@@ -926,7 +962,7 @@ namespace EnderCode.osu_backupAndRestore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ismeretlen hiba.
+        ///   Looks up a localized string similar to Ismeretlen hiba!.
         /// </summary>
         internal static string WhatTheFuckWasThatHun {
             get {

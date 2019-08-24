@@ -327,19 +327,34 @@ namespace EnderCode.osu_backupAndRestore
             DirectoryInfo mapsDirectroy = new DirectoryInfo(MainEntry.data.dir + @"\Songs");
             List<string> mapIDs = new List<string>();
             List<string> newMaps = new List<string>();
+            List<FileInfo> collusions = new List<FileInfo>();
             foreach (var dir in mapsDirectroy.GetDirectories())
             {
                 mapIDs.Add(dir.Name.Split(' ')[0]);
             }
             foreach (var file in mapsDirectroy.GetFiles("*.osz", SearchOption.TopDirectoryOnly))
             {
-                newMaps.Add(file.Name.Split(' ')[0]);
+                string temp = file.Name.Split(' ')[0];
+                if (mapIDs.Contains(temp))
+                    collusions.Add(file);
+                newMaps.Add(temp);
             }
             File.WriteAllLines($@"{MainEntry.data.backupDir}\mapdump.log", mapIDs.ToArray(), Encoding.UTF8);
             Util.WriteColored($"{mapIDs.Count}", ConsoleColor.Blue);
             Console.WriteLine(" " + MainEntry.langDict[UIElements.PartialDownloadedMaps]);
             Util.WriteColored($"{newMaps.Count}", ConsoleColor.Green);
             Console.WriteLine(" " + MainEntry.langDict[UIElements.PartialNewMaps]);
+            if (collusions.Count != 0)
+            {
+                Util.WriteColored($"{collusions} ", ConsoleColor.Blue);
+                Console.Write(MainEntry.langDict[UIElements.MapIDCollusion]);
+                if (Dialogs.GeneralAskDialog(UIElements.CollusionDialog))
+                    foreach (var file in collusions)
+                    {
+                        File.Delete(file.FullName);
+                    }
+
+            }
         }
         private static void Safeguard()
         {
