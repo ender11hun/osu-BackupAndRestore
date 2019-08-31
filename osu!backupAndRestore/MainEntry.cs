@@ -11,13 +11,34 @@ namespace EnderCode.osu_backupAndRestore
     {
         internal static Dictionary<UIElements, string> langDict = new Dictionary<UIElements, string>();
         internal static MainData data = null;
+        internal static int cursorTop;
+        internal static string GetVersion
+        {
+            get
+            {
+                return System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).FileVersion;
+            }
+        }
 
         static void Main(string[] args)
         {
             Init();
+            void Version()
+            {
+                string versionStr = langDict[UIElements.VersionString];
+                string libVerSting = langDict[UIElements.LibVersion];
+                cursorTop = Console.CursorTop;
+                Console.SetCursorPosition(Console.WindowWidth - versionStr.Length - GetVersion.Length - 1, 0);
+                Console.Write(langDict[UIElements.VersionString]);
+                Util.WriteColored(GetVersion, ConsoleColor.Green);
+                Console.SetCursorPosition(Console.WindowWidth - libVerSting.Length - Util.GetVersion.Length - 1, 1);
+                Console.Write(langDict[UIElements.LibVersion]);
+                Util.WriteColored(Util.GetVersion, ConsoleColor.Green);
+                Console.SetCursorPosition(0, cursorTop);
+            }
             do
             {
-                IO.LastRunReader(out bool exist, ref data);
+                IO.LastRunReader(out bool settingsFound, ref data);
                 try
                 {
                     if (data.lastRunContent[3] != "eng")
@@ -29,18 +50,21 @@ namespace EnderCode.osu_backupAndRestore
                 catch (Exception)
                 {
                 }
-                int cursorTop;
+
+                Version();
 
                 if (data.debug)
                 {
                     cursorTop = Console.CursorTop;
-                    Console.SetCursorPosition(Console.WindowWidth - data.debugMsg.Length - 1, 0);
+                    Console.SetCursorPosition(Console.WindowWidth - data.debugMsg.Length - 1, 2);
                     Util.WriteColored(data.debugMsg, ConsoleColor.DarkYellow);
                     Console.SetCursorPosition(0, cursorTop);
                 }
+
                 Console.Title = langDict[UIElements.WindowTitle];
                 Console.WriteLine(langDict[UIElements.HeadLine]);
-                if (exist)
+
+                if (settingsFound)
                 {
                     Console.Write($"{langDict[UIElements.LastOp]}: ");
                     Util.WriteColored(data.lastRunContent[0], ConsoleColor.Cyan);
@@ -51,15 +75,18 @@ namespace EnderCode.osu_backupAndRestore
                 {
                     Console.WriteLine(langDict[UIElements.MissingLastRunInfo].Beautify());
                 }
+
                 Console.Write($"{langDict[UIElements.CurrentBackupDir]}: ");
                 Util.WriteColoredLine(data.backupDir.Equals(string.Empty) ? langDict[UIElements.NoBackupDir] : data.backupDir, ConsoleColor.Magenta);
                 Util.WriteColorFormated(langDict[UIElements.Commands].Beautify() + "\n", ConsoleColor.DarkCyan, null);
+
                 bool safeguardFound = System.IO.File.Exists($@"{data.dir}\safeguard.lock");
                 if (safeguardFound)
                 {
                     Console.WriteLine(langDict[UIElements.SafeguardDeleteCmd]);
                     Util.WriteColoredLine(langDict[UIElements.SafeguardFound], ConsoleColor.Red);
                 }
+
                 Console.Write($@"{langDict[UIElements.Prompt]}> ");
                 ConsoleKeyInfo input = Console.ReadKey(true);
                 switch (input.Key)
@@ -72,11 +99,11 @@ namespace EnderCode.osu_backupAndRestore
                             Util.WriteColorFormated("%fS%fh%fi%ff%ft + B", ConsoleColor.Green, null);
                         }
                         else Console.WriteLine('B');
-                        Operations.BackupAndRestore(true, ref exist);
+                        Operations.BackupAndRestore(true, ref settingsFound);
                         break;
                     case ConsoleKey.R:
                         Console.WriteLine('R');
-                        Operations.BackupAndRestore(false, ref exist);
+                        Operations.BackupAndRestore(false, ref settingsFound);
                         break;
                     case ConsoleKey.C:
                         Console.WriteLine('C');
@@ -109,7 +136,7 @@ namespace EnderCode.osu_backupAndRestore
                         break;
                     case ConsoleKey.Enter:
                         data.qln = true;
-                        Operations.BackupAndRestore(true, ref exist);
+                        Operations.BackupAndRestore(true, ref settingsFound);
                         data.qln = false;
                         break;
                     case ConsoleKey.F1:
@@ -124,10 +151,10 @@ namespace EnderCode.osu_backupAndRestore
                             Operations.ConfirmDelete();
                         }
                         break;
-                    case ConsoleKey.V:
-                        Version();
-                        break;
                     #region Unused      
+                    case ConsoleKey.V:
+                        //Version();
+                        break;
                     case ConsoleKey.F:
                         break;
                     case ConsoleKey.Backspace:
@@ -479,9 +506,10 @@ namespace EnderCode.osu_backupAndRestore
                 langDict.Add(UIElements.BackupDirNotFound, Language.BackupDirNotFoundEng);
                 langDict.Add(UIElements.QuestionDelete, Language.QuestionDeleteEng);
                 langDict.Add(UIElements.SafeguardDeleteCmd, Language.SafeguardCommandEng);
-                langDict.Add(UIElements.VersionToast, Language.VersionToastEng);
+                langDict.Add(UIElements.VersionString, Language.VersionStringEng);
                 langDict.Add(UIElements.MapIDCollusion, Language.MapIDCollusionEng);
                 langDict.Add(UIElements.CollusionDialog, Language.CollusionDialogEng);
+                langDict.Add(UIElements.LibVersion, Language.LibVersionEng);
             }
             else
             {
@@ -534,50 +562,51 @@ namespace EnderCode.osu_backupAndRestore
                 langDict.Add(UIElements.BackupDirNotFound, Language.BackupDirNotFoundHun);
                 langDict.Add(UIElements.QuestionDelete, Language.QuestionDeleteHun);
                 langDict.Add(UIElements.SafeguardDeleteCmd, Language.SafeguardCommandHun);
-                langDict.Add(UIElements.VersionToast, Language.VersionToastHun);
+                langDict.Add(UIElements.VersionString, Language.VersionStringHun);
                 langDict.Add(UIElements.MapIDCollusion, Language.MapIDCollusionHun);
                 langDict.Add(UIElements.CollusionDialog, Language.CollusionDialogHun);
+                langDict.Add(UIElements.LibVersion, Language.LibVersionHun);
             }
         }
-        static void Version()
-        {
-            string versionString = MainEntry.langDict[UIElements.VersionToast].Replace("%d", System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).FileVersion);
-            int strLength = versionString.Length;
-            //strLength += strLength == 32 ? 4 : 0;
-            int left = (Console.WindowWidth % 2 == 1 ? Console.WindowWidth + 1 : Console.WindowWidth) / 2 - strLength / 2,
-                top = (Console.WindowHeight % 2 == 1 ? Console.WindowHeight + 1 : Console.WindowHeight) / 2 - 3;
-            Console.SetCursorPosition(left, top);
+        //static void Version()
+        //{
+        //    string versionString = MainEntry.langDict[UIElements.VersionToast].Replace("%d", System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).FileVersion);
+        //    int strLength = versionString.Length;
+        //    //strLength += strLength == 32 ? 4 : 0;
+        //    int left = (Console.WindowWidth % 2 == 1 ? Console.WindowWidth + 1 : Console.WindowWidth) / 2 - strLength / 2,
+        //        top = (Console.WindowHeight % 2 == 1 ? Console.WindowHeight + 1 : Console.WindowHeight) / 2 - 3;
+        //    Console.SetCursorPosition(left, top);
 
-            for (int i = 0; i < 5; i++)
-            {
-                Console.SetCursorPosition(left, top + i);
-                for (int j = 0; j < strLength + (data.isEng ? 4 : 2); j++)
-                {
-                    if (i == 0 || i == 4)
-                    {
-                        Console.Write('*');
-                    }
-                    else
-                    {
-                        Console.Write("* ");
-                        if (i == 1 || i == 3)
-                            for (int k = 0; k < strLength; k++)
-                            {
-                                Console.Write(' ');
-                            }
-                        if (i == 2)
-                        {
-                            Console.SetCursorPosition(left + 2, top + i);
-                            Console.Write(versionString);
-                        }
-                        Console.SetCursorPosition(left * 2 - (data.isEng ? 4 : 0), top + i);
-                        Console.Write(" *");
-                        break;
-                    }
-                }
-            }
-            Console.ReadKey(true);
-        }
+        //    for (int i = 0; i < 5; i++)
+        //    {
+        //        Console.SetCursorPosition(left, top + i);
+        //        for (int j = 0; j < strLength + (data.isEng ? 4 : 2); j++)
+        //        {
+        //            if (i == 0 || i == 4)
+        //            {
+        //                Console.Write('*');
+        //            }
+        //            else
+        //            {
+        //                Console.Write("* ");
+        //                if (i == 1 || i == 3)
+        //                    for (int k = 0; k < strLength; k++)
+        //                    {
+        //                        Console.Write(' ');
+        //                    }
+        //                if (i == 2)
+        //                {
+        //                    Console.SetCursorPosition(left + 2, top + i);
+        //                    Console.Write(versionString);
+        //                }
+        //                Console.SetCursorPosition(left * 2 - (data.isEng ? 4 : 0), top + i);
+        //                Console.Write(" *");
+        //                break;
+        //            }
+        //        }
+        //    }
+        //    Console.ReadKey(true);
+        //}
         public static string Beautify(this string unformated)
         {
             return unformated.Replace(@"\n", Environment.NewLine).Replace(@"\t", "\t");
@@ -652,7 +681,8 @@ namespace EnderCode.osu_backupAndRestore
         Aborted,
         QuestionDelete,
         SafeguardDeleteCmd,
-        VersionToast,
+        VersionString,
+        LibVersion,
         MapIDCollusion,
         CollusionDialog
     }

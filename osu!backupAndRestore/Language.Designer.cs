@@ -133,7 +133,7 @@ namespace EnderCode.osu_backupAndRestore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Commands:\n%fB - Backup  %fR - Restore  %fP - Repair  %fL - Launch \n%fE - Catch game process  %fC - Change backup dir  %fV - Show version number\n%fE%fn%ft%fe%fr - backup and go  %fF%f1 - Change language  %fQ - Exit\n%fS%fh%fi%ff%ft %f+ %fL \  Autoclose after\n%fS%fh%fi%ff%ft %f+ %fB /  the game ended.
+        ///   Looks up a localized string similar to Commands:\n%fB - Backup  %fR - Restore  %fP - Repair  %fL - Launch \n%fE - Catch game process  %fC - Change backup dir  \n%fE%fn%ft%fe%fr - backup and go  %fF%f1 - Change language  %fQ - Exit\n%fS%fh%fi%ff%ft %f+ %fL \  Autoclose after\n%fS%fh%fi%ff%ft %f+ %fB /  the game ended.
         /// </summary>
         internal static string CommandsEng {
             get {
@@ -142,7 +142,7 @@ namespace EnderCode.osu_backupAndRestore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parancsok:\n%fB - Biztosági mentés  %fR - Helyreállítás  %fP - Javítás  %fL - Indítás\n%fE - Játékfolyamat elfogása  %fC - Bizt.mentés könyvtárának megadása  %fV - Verziószám megtekintése\n%fE%fn%ft%fe%fr - Mentés és indítás  %fF%f1 - Nyelv váltása  %fQ - Kilépés\n%fS%fh%fi%ff%ft %f+ %fL \  Auto-bezárás\n%fS%fh%fi%ff%ft %f+ %fB /  miután a játék leállt.
+        ///   Looks up a localized string similar to Parancsok:\n%fB - Biztosági mentés  %fR - Helyreállítás  %fP - Javítás  %fL - Indítás\n%fE - Játékfolyamat elfogása  %fC - Bizt.mentés könyvtárának megadása\n%fE%fn%ft%fe%fr - Mentés és indítás  %fF%f1 - Nyelv váltása  %fQ - Kilépés\n%fS%fh%fi%ff%ft %f+ %fL \  Auto-bezárás\n%fS%fh%fi%ff%ft %f+ %fB /  miután a játék leállt.
         /// </summary>
         internal static string CommandsHun {
             get {
@@ -539,6 +539,24 @@ namespace EnderCode.osu_backupAndRestore {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Utils library version: .
+        /// </summary>
+        internal static string LibVersionEng {
+            get {
+                return ResourceManager.GetString("LibVersionEng", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Segéd könyvtár verzió: .
+        /// </summary>
+        internal static string LibVersionHun {
+            get {
+                return ResourceManager.GetString("LibVersionHun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to unimported map ID(s) collide with already imported ones..
         /// </summary>
         internal static string MapIDCollusionEng {
@@ -917,20 +935,20 @@ namespace EnderCode.osu_backupAndRestore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tool binary version: %d.
+        ///   Looks up a localized string similar to Tool version: .
         /// </summary>
-        internal static string VersionToastEng {
+        internal static string VersionStringEng {
             get {
-                return ResourceManager.GetString("VersionToastEng", resourceCulture);
+                return ResourceManager.GetString("VersionStringEng", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Eszköz bináris verziója: %d.
+        ///   Looks up a localized string similar to Eszköz verziója: .
         /// </summary>
-        internal static string VersionToastHun {
+        internal static string VersionStringHun {
             get {
-                return ResourceManager.GetString("VersionToastHun", resourceCulture);
+                return ResourceManager.GetString("VersionStringHun", resourceCulture);
             }
         }
         

@@ -12,6 +12,13 @@ namespace EnderCode.Utils
 {
     public static class Util
     {
+        public static string GetVersion
+        {
+            get
+            {
+                return System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).FileVersion;
+            }
+        }
         public static string SizeSuffixer(long bytes)
         {
             if (((bytes / 1024f) / 1024f) >= 1)
