@@ -568,45 +568,6 @@ namespace EnderCode.osu_backupAndRestore
                 langDict.Add(UIElements.LibVersion, Language.LibVersionHun);
             }
         }
-        //static void Version()
-        //{
-        //    string versionString = MainEntry.langDict[UIElements.VersionToast].Replace("%d", System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).FileVersion);
-        //    int strLength = versionString.Length;
-        //    //strLength += strLength == 32 ? 4 : 0;
-        //    int left = (Console.WindowWidth % 2 == 1 ? Console.WindowWidth + 1 : Console.WindowWidth) / 2 - strLength / 2,
-        //        top = (Console.WindowHeight % 2 == 1 ? Console.WindowHeight + 1 : Console.WindowHeight) / 2 - 3;
-        //    Console.SetCursorPosition(left, top);
-
-        //    for (int i = 0; i < 5; i++)
-        //    {
-        //        Console.SetCursorPosition(left, top + i);
-        //        for (int j = 0; j < strLength + (data.isEng ? 4 : 2); j++)
-        //        {
-        //            if (i == 0 || i == 4)
-        //            {
-        //                Console.Write('*');
-        //            }
-        //            else
-        //            {
-        //                Console.Write("* ");
-        //                if (i == 1 || i == 3)
-        //                    for (int k = 0; k < strLength; k++)
-        //                    {
-        //                        Console.Write(' ');
-        //                    }
-        //                if (i == 2)
-        //                {
-        //                    Console.SetCursorPosition(left + 2, top + i);
-        //                    Console.Write(versionString);
-        //                }
-        //                Console.SetCursorPosition(left * 2 - (data.isEng ? 4 : 0), top + i);
-        //                Console.Write(" *");
-        //                break;
-        //            }
-        //        }
-        //    }
-        //    Console.ReadKey(true);
-        //}
         public static string Beautify(this string unformated)
         {
             return unformated.Replace(@"\n", Environment.NewLine).Replace(@"\t", "\t");

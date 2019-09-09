@@ -61,39 +61,6 @@ namespace EnderCode.Utils
                 Console.Write(text[i]);
                 Console.ResetColor();
             }
-            /*
-            while (text.Contains("%f") || text.Contains("%b"))
-            {
-                noFormating = false;
-                int index = text.IndexOf('%', offset++);
-                if (text[index + 1] == 'f')
-                {
-                    Console.ForegroundColor = !foreColor.HasValue ? Console.ForegroundColor : (ConsoleColor)foreColor;
-                    text = text.Remove(index, 2);
-                    if (text[index] != '%')
-                    {
-                        Console.Write(text[cycle++]);
-                        Console.ResetColor();
-                    }
-                    continue;
-                }
-                if (text[index + 1] == 'b')
-                {
-                    Console.BackgroundColor = !backColor.HasValue ? Console.BackgroundColor : (ConsoleColor)backColor;
-                    text = text.Remove(index, 2);
-                    if (text[index] != '%')
-                    {
-                        Console.Write(text[cycle++]);
-                        Console.ResetColor();
-                    }
-                    continue;
-                }
-
-            }
-
-            if (noFormating) Console.Write(text);
-            else Console.Write(text.Remove(0, offset));
-            */
         }
         public static async Task<int> BringMainWindowToFront(IntPtr hwnd)
         {
