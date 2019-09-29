@@ -124,28 +124,19 @@ namespace EnderCode.osu_backupAndRestore
             catch (FileNotFoundException e)
             {
                 Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(MainEntry.langDict[UIElements.FileNotFoundEx] + (MainEntry.data.debug ? $"\n{MainEntry.langDict[UIElements.ErrorDetails]}:" : string.Empty));
-                if (MainEntry.data.debug)
-                {
-                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Message);
-                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Source);
-                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
-                }
-                Console.Write($"{MainEntry.langDict[UIElements.AwaitKeyToast]}");
-                Console.ReadKey();
+                ErrorMsg(e);
                 error = true;
             }
             catch (Win32Exception e)
             {
                 Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(MainEntry.langDict[UIElements.Win32Ex]);
-                if (MainEntry.data.debug)
-                {
-                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Message);
-                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Source);
-                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
-                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine("ErrorCode: " + e.ErrorCode);
-                }
-                Console.Write($"{MainEntry.langDict[UIElements.AwaitKeyToast]}");
-                Console.ReadKey();
+                ErrorMsg(e);
+                error = true;
+                
+            }
+            catch (Exception e)
+            {
+                ErrorMsg(e);
                 error = true;
             }
 
@@ -185,38 +176,17 @@ namespace EnderCode.osu_backupAndRestore
             catch (Win32Exception e)
             {
                 Console.WriteLine(MainEntry.langDict[UIElements.Win32Ex] + (MainEntry.data.debug ? $"\n{MainEntry.langDict[UIElements.ErrorDetails]}:" : string.Empty));
-                if (MainEntry.data.debug)
-                {
-                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Message);
-                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Source);
-                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
-                }
-                Console.Write($"{MainEntry.langDict[UIElements.AwaitKeyToast]}");
-                Console.ReadKey();
+                ErrorMsg(e);
             }
             catch (FileNotFoundException e)
             {
                 Console.WriteLine(MainEntry.langDict[UIElements.FileNotFoundEx] + (MainEntry.data.debug ? $"\n{MainEntry.langDict[UIElements.ErrorDetails]}:" : string.Empty));
-                if (MainEntry.data.debug)
-                {
-                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Message);
-                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Source);
-                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
-                }
-                Console.Write($"{MainEntry.langDict[UIElements.AwaitKeyToast]}");
-                Console.ReadKey();
+                ErrorMsg(e);
             }
             catch (Exception e)
             {
                 Console.WriteLine(MainEntry.langDict[UIElements.WhatTheFuckWasThat] + (MainEntry.data.debug ? $"\n{MainEntry.langDict[UIElements.ErrorDetails]}:" : string.Empty));
-                if (MainEntry.data.debug)
-                {
-                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Message);
-                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Source);
-                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
-                }
-                Console.Write($"{MainEntry.langDict[UIElements.AwaitKeyToast]}");
-                Console.ReadKey();
+                ErrorMsg(e);
             }
 
             File.Delete($@"{MainEntry.data.dir}\safeguard.lock");
@@ -368,6 +338,22 @@ namespace EnderCode.osu_backupAndRestore
                 File.Delete($"{MainEntry.data.dir}/safeguard.lock");
             }
             else { Console.WriteLine(MainEntry.langDict[UIElements.Aborted]); }
+        }
+        internal static void ErrorMsg<T>(T e)
+        {
+            if (typeof(T).BaseType != typeof(Exception))
+                return;
+
+            if (MainEntry.data.debug)
+            {
+                Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine((e as Exception).Message);
+                Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine((e as Exception).Source);
+                Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine((e as Exception).StackTrace);
+                if (typeof(T) == typeof(Win32Exception))
+                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine("ErrorCode: " + (e as Win32Exception).ErrorCode);
+            }
+            Console.Write($"{MainEntry.langDict[UIElements.AwaitKeyToast]}");
+            Console.ReadKey();
         }
     }
 }
