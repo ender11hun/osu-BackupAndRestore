@@ -86,6 +86,10 @@ namespace EnderCode.Utils
             //throw new InvalidOperationException("Window is UAC protected or its parent process has closed");
             return int.MaxValue;
         }
+        public static string Beautify(this string unformated)
+        {
+            return unformated.Replace(@"\n", Environment.NewLine).Replace(@"\t", "\t");
+        }
         #region Interop
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]

@@ -5,7 +5,7 @@ namespace EnderCode.osu_backupAndRestore
 {
     static class Dialogs
     {
-        internal static bool GeneralAskDialog(UIElements element)
+        internal static bool GeneralAskDialog(in UIElements element)
         {
             ConsoleKey a;
             Console.Write("\n" + MainEntry.langDict[element] + ": ");

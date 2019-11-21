@@ -26,7 +26,7 @@ namespace EnderCode.osu_backupAndRestore
         internal static event KeyEventHandler KeyEvent;
         #endregion
         private static readonly string errorPrefix = $"{MainEntry.langDict[UIElements.ErrorPrefix]} ";
-        internal static void BackupAndRestore(bool isBackup, ref bool exist)
+        internal static void BackupAndRestore(bool isBackup, in bool exist)
         {
             DirectoryInfo destDir;
             string fileName, destFile;
@@ -76,7 +76,7 @@ namespace EnderCode.osu_backupAndRestore
                     destFile = Path.Combine(dst, item.Name);
                     File.Copy(Path.Combine(src, item.Name), destFile, true);
                 }
-                IO.SettingsSaver(isBackup, false, ref MainEntry.data);
+                IO.SettingsSaver(isBackup, false, MainEntry.data);
                 Console.WriteLine(MainEntry.langDict[UIElements.Done]);
                 DirectoryInfo dest = new DirectoryInfo(dst);
                 FileInfo[] destFiles = dest.GetFiles("*.db", SearchOption.TopDirectoryOnly);
@@ -226,7 +226,7 @@ namespace EnderCode.osu_backupAndRestore
                 isCorrect = a.Equals(MainEntry.data.isEng ? ConsoleKey.Y : ConsoleKey.I);
             } while (!isCorrect);
             MainEntry.data.backupDir = newDir;
-            IO.SettingsSaver(true, true, ref MainEntry.data);
+            IO.SettingsSaver(true, true, MainEntry.data);
         }
         internal static void CatchGameProcess(bool isAutorun)
         {

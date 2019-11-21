@@ -38,7 +38,7 @@ namespace EnderCode.osu_backupAndRestore
             }
             do
             {
-                IO.LastRunReader(out bool settingsFound, ref data);
+                IO.LastRunReader(out bool settingsFound, data);
                 try
                 {
                     if (data.lastRunContent[3] != "eng")
@@ -99,11 +99,11 @@ namespace EnderCode.osu_backupAndRestore
                             Util.WriteColorFormated("%fS%fh%fi%ff%ft + B", ConsoleColor.Green, null);
                         }
                         else Console.WriteLine('B');
-                        Operations.BackupAndRestore(true, ref settingsFound);
+                        Operations.BackupAndRestore(true, in settingsFound);
                         break;
                     case ConsoleKey.R:
                         Console.WriteLine('R');
-                        Operations.BackupAndRestore(false, ref settingsFound);
+                        Operations.BackupAndRestore(false, in settingsFound);
                         break;
                     case ConsoleKey.C:
                         Console.WriteLine('C');
@@ -136,13 +136,13 @@ namespace EnderCode.osu_backupAndRestore
                         break;
                     case ConsoleKey.Enter:
                         data.qln = true;
-                        Operations.BackupAndRestore(true, ref settingsFound);
+                        Operations.BackupAndRestore(true, in settingsFound);
                         data.qln = false;
                         break;
                     case ConsoleKey.F1:
                         data.isEng = !data.isEng;
                         LangInit();
-                        IO.SettingsSaver(data.lastRunContent[0].Equals("backup"), true, ref data);
+                        IO.SettingsSaver(data.lastRunContent[0].Equals("backup"), true, data);
                         break;
                     case ConsoleKey.D:
                         if (input.Modifiers.HasFlag(ConsoleModifiers.Alt) && safeguardFound)
@@ -567,10 +567,6 @@ namespace EnderCode.osu_backupAndRestore
                 langDict.Add(UIElements.CollusionDialog, Language.CollusionDialogHun);
                 langDict.Add(UIElements.LibVersion, Language.LibVersionHun);
             }
-        }
-        public static string Beautify(this string unformated)
-        {
-            return unformated.Replace(@"\n", Environment.NewLine).Replace(@"\t", "\t");
         }
 
     }
