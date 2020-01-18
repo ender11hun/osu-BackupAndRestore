@@ -29,5 +29,24 @@ namespace EnderCode.osu_backupAndRestore
                 Util.WriteColoredLine(MainEntry.langDict[UIElements.Aborted], ConsoleColor.Red);
             }
         }
+        internal static string InstallNotFound()
+        {
+            if (!GeneralAskDialog(UIElements.InstallNotFound))
+            {
+                Console.WriteLine();
+            }
+            Console.WriteLine(MainEntry.langDict[UIElements.FolderBrowsing]);
+            System.Threading.Thread.Sleep(2000);
+            var folderDialog = FormImpl4Con.CreateFolderBrowser(MainEntry.langDict[UIElements.BrowseFolder]);
+            var dialogResult = folderDialog.ShowDialog();
+            if (dialogResult == System.Windows.Forms.DialogResult.Abort || dialogResult == System.Windows.Forms.DialogResult.Cancel)
+            {
+                Console.WriteLine(MainEntry.langDict[UIElements.BrowseAbort]);
+                Console.WriteLine(MainEntry.langDict[UIElements.AwaitKeyToast]);
+                Console.ReadKey();
+                return null;
+            }
+            return folderDialog.SelectedPath;
+        }
     }
 }

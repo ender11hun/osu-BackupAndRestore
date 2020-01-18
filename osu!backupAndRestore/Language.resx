@@ -373,10 +373,10 @@
   <data name="RepairToastHun" xml:space="preserve">
     <value>Javítás megkezdése...</value>
   </data>
-  <data name="SafeguardCommandEng" xml:space="preserve">
+  <data name="SafeguardDeleteCmdEng" xml:space="preserve">
     <value>Alt + D - Delete residual safeguard file (at your own risk)</value>
   </data>
-  <data name="SafeguardCommandHun" xml:space="preserve">
+  <data name="SafeguardDeleteCmdHun" xml:space="preserve">
     <value>Alt + D - Visszamaradt biztonsági fájl törlése (saját felelősségre!)</value>
   </data>
   <data name="SafeguardFoundEng" xml:space="preserve">
@@ -438,5 +438,29 @@
   </data>
   <data name="LibVersionHun" xml:space="preserve">
     <value>Segéd könyvtár verzió: </value>
+  </data>
+  <data name="BrowseAbortEng" xml:space="preserve">
+    <value>Browsing aborted by user! I won't work without osu! installed.\nExiting now...</value>
+  </data>
+  <data name="BrowseAbortHun" xml:space="preserve">
+    <value>Tallózást a felhasználó megszakította! Az osu! nélkül én nem tudok működni!\nAz alkalmazás bezáródik...</value>
+  </data>
+  <data name="FolderBrowsingEng" xml:space="preserve">
+    <value>Game not found. A window will open to help you find where it is installed...</value>
+  </data>
+  <data name="FolderBrowsingHun" xml:space="preserve">
+    <value>A játék nem található. Egy ablak megfog nyílni, hogy megtalálhasd...</value>
+  </data>
+  <data name="InstallNotFoundEng" xml:space="preserve">
+    <value>osu! not found in the default install folder!\nAre you sure it's installed? [Y/n]</value>
+  </data>
+  <data name="InstallNotFoundHun" xml:space="preserve">
+    <value>osu! nem található az alapértelmezett telepítési mappában!\nTelepítve van biztosan? [I/n]</value>
+  </data>
+  <data name="BrowseFolderEng" xml:space="preserve">
+    <value>Browse folder...</value>
+  </data>
+  <data name="BrowseFolderHun" xml:space="preserve">
+    <value>Könyvtár tallózása...</value>
   </data>
 </root>

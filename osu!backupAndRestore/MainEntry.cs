@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 using EnderCode.Utils;
 
 
@@ -14,12 +15,13 @@ namespace EnderCode.osu_backupAndRestore
         internal static int cursorTop;
         internal static string GetVersion
         {
-            get
-            {
-                return System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).FileVersion;
-            }
+            get => System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).FileVersion;
         }
+        internal static IntPtr WindowHandle => Interop.GetConsoleWindow();
+        internal static bool WindowHidden = false;
+        internal static Thread thread;
 
+        [STAThread]
         static void Main(string[] args)
         {
             Init();
@@ -41,10 +43,17 @@ namespace EnderCode.osu_backupAndRestore
                 IO.LastRunReader(out bool settingsFound, data);
                 try
                 {
+                    
                     if (data.lastRunContent[3] != "eng")
                     {
                         data.isEng = false;
                         LangInit();
+                    }
+                    if (!System.IO.File.Exists(System.IO.Path.Combine(data.installPath,"osu!.exe")))
+                    {
+                        data.installPath = Dialogs.InstallNotFound();
+                        if (data.installPath == null)
+                            goto Exit;
                     }
                 }
                 catch (Exception)
@@ -53,13 +62,13 @@ namespace EnderCode.osu_backupAndRestore
 
                 Version();
 
-                if (data.debug)
-                {
-                    cursorTop = Console.CursorTop;
-                    Console.SetCursorPosition(Console.WindowWidth - data.debugMsg.Length - 1, 2);
-                    Util.WriteColored(data.debugMsg, ConsoleColor.DarkYellow);
-                    Console.SetCursorPosition(0, cursorTop);
-                }
+                //if (data.debug)
+                //{
+                //    cursorTop = Console.CursorTop;
+                //    Console.SetCursorPosition(Console.WindowWidth - data.debugMsg.Length - 1, 2);
+                //    Util.WriteColored(data.debugMsg, ConsoleColor.DarkYellow);
+                //    Console.SetCursorPosition(0, cursorTop);
+                //}
 
                 Console.Title = langDict[UIElements.WindowTitle];
                 Console.WriteLine(langDict[UIElements.HeadLine]);
@@ -73,14 +82,14 @@ namespace EnderCode.osu_backupAndRestore
                 }
                 else
                 {
-                    Console.WriteLine(langDict[UIElements.MissingLastRunInfo].Beautify());
+                    Console.WriteLine(langDict[UIElements.MissingLastRunInfo]);
                 }
 
                 Console.Write($"{langDict[UIElements.CurrentBackupDir]}: ");
                 Util.WriteColoredLine(data.backupDir.Equals(string.Empty) ? langDict[UIElements.NoBackupDir] : data.backupDir, ConsoleColor.Magenta);
-                Util.WriteColorFormated(langDict[UIElements.Commands].Beautify() + "\n", ConsoleColor.DarkCyan, null);
+                Util.WriteColorFormated(langDict[UIElements.Commands] + "\n", ConsoleColor.DarkCyan, null);
 
-                bool safeguardFound = System.IO.File.Exists($@"{data.dir}\safeguard.lock");
+                bool safeguardFound = System.IO.File.Exists($@"{data.installPath}\safeguard.lock");
                 if (safeguardFound)
                 {
                     Console.WriteLine(langDict[UIElements.SafeguardDeleteCmd]);
@@ -430,6 +439,8 @@ namespace EnderCode.osu_backupAndRestore
                 Console.WriteLine(langDict[UIElements.SeeYa]);
                 Thread.Sleep(1000);
             }
+        Exit:
+        Application.Exit();
         }
 
         /// <summary>
@@ -442,6 +453,8 @@ namespace EnderCode.osu_backupAndRestore
             {
                 throw new PlatformNotSupportedException("Only Windows NT or later supported");
             }
+            thread = new Thread(delegate () { Application.Run(SystemTray.instance); });
+            thread.Start();
             data = new MainData();
             Console.OutputEncoding = Encoding.UTF8;
             Console.TreatControlCAsInput = true;
@@ -451,129 +464,30 @@ namespace EnderCode.osu_backupAndRestore
         }
         static void LangInit()
         {
+            string[] enumNames = typeof(UIElements).GetEnumNames();
             //Clear Dictionary
             langDict.Clear();
             //Fill Dictionary
-            if (data.isEng)
+            string lang = data.isEng ? "Eng" : "Hun";
+            foreach (var item in enumNames)
             {
-                //langDict.Add(UIElements, Language);
-                langDict.Add(UIElements.WindowTitle, Language.WindowTitleEng);
-                langDict.Add(UIElements.HeadLine, Language.HeadLineEng);
-                langDict.Add(UIElements.CurrentBackupDir, Language.CurrentBackupDirEng);
-                langDict.Add(UIElements.NoBackupDir, Language.NoBackupDirEng);
-                langDict.Add(UIElements.NoSourceFound, Language.NoSourceFoundEng);
-                langDict.Add(UIElements.Commands, Language.CommandsEng);
-                langDict.Add(UIElements.LastOp, Language.LastOpEng);
-                langDict.Add(UIElements.LastOpTime, Language.LastOpTimeEng);
-                langDict.Add(UIElements.MissingLastRunInfo, Language.MissingLastRunInfoEng);
-                langDict.Add(UIElements.SafeguardFound, Language.SafeguardFoundEng);
-                langDict.Add(UIElements.Prompt, Language.PromptEng);
-                langDict.Add(UIElements.SeeYa, Language.SeeYaEng);
-                langDict.Add(UIElements.ErrorPrefix, Language.ErrorPrefixEng);
-                langDict.Add(UIElements.GettingFiles, Language.GettingFilesEng);
-                langDict.Add(UIElements.LaunchToast, Language.LaunchToastEng);
-                langDict.Add(UIElements.AwaitKeyToast, Language.AwaitKeyToastEng);
-                langDict.Add(UIElements.RepairToast, Language.RepairToastEng);
-                langDict.Add(UIElements.CopyToast, Language.CopyToastEng);
-                langDict.Add(UIElements.FileNotFoundEx, Language.FileNotFoundExEng);
-                langDict.Add(UIElements.Win32Ex, Language.Win32ExEng);
-                langDict.Add(UIElements.ProcessEnded, Language.ProcessEndedEng);
-                langDict.Add(UIElements.FileInfoPart1, Language.FileInfoPart1Eng);
-                langDict.Add(UIElements.FileInfoPart2, Language.FileInfoPart2Eng);
-                langDict.Add(UIElements.FileInfoPart3, Language.FileInfoPart3Eng);
-                langDict.Add(UIElements.FileInfoPart4, Language.FileInfoPart4Eng);
-                langDict.Add(UIElements.FinalSizePart1, Language.FinalSizePart1Eng);
-                langDict.Add(UIElements.FinalSizePart2, Language.FinalSizePart2Eng);
-                langDict.Add(UIElements.FinalSizePart3, Language.FinalSizePart3Eng);
-                langDict.Add(UIElements.ErrorDetails, Language.ErrorDetailsEng);
-                langDict.Add(UIElements.NoCurrentBackupDir, Language.NoCurrentBackupDirEng);
-                langDict.Add(UIElements.EnvVarInfo, Language.EnvVarInfoEng);
-                langDict.Add(UIElements.NewDir, Language.NewDirEng);
-                langDict.Add(UIElements.CorrectQuestionStr, Language.CorrectQuestionStrEng);
-                langDict.Add(UIElements.CreateNew, Language.CreateNewEng);
-                langDict.Add(UIElements.WarnPrefix, Language.WarnPrefixEng);
-                langDict.Add(UIElements.QueryProcess, Language.QueryProcessEng);
-                langDict.Add(UIElements.MultiProcessWeirdness, Language.MultiProcessWeirdnessEng);
-                langDict.Add(UIElements.NoProcess, Language.NoProcessEng);
-                langDict.Add(UIElements.WhatTheFuckWasThat, Language.WhatTheFuckWasThatEng);
-                langDict.Add(UIElements.ProcessCaught, Language.ProcessCaughtEng);
-                langDict.Add(UIElements.PartialDownloadedMaps, Language.PartialDownloadedMapsEng);
-                langDict.Add(UIElements.PartialNewMaps, Language.PartialNewMapsEng);
-                langDict.Add(UIElements.QuestionLaunch, Language.QuestionLaunchEng);
-                langDict.Add(UIElements.QuestionSure, Language.QuestionSureEng);
-                langDict.Add(UIElements.Done, Language.DoneEng);
-                langDict.Add(UIElements.Aborted, Language.AbortedEng);
-                langDict.Add(UIElements.BackupDirNotFound, Language.BackupDirNotFoundEng);
-                langDict.Add(UIElements.QuestionDelete, Language.QuestionDeleteEng);
-                langDict.Add(UIElements.SafeguardDeleteCmd, Language.SafeguardCommandEng);
-                langDict.Add(UIElements.VersionString, Language.VersionStringEng);
-                langDict.Add(UIElements.MapIDCollusion, Language.MapIDCollusionEng);
-                langDict.Add(UIElements.CollusionDialog, Language.CollusionDialogEng);
-                langDict.Add(UIElements.LibVersion, Language.LibVersionEng);
-            }
-            else
-            {
-                langDict.Add(UIElements.WindowTitle, Language.WindowTitleHun);
-                langDict.Add(UIElements.HeadLine, Language.HeadLineHun);
-                langDict.Add(UIElements.CurrentBackupDir, Language.CurrentBackupDirHun);
-                langDict.Add(UIElements.NoBackupDir, Language.NoBackupDirHun);
-                langDict.Add(UIElements.NoSourceFound, Language.NoSourceFoundHun);
-                langDict.Add(UIElements.Commands, Language.CommandsHun);
-                langDict.Add(UIElements.LastOp, Language.LastOpHun);
-                langDict.Add(UIElements.LastOpTime, Language.LastOpTimeHun);
-                langDict.Add(UIElements.MissingLastRunInfo, Language.MissingLastRunInfoHun);
-                langDict.Add(UIElements.SafeguardFound, Language.SafeguardFoundHun);
-                langDict.Add(UIElements.Prompt, Language.PromptHun);
-                langDict.Add(UIElements.SeeYa, Language.SeeYaHun);
-                langDict.Add(UIElements.ErrorPrefix, Language.ErrorPrefixHun);
-                langDict.Add(UIElements.GettingFiles, Language.GettingFilesHun);
-                langDict.Add(UIElements.LaunchToast, Language.LaunchToastHun);
-                langDict.Add(UIElements.AwaitKeyToast, Language.AwaitKeyToastHun);
-                langDict.Add(UIElements.RepairToast, Language.RepairToastHun);
-                langDict.Add(UIElements.CopyToast, Language.CopyToastHun);
-                langDict.Add(UIElements.FileNotFoundEx, Language.FileNotFoundExHun);
-                langDict.Add(UIElements.Win32Ex, Language.Win32ExHun);
-                langDict.Add(UIElements.ProcessEnded, Language.ProcessEndedHun);
-                langDict.Add(UIElements.FileInfoPart1, Language.FileInfoPart1Hun);
-                langDict.Add(UIElements.FileInfoPart2, Language.FileInfoPart2Hun);
-                langDict.Add(UIElements.FileInfoPart3, Language.FileInfoPart3Hun);
-                langDict.Add(UIElements.FileInfoPart4, Language.FileInfoPart4Hun);
-                langDict.Add(UIElements.FinalSizePart1, Language.FinalSizePart1Hun);
-                langDict.Add(UIElements.FinalSizePart2, Language.FinalSizePart2Hun);
-                langDict.Add(UIElements.FinalSizePart3, Language.FinalSizePart3Hun);
-                langDict.Add(UIElements.ErrorDetails, Language.ErrorDetailsHun);
-                langDict.Add(UIElements.NoCurrentBackupDir, Language.NoCurrentBackupDirHun);
-                langDict.Add(UIElements.EnvVarInfo, Language.EnvVarInfoHun);
-                langDict.Add(UIElements.NewDir, Language.NewDirHun);
-                langDict.Add(UIElements.CorrectQuestionStr, Language.CorrectQuestionStrHun);
-                langDict.Add(UIElements.CreateNew, Language.CreateNewHun);
-                langDict.Add(UIElements.WarnPrefix, Language.WarnPrefixHun);
-                langDict.Add(UIElements.QueryProcess, Language.QueryProcessHun);
-                langDict.Add(UIElements.MultiProcessWeirdness, Language.MultiProcessWeirdnessHun);
-                langDict.Add(UIElements.NoProcess, Language.NoProcessHun);
-                langDict.Add(UIElements.WhatTheFuckWasThat, Language.WhatTheFuckWasThatHun);
-                langDict.Add(UIElements.ProcessCaught, Language.ProcessCaughtHun);
-                langDict.Add(UIElements.PartialDownloadedMaps, Language.PartialDownloadedMapsHun);
-                langDict.Add(UIElements.PartialNewMaps, Language.PartialNewMapsHun);
-                langDict.Add(UIElements.QuestionLaunch, Language.QuestionLaunchHun);
-                langDict.Add(UIElements.QuestionSure, Language.QuestionSureHun);
-                langDict.Add(UIElements.Done, Language.DoneHun);
-                langDict.Add(UIElements.Aborted, Language.AbortedHun);
-                langDict.Add(UIElements.BackupDirNotFound, Language.BackupDirNotFoundHun);
-                langDict.Add(UIElements.QuestionDelete, Language.QuestionDeleteHun);
-                langDict.Add(UIElements.SafeguardDeleteCmd, Language.SafeguardCommandHun);
-                langDict.Add(UIElements.VersionString, Language.VersionStringHun);
-                langDict.Add(UIElements.MapIDCollusion, Language.MapIDCollusionHun);
-                langDict.Add(UIElements.CollusionDialog, Language.CollusionDialogHun);
-                langDict.Add(UIElements.LibVersion, Language.LibVersionHun);
+                langDict.Add(
+                    item.GetEnum<UIElements>(),
+                    ((string)typeof(Language).GetProperty(
+                        item+lang,
+                        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public
+                    ).GetValue(null,null)).Beautify()
+                );
             }
         }
 
     }
-
+    /// <summary>
+    /// Beállítások osztálya
+    /// </summary>
     sealed class MainData
     {
-        internal string dir = Environment.ExpandEnvironmentVariables(@"%userprofile%\AppData\Local\osu!");
+        internal string installPath = Environment.ExpandEnvironmentVariables(@"%userprofile%\AppData\Local\osu!");
         internal string lastRunInfo;
         internal string[] lastRunContent = { "backup", DateTime.MinValue.ToString(), null, "eng", "" };
         internal string backupDir;
@@ -583,11 +497,11 @@ namespace EnderCode.osu_backupAndRestore
 
         public MainData()
         {
-            lastRunInfo = $@"{dir}\settings.obr";
+            lastRunInfo = $@"{Environment.CurrentDirectory}\settings.obr";
         }
     }
 
-    enum UIElements
+    enum UIElements : byte
     {
         WindowTitle,
         HeadLine,
@@ -641,7 +555,11 @@ namespace EnderCode.osu_backupAndRestore
         VersionString,
         LibVersion,
         MapIDCollusion,
-        CollusionDialog
+        CollusionDialog,
+        FolderBrowsing,
+        InstallNotFound,
+        BrowseAbort,
+        BrowseFolder
     }
 
 }

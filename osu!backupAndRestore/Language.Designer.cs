@@ -115,6 +115,42 @@ namespace EnderCode.osu_backupAndRestore {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Browsing aborted by user! I won&apos;t work without osu! installed.\nExiting now....
+        /// </summary>
+        internal static string BrowseAbortEng {
+            get {
+                return ResourceManager.GetString("BrowseAbortEng", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tallózást a felhasználó megszakította! Az osu! nélkül én nem tudok működni!\nAz alkalmazás bezáródik....
+        /// </summary>
+        internal static string BrowseAbortHun {
+            get {
+                return ResourceManager.GetString("BrowseAbortHun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Browse folder....
+        /// </summary>
+        internal static string BrowseFolderEng {
+            get {
+                return ResourceManager.GetString("BrowseFolderEng", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Könyvtár tallózása....
+        /// </summary>
+        internal static string BrowseFolderHun {
+            get {
+                return ResourceManager.GetString("BrowseFolderHun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you wish to filter them out? [(Y)es/(N)o].
         /// </summary>
         internal static string CollusionDialogEng {
@@ -439,6 +475,24 @@ namespace EnderCode.osu_backupAndRestore {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Game not found. A window will open to help you find where it is installed....
+        /// </summary>
+        internal static string FolderBrowsingEng {
+            get {
+                return ResourceManager.GetString("FolderBrowsingEng", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A játék nem található. Egy ablak megfog nyílni, hogy megtalálhasd....
+        /// </summary>
+        internal static string FolderBrowsingHun {
+            get {
+                return ResourceManager.GetString("FolderBrowsingHun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Getting files....
         /// </summary>
         internal static string GettingFilesEng {
@@ -481,6 +535,24 @@ namespace EnderCode.osu_backupAndRestore {
             get {
                 object obj = ResourceManager.GetObject("icon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to osu! not found in the default install folder!\nAre you sure it&apos;s installed? [Y/n].
+        /// </summary>
+        internal static string InstallNotFoundEng {
+            get {
+                return ResourceManager.GetString("InstallNotFoundEng", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to osu! nem található az alapértelmezett telepítési mappában!\nTelepítve van biztosan? [I/n].
+        /// </summary>
+        internal static string InstallNotFoundHun {
+            get {
+                return ResourceManager.GetString("InstallNotFoundHun", resourceCulture);
             }
         }
         
@@ -883,18 +955,18 @@ namespace EnderCode.osu_backupAndRestore {
         /// <summary>
         ///   Looks up a localized string similar to Alt + D - Delete residual safeguard file (at your own risk).
         /// </summary>
-        internal static string SafeguardCommandEng {
+        internal static string SafeguardDeleteCmdEng {
             get {
-                return ResourceManager.GetString("SafeguardCommandEng", resourceCulture);
+                return ResourceManager.GetString("SafeguardDeleteCmdEng", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Alt + D - Visszamaradt biztonsági fájl törlése (saját felelősségre!).
         /// </summary>
-        internal static string SafeguardCommandHun {
+        internal static string SafeguardDeleteCmdHun {
             get {
-                return ResourceManager.GetString("SafeguardCommandHun", resourceCulture);
+                return ResourceManager.GetString("SafeguardDeleteCmdHun", resourceCulture);
             }
         }
         

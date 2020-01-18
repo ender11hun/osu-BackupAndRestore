@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
 using System.Threading;
-using System.Runtime.InteropServices;
 #pragma warning disable CS1998
 
 namespace EnderCode.Utils
@@ -27,20 +26,27 @@ namespace EnderCode.Utils
             }
             return $"{double.Parse(string.Format("{0:0.0##}", Math.Round(bytes / 1024f, 3)), CultureInfo.InvariantCulture)}KB";
         }
-        public static void WriteColored(string text, ConsoleColor color)
+        public static void WriteColored(string text, ConsoleColor font)
         {
-            Console.ForegroundColor = color;
+            Console.ForegroundColor = font;
             Console.Write(text);
             Console.ResetColor();
+        }
+        public static void WriteColored(string text, ConsoleColor? font, ConsoleColor back)
+        {
+            Console.BackgroundColor = back;
+            WriteColored(text, font.HasValue ? (ConsoleColor)font : Console.ForegroundColor);
         }
         public static void WriteColoredLine(string text, ConsoleColor color)
         {
-            Console.ForegroundColor = color;
-            Console.Write(text);
-            Console.ResetColor();
-            Console.WriteLine();
+            WriteColored(text+"\n", color);
         }
-        public static void WriteColorFormated(string text, ConsoleColor? foreColor, ConsoleColor? backColor)
+        public static void WriteColoredLine(string text, ConsoleColor? font, ConsoleColor back)
+        {
+            Console.BackgroundColor = back;
+            WriteColoredLine(text, font.HasValue ? (ConsoleColor)font : Console.ForegroundColor);
+        }
+        public static void WriteColorFormated(string text, ConsoleColor? fontColor, ConsoleColor? backColor)
         {
             int variableTextLength = text.Length;
             for (int i = 0; i < variableTextLength; i++)
@@ -49,7 +55,7 @@ namespace EnderCode.Utils
                 {
                     if (text[i + 1] == 'f')
                     {
-                        Console.ForegroundColor = !foreColor.HasValue ? Console.ForegroundColor : (ConsoleColor)foreColor;
+                        Console.ForegroundColor = !fontColor.HasValue ? Console.ForegroundColor : (ConsoleColor)fontColor;
                     }
                     if (text[i + 1] == 'b')
                     {
@@ -62,49 +68,42 @@ namespace EnderCode.Utils
                 Console.ResetColor();
             }
         }
-        public static async Task<int> BringMainWindowToFront(IntPtr hwnd)
+        public static async Task<int> BringWindowToFront(IntPtr hwnd)
         {
-            // check if the window is hidden / minimized
             if (hwnd == IntPtr.Zero)
             {
-                // the window is hidden so try to restore it before setting focus.
                 for (int i = 0; i < 4; i++)
                 {
-                    if (ShowWindow(hwnd, ShowWindowEnum.Restore))
+                    if (Interop.ShowWindow(hwnd, ShowWindowEnum.Restore))
                         return 0;
                     Thread.Sleep(1000);
                 }
             }
 
-            // set user the focus to the window
             for (int i = 0; i < 4; i++)
             {
-                if (SetForegroundWindow(hwnd) == 0)
+                if (Interop.SetForegroundWindow(hwnd) == 0)
                     return 0;
                 Thread.Sleep(1000);
             }
-            //throw new InvalidOperationException("Window is UAC protected or its parent process has closed");
             return int.MaxValue;
         }
         public static string Beautify(this string unformated)
         {
             return unformated.Replace(@"\n", Environment.NewLine).Replace(@"\t", "\t");
         }
-        #region Interop
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool ShowWindow(IntPtr hWnd, ShowWindowEnum flags);
-
-        [DllImport("user32.dll")]
-        private static extern int SetForegroundWindow(IntPtr hwnd);
-        #endregion
+        public static void HideCurrentWindow(bool hide, IntPtr hwnd)
+        {
+            Interop.ShowWindow(hwnd, hide ? ShowWindowEnum.Hide : ShowWindowEnum.Restore);
+            if (!hide) Interop.SetForegroundWindow(hwnd);
+        }
+        public static bool Switch(ref this bool value)
+        {
+            return (value = !value);
+        }
+        public static T GetEnum<T>(this string name) where T : Enum
+        {
+            return (T)Enum.Parse(typeof(T), name);
+        }
     }
-    enum ShowWindowEnum
-    {
-        Hide = 0,
-        ShowNormal = 1, ShowMinimized = 2, ShowMaximized = 3,
-        Maximize = 3, ShowNormalNoActivate = 4, Show = 5,
-        Minimize = 6, ShowMinNoActivate = 7, ShowNoActivate = 8,
-        Restore = 9, ShowDefault = 10, ForceMinimized = 11
-    };
 }

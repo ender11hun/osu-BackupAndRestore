@@ -14,6 +14,7 @@ namespace EnderCode.osu_backupAndRestore
                 outFile.WriteLine(isUpdate ? data.lastRunContent[1] : DateTime.Now.ToString());
                 outFile.WriteLine(data.backupDir);
                 outFile.WriteLine(data.isEng ? "eng" : "hun");
+                outFile.WriteLine(data.installPath);
             }
         }
         internal static void LastRunReader(out bool exist, MainData data)
@@ -21,17 +22,16 @@ namespace EnderCode.osu_backupAndRestore
             exist = false;
             if (File.Exists(data.lastRunInfo))
             {
-                int index = 0;
                 exist = true;
                 using (StreamReader file = new StreamReader(data.lastRunInfo, Encoding.UTF8))
                 {
-                    while (!file.EndOfStream)
+                    for (int i = 0; !file.EndOfStream; i++)
                     {
-                        data.lastRunContent[index] = file.ReadLine();
-                        index++;
+                        data.lastRunContent[i] = file.ReadLine();
                     }
                 }
                 data.backupDir = data.lastRunContent[2];
+                data.installPath = data.lastRunContent[4];
             }
             else
             {
