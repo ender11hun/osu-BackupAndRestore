@@ -151,6 +151,24 @@ namespace EnderCode.osu_backupAndRestore {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Target directory saved!.
+        /// </summary>
+        internal static string BrowseSuccessEng {
+            get {
+                return ResourceManager.GetString("BrowseSuccessEng", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cél könyvtár sikeresen mentve!.
+        /// </summary>
+        internal static string BrowseSuccessHun {
+            get {
+                return ResourceManager.GetString("BrowseSuccessHun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you wish to filter them out? [(Y)es/(N)o].
         /// </summary>
         internal static string CollusionDialogEng {
@@ -273,24 +291,6 @@ namespace EnderCode.osu_backupAndRestore {
         internal static string DoneHun {
             get {
                 return ResourceManager.GetString("DoneHun", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You can use enviromental variables!.
-        /// </summary>
-        internal static string EnvVarInfoEng {
-            get {
-                return ResourceManager.GetString("EnvVarInfoEng", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Használhatsz környezetiváltozókat is!.
-        /// </summary>
-        internal static string EnvVarInfoHun {
-            get {
-                return ResourceManager.GetString("EnvVarInfoHun", resourceCulture);
             }
         }
         

@@ -534,7 +534,6 @@ namespace EnderCode.osu_backupAndRestore
         FinalSizePart3,
         ErrorDetails,
         NoCurrentBackupDir,
-        EnvVarInfo,
         NewDir,
         CorrectQuestionStr,
         CreateNew,
@@ -559,7 +558,8 @@ namespace EnderCode.osu_backupAndRestore
         FolderBrowsing,
         InstallNotFound,
         BrowseAbort,
-        BrowseFolder
+        BrowseFolder,
+        BrowseSuccess
     }
 
 }

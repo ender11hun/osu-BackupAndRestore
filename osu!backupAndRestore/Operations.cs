@@ -203,40 +203,20 @@ namespace EnderCode.osu_backupAndRestore
             ConsoleKeyInfo keyInfo = Console.ReadKey();
             KeyEvent?.Invoke(new KeyEventArgs(keyInfo));
         }
-        //internal static void ChangeBackupDir()
-        //{
-        //    Console.WriteLine($"{MainEntry.langDict[UIElements.CurrentBackupDir]}: {(MainEntry.data.backupDir.Equals(string.Empty) ? MainEntry.langDict[UIElements.NoCurrentBackupDir] : MainEntry.data.backupDir)}");
-        //    Console.WriteLine(MainEntry.langDict[UIElements.EnvVarInfo]);
-        //    string newDir;
-        //    ConsoleKey a;
-        //    bool isCorrect;
-        //    do
-        //    {
-        //        Console.Write($"{MainEntry.langDict[UIElements.NewDir]}: ");
-        //        newDir = Console.ReadLine();
-        //        Console.WriteLine($@"{MainEntry.langDict[UIElements.NewDir]} ({newDir})");
-        //        bool exist = Directory.Exists(newDir);
-        //        do
-        //        {
-        //            if (exist)
-        //            {
-        //                Console.Write($"{MainEntry.langDict[UIElements.CorrectQuestionStr]}: ");
-        //            }
-        //            else
-        //            {
-        //                Console.Write($"{MainEntry.langDict[UIElements.CreateNew]}: ");
-        //            }
-        //            a = Console.ReadKey().Key;
-        //        } while (!(a.Equals(MainEntry.data.isEng ? ConsoleKey.Y : ConsoleKey.I) || a.Equals(ConsoleKey.N)));
-        //        if (!exist) Directory.CreateDirectory(Environment.ExpandEnvironmentVariables(newDir));
-        //        isCorrect = a.Equals(MainEntry.data.isEng ? ConsoleKey.Y : ConsoleKey.I);
-        //    } while (!isCorrect);
-        //    MainEntry.data.backupDir = newDir;
-        //    IO.SettingsSaver(true, true, MainEntry.data);
-        //}
         internal static void ChangeBackupDir()
         {
-            
+            Console.WriteLine(MainEntry.langDict[UIElements.FolderBrowsing]);
+            var dialog = FormImpl4Con.CreateFolderBrowser(MainEntry.langDict[UIElements.BrowseFolder]);
+            Thread.Sleep(3000);
+            if (dialog.ShowDialog() == (System.Windows.Forms.DialogResult.Abort | System.Windows.Forms.DialogResult.Cancel))
+            {
+                Console.WriteLine(MainEntry.langDict[UIElements.BrowseAbort]);
+                object a = Console.ReadKey();
+                return;
+            }
+            MainEntry.data.backupDir = dialog.SelectedPath;
+            Console.WriteLine(MainEntry.langDict[UIElements.BrowseSuccess]);
+            Thread.Sleep(3000);
         }
         internal static void CatchGameProcess(bool isAutorun)
         {
@@ -338,8 +318,8 @@ namespace EnderCode.osu_backupAndRestore
         }
         private static void Safeguard()
         {
-            using (FileStream fs = File.Create(MainEntry.data.installPath + @"\safeguard.lock"))
-            { return; }
+            FileStream fs = File.Create(MainEntry.data.installPath + @"\safeguard.lock");
+            fs.Dispose();
         }
         internal static void ConfirmDelete()
         {
@@ -347,7 +327,7 @@ namespace EnderCode.osu_backupAndRestore
             {
                 File.Delete($"{MainEntry.data.installPath}/safeguard.lock");
             }
-            else { Console.WriteLine(MainEntry.langDict[UIElements.Aborted]); }
+            else { Util.WriteColoredLine(MainEntry.langDict[UIElements.Aborted], ConsoleColor.Red); }
         }
         internal static void ErrorMsg<T>(T e) where T : Exception
         {

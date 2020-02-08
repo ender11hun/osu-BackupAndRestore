@@ -171,12 +171,6 @@
   <data name="DoneHun" xml:space="preserve">
     <value>Kész!</value>
   </data>
-  <data name="EnvVarInfoEng" xml:space="preserve">
-    <value>You can use enviromental variables!</value>
-  </data>
-  <data name="EnvVarInfoHun" xml:space="preserve">
-    <value>Használhatsz környezetiváltozókat is!</value>
-  </data>
   <data name="ErrorDetailsEng" xml:space="preserve">
     <value>Error details</value>
   </data>
@@ -462,5 +456,11 @@
   </data>
   <data name="BrowseFolderHun" xml:space="preserve">
     <value>Könyvtár tallózása...</value>
+  </data>
+  <data name="BrowseSuccessEng" xml:space="preserve">
+    <value>Target directory saved!</value>
+  </data>
+  <data name="BrowseSuccessHun" xml:space="preserve">
+    <value>Cél könyvtár sikeresen mentve!</value>
   </data>
 </root>
