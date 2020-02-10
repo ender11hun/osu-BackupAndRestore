@@ -205,12 +205,12 @@ namespace EnderCode.osu_backupAndRestore
         }
         internal static void ChangeBackupDir()
         {
-            Console.WriteLine(MainEntry.langDict[UIElements.FolderBrowsing]);
+            Console.WriteLine(MainEntry.langDict[UIElements.BrowseBackup]);
             var dialog = FormImpl4Con.CreateFolderBrowser(MainEntry.langDict[UIElements.BrowseFolder]);
             Thread.Sleep(3000);
             if (dialog.ShowDialog() == (System.Windows.Forms.DialogResult.Abort | System.Windows.Forms.DialogResult.Cancel))
             {
-                Console.WriteLine(MainEntry.langDict[UIElements.BrowseAbort]);
+                Console.WriteLine(MainEntry.langDict[UIElements.BrowseBackupAbort]);
                 object a = Console.ReadKey();
                 return;
             }

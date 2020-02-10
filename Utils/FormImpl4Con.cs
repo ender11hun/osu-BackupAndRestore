@@ -12,13 +12,13 @@ namespace EnderCode.Utils
         /// <summary>
         /// Könyvtár tallózó készítése konzolhoz beállítva
         /// </summary>
-        /// <param name="dialogName">Párbeszéd ablak neve</param>
+        /// <param name="dialogTitle">Párbeszéd ablak címe</param>
         /// <returns>Visszaad egy <see cref="FolderBrowserDialog"/> objektumot, amit újra fel lehet használni</returns>
-        public static FolderBrowserDialog CreateFolderBrowser(string dialogName)
+        public static FolderBrowserDialog CreateFolderBrowser(string dialogTitle)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog()
             {
-                Description = dialogName,
+                Description = dialogTitle,
                 RootFolder = Environment.SpecialFolder.MyComputer,
                 ShowNewFolderButton = true
             };

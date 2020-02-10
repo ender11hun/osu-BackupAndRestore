@@ -133,6 +133,42 @@ namespace EnderCode.osu_backupAndRestore {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Directory browsing aborted....
+        /// </summary>
+        internal static string BrowseBackupAbortEng {
+            get {
+                return ResourceManager.GetString("BrowseBackupAbortEng", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Könyvtár keresés elvetve....
+        /// </summary>
+        internal static string BrowseBackupAbortHun {
+            get {
+                return ResourceManager.GetString("BrowseBackupAbortHun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to I&apos;ll open a window for you to help find your desired directory....
+        /// </summary>
+        internal static string BrowseBackupEng {
+            get {
+                return ResourceManager.GetString("BrowseBackupEng", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Megnyitok egy ablakot, ami segít majd megtalálni a kívánt könyvtárad....
+        /// </summary>
+        internal static string BrowseBackupHun {
+            get {
+                return ResourceManager.GetString("BrowseBackupHun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Browse folder....
         /// </summary>
         internal static string BrowseFolderEng {

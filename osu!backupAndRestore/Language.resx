@@ -463,4 +463,16 @@
   <data name="BrowseSuccessHun" xml:space="preserve">
     <value>Cél könyvtár sikeresen mentve!</value>
   </data>
+  <data name="BrowseBackupAbortEng" xml:space="preserve">
+    <value>Directory browsing aborted...</value>
+  </data>
+  <data name="BrowseBackupAbortHun" xml:space="preserve">
+    <value>Könyvtár keresés elvetve...</value>
+  </data>
+  <data name="BrowseBackupEng" xml:space="preserve">
+    <value>I'll open a window for you to help find your desired directory...</value>
+  </data>
+  <data name="BrowseBackupHun" xml:space="preserve">
+    <value>Megnyitok egy ablakot, ami segít majd megtalálni a kívánt könyvtárad...</value>
+  </data>
 </root>

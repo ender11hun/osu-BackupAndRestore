@@ -559,7 +559,9 @@ namespace EnderCode.osu_backupAndRestore
         InstallNotFound,
         BrowseAbort,
         BrowseFolder,
-        BrowseSuccess
+        BrowseSuccess,
+        BrowseBackup,
+        BrowseBackupAbort
     }
 
 }
