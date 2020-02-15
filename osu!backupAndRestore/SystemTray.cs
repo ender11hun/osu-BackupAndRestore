@@ -8,6 +8,8 @@ using System.ComponentModel;
 using System.Drawing;
 using EnderCode.Utils;
 
+#pragma warning disable IDE1006
+
 namespace EnderCode.osu_backupAndRestore
 {
     class SystemTray : Form

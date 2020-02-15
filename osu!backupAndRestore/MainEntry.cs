@@ -62,14 +62,6 @@ namespace EnderCode.osu_backupAndRestore
 
                 Version();
 
-                //if (data.debug)
-                //{
-                //    cursorTop = Console.CursorTop;
-                //    Console.SetCursorPosition(Console.WindowWidth - data.debugMsg.Length - 1, 2);
-                //    Util.WriteColored(data.debugMsg, ConsoleColor.DarkYellow);
-                //    Console.SetCursorPosition(0, cursorTop);
-                //}
-
                 Console.Title = langDict[UIElements.WindowTitle];
                 Console.WriteLine(langDict[UIElements.HeadLine]);
 

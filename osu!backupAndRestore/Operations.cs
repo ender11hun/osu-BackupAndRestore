@@ -102,7 +102,7 @@ namespace EnderCode.osu_backupAndRestore
             }
 
         }
-        internal static void Launch()
+        internal static async void Launch()
         {
             bool error = false;
             #region eventInit
@@ -126,6 +126,7 @@ namespace EnderCode.osu_backupAndRestore
                 }
                 process.WaitForExit();
                 Util.HideCurrentWindow(MainEntry.WindowHidden.Switch(), MainEntry.WindowHandle);
+                await Util.BringWindowToFront(MainEntry.WindowHandle);
             }
             catch (FileNotFoundException e)
             {
