@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="FormImpl4Con.cs" />
     <Compile Include="Interop.cs" />
+    <Compile Include="UPnP.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

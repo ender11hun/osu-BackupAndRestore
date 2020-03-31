@@ -39,13 +39,13 @@ namespace EnderCode.osu_backupAndRestore
             string dst = "", src = "";
             if (isBackup)
             {
-                src = MainEntry.data.installPath;
-                dst = MainEntry.data.lastRunContent[2];
+                src = AppData.installPath;
+                dst = AppData.lastRunContent[2];
             }
             else
             {
-                src = MainEntry.data.lastRunContent[2];
-                dst = MainEntry.data.installPath;
+                src = AppData.lastRunContent[2];
+                dst = AppData.installPath;
             }
 
             Console.WriteLine($"{MainEntry.langDict[UIElements.GettingFiles]}");
@@ -76,7 +76,7 @@ namespace EnderCode.osu_backupAndRestore
                     destFile = Path.Combine(dst, item.Name);
                     File.Copy(Path.Combine(src, item.Name), destFile, true);
                 }
-                IO.SettingsSaver(isBackup, false, MainEntry.data);
+                IO.SettingsSaver(isBackup, false);
                 Console.WriteLine(MainEntry.langDict[UIElements.Done]);
                 DirectoryInfo dest = new DirectoryInfo(dst);
                 FileInfo[] destFiles = dest.GetFiles("*.db", SearchOption.TopDirectoryOnly);
@@ -88,10 +88,10 @@ namespace EnderCode.osu_backupAndRestore
                 Console.Write($"{MainEntry.langDict[UIElements.FinalSizePart1]}: ");
                 Util.WriteColored(Util.SizeSuffixer(sizeFinal) + " ", ConsoleColor.Green);
                 Console.WriteLine($"{MainEntry.langDict[UIElements.FinalSizePart2]}{destFiles.Length} {MainEntry.langDict[UIElements.FinalSizePart3]}");
-                if (File.Exists(MainEntry.data.installPath + @"\safeguard.lock"))
-                    File.Delete(MainEntry.data.installPath + @"\safeguard.lock");
+                if (File.Exists(AppData.installPath + @"\safeguard.lock"))
+                    File.Delete(AppData.installPath + @"\safeguard.lock");
                 DumpMapIDs();
-                if (MainEntry.data.qln)
+                if (AppData.qln)
                 {
                     Launch();
                 }
@@ -116,7 +116,7 @@ namespace EnderCode.osu_backupAndRestore
             Process process = null;
             try
             {
-                process = Process.Start(Environment.ExpandEnvironmentVariables($@"{MainEntry.data.installPath}\osu!.exe"));
+                process = Process.Start(Environment.ExpandEnvironmentVariables($@"{AppData.installPath}\osu!.exe"));
                 Safeguard();
                 Util.HideCurrentWindow(MainEntry.WindowHidden.Switch(), MainEntry.WindowHandle);
                 for (byte i =  0; i < 4; i++)
@@ -130,7 +130,7 @@ namespace EnderCode.osu_backupAndRestore
             }
             catch (FileNotFoundException e)
             {
-                Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(MainEntry.langDict[UIElements.FileNotFoundEx] + (MainEntry.data.debug ? $"\n{MainEntry.langDict[UIElements.ErrorDetails]}:" : string.Empty));
+                Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(MainEntry.langDict[UIElements.FileNotFoundEx] + (AppData.debug ? $"\n{MainEntry.langDict[UIElements.ErrorDetails]}:" : string.Empty));
                 ErrorMsg(e);
                 error = true;
             }
@@ -148,7 +148,7 @@ namespace EnderCode.osu_backupAndRestore
             }
 
             if (process.ExitCode == 0)
-                File.Delete($@"{MainEntry.data.installPath}\safeguard.lock");
+                File.Delete($@"{AppData.installPath}\safeguard.lock");
 
             if (!error)
             {
@@ -176,27 +176,27 @@ namespace EnderCode.osu_backupAndRestore
             Console.WriteLine(MainEntry.langDict[UIElements.RepairToast]);
             try
             {
-                Process process = Process.Start(MainEntry.data.installPath + @"\osu!.exe", "-config");
+                Process process = Process.Start(AppData.installPath + @"\osu!.exe", "-config");
                 Safeguard();
                 process.WaitForExit();
             }
             catch (Win32Exception e)
             {
-                Console.WriteLine(MainEntry.langDict[UIElements.Win32Ex] + (MainEntry.data.debug ? $"\n{MainEntry.langDict[UIElements.ErrorDetails]}:" : string.Empty));
+                Console.WriteLine(MainEntry.langDict[UIElements.Win32Ex] + (AppData.debug ? $"\n{MainEntry.langDict[UIElements.ErrorDetails]}:" : string.Empty));
                 ErrorMsg(e);
             }
             catch (FileNotFoundException e)
             {
-                Console.WriteLine(MainEntry.langDict[UIElements.FileNotFoundEx] + (MainEntry.data.debug ? $"\n{MainEntry.langDict[UIElements.ErrorDetails]}:" : string.Empty));
+                Console.WriteLine(MainEntry.langDict[UIElements.FileNotFoundEx] + (AppData.debug ? $"\n{MainEntry.langDict[UIElements.ErrorDetails]}:" : string.Empty));
                 ErrorMsg(e);
             }
             catch (Exception e)
             {
-                Console.WriteLine(MainEntry.langDict[UIElements.WhatTheFuckWasThat] + (MainEntry.data.debug ? $"\n{MainEntry.langDict[UIElements.ErrorDetails]}:" : string.Empty));
+                Console.WriteLine(MainEntry.langDict[UIElements.WhatTheFuckWasThat] + (AppData.debug ? $"\n{MainEntry.langDict[UIElements.ErrorDetails]}:" : string.Empty));
                 ErrorMsg(e);
             }
 
-            File.Delete($@"{MainEntry.data.installPath}\safeguard.lock");
+            File.Delete($@"{AppData.installPath}\safeguard.lock");
             Console.Clear();
         }
         internal static void RaiseKeyEvent()
@@ -215,7 +215,7 @@ namespace EnderCode.osu_backupAndRestore
                 object a = Console.ReadKey();
                 return;
             }
-            MainEntry.data.backupDir = dialog.SelectedPath;
+            AppData.backupDir = dialog.SelectedPath;
             Console.WriteLine(MainEntry.langDict[UIElements.BrowseSuccess]);
             Thread.Sleep(3000);
         }
@@ -244,7 +244,7 @@ namespace EnderCode.osu_backupAndRestore
                 noError = false;
                 if (!isAutorun)
                     Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(MainEntry.langDict[UIElements.NoProcess]);
-                if (MainEntry.data.debug)
+                if (AppData.debug)
                 {
                     Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Message);
                     Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Source);
@@ -259,8 +259,8 @@ namespace EnderCode.osu_backupAndRestore
             catch (Exception e)
             {
                 noError = false;
-                Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine($"{MainEntry.langDict[UIElements.WhatTheFuckWasThat]} {(!MainEntry.data.debug ? MainEntry.langDict[UIElements.ErrorDetails] : string.Empty)}");
-                if (MainEntry.data.debug)
+                Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine($"{MainEntry.langDict[UIElements.WhatTheFuckWasThat]} {(!AppData.debug ? MainEntry.langDict[UIElements.ErrorDetails] : string.Empty)}");
+                if (AppData.debug)
                 {
                     Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Message);
                     Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Source);
@@ -275,17 +275,17 @@ namespace EnderCode.osu_backupAndRestore
                 try
                 {
                     if (process.ExitCode == 0)
-                        File.Delete($@"{MainEntry.data.installPath}\safeguard.lock");
+                        File.Delete($@"{AppData.installPath}\safeguard.lock");
                 }
                 catch (InvalidOperationException)
                 {
-                    File.Delete($@"{MainEntry.data.installPath}\safeguard.lock");
+                    File.Delete($@"{AppData.installPath}\safeguard.lock");
                 }
             }
         }
         internal static void DumpMapIDs()
         {
-            DirectoryInfo mapsDirectroy = new DirectoryInfo(MainEntry.data.installPath + @"\Songs");
+            DirectoryInfo mapsDirectroy = new DirectoryInfo(AppData.installPath + @"\Songs");
             List<string> mapIDs = new List<string>();
             List<string> newMaps = new List<string>();
             List<FileInfo> collusions = new List<FileInfo>();
@@ -300,7 +300,7 @@ namespace EnderCode.osu_backupAndRestore
                     collusions.Add(file);
                 newMaps.Add(temp);
             }
-            File.WriteAllLines($@"{MainEntry.data.backupDir}\mapdump.log", mapIDs.ToArray(), Encoding.UTF8);
+            File.WriteAllLines($@"{AppData.backupDir}\mapdump.log", mapIDs.ToArray(), Encoding.UTF8);
             Util.WriteColored($"{mapIDs.Count}", ConsoleColor.Blue);
             Console.WriteLine(" " + MainEntry.langDict[UIElements.PartialDownloadedMaps]);
             Util.WriteColored($"{newMaps.Count}", ConsoleColor.Green);
@@ -319,20 +319,20 @@ namespace EnderCode.osu_backupAndRestore
         }
         private static void Safeguard()
         {
-            FileStream fs = File.Create(MainEntry.data.installPath + @"\safeguard.lock");
+            FileStream fs = File.Create(AppData.installPath + @"\safeguard.lock");
             fs.Dispose();
         }
         internal static void ConfirmDelete()
         {
             if (Dialogs.GeneralAskDialog(UIElements.QuestionDelete))
             {
-                File.Delete($"{MainEntry.data.installPath}/safeguard.lock");
+                File.Delete($"{AppData.installPath}/safeguard.lock");
             }
             else { Util.WriteColoredLine(MainEntry.langDict[UIElements.Aborted], ConsoleColor.Red); }
         }
         internal static void ErrorMsg<T>(T e) where T : Exception
         {
-            if (MainEntry.data.debug)
+            if (AppData.debug)
             {
                 Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine((e as Exception).Message);
                 Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine((e as Exception).Source);

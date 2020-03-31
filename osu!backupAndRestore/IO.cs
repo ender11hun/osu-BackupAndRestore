@@ -6,36 +6,36 @@ namespace EnderCode.osu_backupAndRestore
 {
     static class IO
     {
-        internal static void SettingsSaver(bool isBackup, bool isUpdate, MainData data)
+        internal static void SettingsSaver(bool isBackup, bool isUpdate)
         {
-            using (StreamWriter outFile = new StreamWriter(data.lastRunInfo, false, Encoding.UTF8))
+            using (StreamWriter outFile = new StreamWriter(AppData.lastRunInfo, false, Encoding.UTF8))
             {
-                outFile.WriteLine(isUpdate ? data.lastRunContent[0] : (isBackup ? "backup" : "restore"));
-                outFile.WriteLine(isUpdate ? data.lastRunContent[1] : DateTime.Now.ToString());
-                outFile.WriteLine(data.backupDir);
-                outFile.WriteLine(data.isEng ? "eng" : "hun");
-                outFile.WriteLine(data.installPath);
+                outFile.WriteLine(isUpdate ? AppData.lastRunContent[0] : (isBackup ? "backup" : "restore"));
+                outFile.WriteLine(isUpdate ? AppData.lastRunContent[1] : DateTime.Now.ToString());
+                outFile.WriteLine(AppData.backupDir);
+                outFile.WriteLine(AppData.isEng ? "eng" : "hun");
+                outFile.WriteLine(AppData.installPath);
             }
         }
-        internal static void LastRunReader(out bool exist, MainData data)
+        internal static void LastRunReader(out bool exist)
         {
             exist = false;
-            if (File.Exists(data.lastRunInfo))
+            if (File.Exists(AppData.lastRunInfo))
             {
                 exist = true;
-                using (StreamReader file = new StreamReader(data.lastRunInfo, Encoding.UTF8))
+                using (StreamReader file = new StreamReader(AppData.lastRunInfo, Encoding.UTF8))
                 {
                     for (int i = 0; !file.EndOfStream; i++)
                     {
-                        data.lastRunContent[i] = file.ReadLine();
+                        AppData.lastRunContent[i] = file.ReadLine();
                     }
                 }
-                data.backupDir = data.lastRunContent[2];
-                data.installPath = data.lastRunContent[4];
+                AppData.backupDir = AppData.lastRunContent[2];
+                AppData.installPath = AppData.lastRunContent[4];
             }
             else
             {
-                data.backupDir = string.Empty;
+                AppData.backupDir = string.Empty;
             }
         }
     }

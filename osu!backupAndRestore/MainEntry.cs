@@ -8,10 +8,12 @@ using EnderCode.Utils;
 
 namespace EnderCode.osu_backupAndRestore
 {
+    /// <summary>
+    /// Application entrypoint
+    /// </summary>
     static class MainEntry
     {
         internal static Dictionary<UIElements, string> langDict = new Dictionary<UIElements, string>();
-        internal static MainData data = null;
         internal static int cursorTop;
         internal static string GetVersion
         {
@@ -21,7 +23,6 @@ namespace EnderCode.osu_backupAndRestore
         internal static bool WindowHidden = false;
         internal static Thread thread;
 
-        [STAThread]
         static void Main(string[] args)
         {
             Init();
@@ -40,19 +41,19 @@ namespace EnderCode.osu_backupAndRestore
             }
             do
             {
-                IO.LastRunReader(out bool settingsFound, data);
+                IO.LastRunReader(out bool settingsFound);
                 try
                 {
                     
-                    if (data.lastRunContent[3] != "eng")
+                    if (AppData.lastRunContent[3] != "eng")
                     {
-                        data.isEng = false;
+                        AppData.isEng = false;
                         LangInit();
                     }
-                    if (!System.IO.File.Exists(System.IO.Path.Combine(data.installPath,"osu!.exe")))
+                    if (!System.IO.File.Exists(System.IO.Path.Combine(AppData.installPath,"osu!.exe")))
                     {
-                        data.installPath = Dialogs.InstallNotFound();
-                        if (data.installPath == null)
+                        AppData.installPath = Dialogs.InstallNotFound();
+                        if (AppData.installPath == null)
                             goto Exit;
                     }
                 }
@@ -68,9 +69,9 @@ namespace EnderCode.osu_backupAndRestore
                 if (settingsFound)
                 {
                     Console.Write($"{langDict[UIElements.LastOp]}: ");
-                    Util.WriteColored(data.lastRunContent[0], ConsoleColor.Cyan);
+                    Util.WriteColored(AppData.lastRunContent[0], ConsoleColor.Cyan);
                     Console.Write($" {langDict[UIElements.LastOpTime]}: ");
-                    Util.WriteColoredLine(data.lastRunContent[1], ConsoleColor.Cyan);
+                    Util.WriteColoredLine(AppData.lastRunContent[1], ConsoleColor.Cyan);
                 }
                 else
                 {
@@ -78,10 +79,10 @@ namespace EnderCode.osu_backupAndRestore
                 }
 
                 Console.Write($"{langDict[UIElements.CurrentBackupDir]}: ");
-                Util.WriteColoredLine(data.backupDir.Equals(string.Empty) ? langDict[UIElements.NoBackupDir] : data.backupDir, ConsoleColor.Magenta);
+                Util.WriteColoredLine(AppData.backupDir.Equals(string.Empty) ? langDict[UIElements.NoBackupDir] : AppData.backupDir, ConsoleColor.Magenta);
                 Util.WriteColorFormated(langDict[UIElements.Commands] + "\n", ConsoleColor.DarkCyan, null);
 
-                bool safeguardFound = System.IO.File.Exists($@"{data.installPath}\safeguard.lock");
+                bool safeguardFound = System.IO.File.Exists($@"{AppData.installPath}\safeguard.lock");
                 if (safeguardFound)
                 {
                     Console.WriteLine(langDict[UIElements.SafeguardDeleteCmd]);
@@ -95,8 +96,8 @@ namespace EnderCode.osu_backupAndRestore
                     case ConsoleKey.B:
                         if (input.Modifiers.HasFlag(ConsoleModifiers.Shift))
                         {
-                            data.qln = true;
-                            data.stay = false;
+                            AppData.qln = true;
+                            AppData.stay = false;
                             Util.WriteColorFormated("%fS%fh%fi%ff%ft + B", ConsoleColor.Green, null);
                         }
                         else Console.WriteLine('B');
@@ -113,8 +114,8 @@ namespace EnderCode.osu_backupAndRestore
                     case ConsoleKey.L:
                         if (input.Modifiers.HasFlag(ConsoleModifiers.Shift))
                         {
-                            data.qln = true;
-                            data.stay = false;
+                            AppData.qln = true;
+                            AppData.stay = false;
                             Util.WriteColorFormated("%fS%fh%fi%ff%ft + L", ConsoleColor.Green, null);
                         }
                         else Console.WriteLine('L');
@@ -125,25 +126,25 @@ namespace EnderCode.osu_backupAndRestore
                         Dialogs.AreYouSure();
                         break;
                     case ConsoleKey.F2:
-                        data.debug = !data.debug;
+                        AppData.debug = !AppData.debug;
                         break;
                     case ConsoleKey.Q:
                         Console.WriteLine('Q');
-                        data.stay = false;
+                        AppData.stay = false;
                         break;
                     case ConsoleKey.E:
                         Console.WriteLine('E');
                         Operations.CatchGameProcess(false);
                         break;
                     case ConsoleKey.Enter:
-                        data.qln = true;
+                        AppData.qln = true;
                         Operations.BackupAndRestore(true, in settingsFound);
-                        data.qln = false;
+                        AppData.qln = false;
                         break;
                     case ConsoleKey.F1:
-                        data.isEng = !data.isEng;
+                        AppData.isEng = !AppData.isEng;
                         LangInit();
-                        IO.SettingsSaver(data.lastRunContent[0].Equals("backup"), true, data);
+                        IO.SettingsSaver(AppData.lastRunContent[0].Equals("backup"), true);
                         break;
                     case ConsoleKey.D:
                         if (input.Modifiers.HasFlag(ConsoleModifiers.Alt) && safeguardFound)
@@ -424,9 +425,9 @@ namespace EnderCode.osu_backupAndRestore
                     default:
                         break;
                 }
-                if (data.stay) Console.Clear();
-            } while (data.stay);
-            if (!data.qln)
+                if (AppData.stay) Console.Clear();
+            } while (AppData.stay);
+            if (!AppData.qln)
             {
                 Console.WriteLine(langDict[UIElements.SeeYa]);
                 Thread.Sleep(1000);
@@ -438,6 +439,7 @@ namespace EnderCode.osu_backupAndRestore
         /// <summary>
         /// Programkezdeti inícializálás
         /// </summary>
+        [STAThread]
         static void Init()
         {
 
@@ -447,20 +449,23 @@ namespace EnderCode.osu_backupAndRestore
             }
             thread = new Thread(delegate () { Application.Run(SystemTray.instance); });
             thread.Start();
-            data = new MainData();
             Console.OutputEncoding = Encoding.UTF8;
             Console.TreatControlCAsInput = true;
             Console.SetWindowSize(95, 24);
             Console.SetBufferSize(95, 9999);
             LangInit();
         }
+
+        /// <summary>
+        /// Nyelvi változók inícializálása
+        /// </summary>
         static void LangInit()
         {
             string[] enumNames = typeof(UIElements).GetEnumNames();
             //Clear Dictionary
             langDict.Clear();
             //Fill Dictionary
-            string lang = data.isEng ? "Eng" : "Hun";
+            string lang = AppData.isEng ? "Eng" : "Hun";
             foreach (var item in enumNames)
             {
                 langDict.Add(
@@ -475,24 +480,22 @@ namespace EnderCode.osu_backupAndRestore
 
     }
     /// <summary>
-    /// Beállítások osztálya
+    /// Beállítások statikus osztálya
     /// </summary>
-    sealed class MainData
+    static class AppData
     {
-        internal string installPath = Environment.ExpandEnvironmentVariables(@"%userprofile%\AppData\Local\osu!");
-        internal string lastRunInfo;
-        internal string[] lastRunContent = { "backup", DateTime.MinValue.ToString(), null, "eng", "" };
-        internal string backupDir;
-        internal bool stay = true, qln = false, debug = false;
-        internal readonly string debugMsg = "DEBUG MODE";
-        internal bool isEng = true;
-
-        public MainData()
-        {
-            lastRunInfo = $@"{Environment.CurrentDirectory}\settings.obr";
-        }
+        internal static string installPath = Environment.ExpandEnvironmentVariables(@"%userprofile%\AppData\Local\osu!");
+        internal static string lastRunInfo = $@"{Environment.CurrentDirectory}\settings.obr";
+        internal static string[] lastRunContent = { "backup", DateTime.MinValue.ToString(), null, "eng", "" };
+        internal static string backupDir;
+        internal static bool stay = true, qln = false, debug = false;
+        internal static readonly string debugMsg = "DEBUG MODE";
+        internal static bool isEng = true;
     }
 
+    /// <summary>
+    /// Enum a nyelvi szövegek lekéréséhez
+    /// </summary>
     enum UIElements : byte
     {
         WindowTitle,

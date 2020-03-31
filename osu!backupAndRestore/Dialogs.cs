@@ -12,9 +12,9 @@ namespace EnderCode.osu_backupAndRestore
             do
             {
                 a = Console.ReadKey().Key;
-            } while (!(a.Equals(MainEntry.data.isEng ? ConsoleKey.Y : ConsoleKey.I) || a.Equals(ConsoleKey.N)));
+            } while (!(a.Equals(AppData.isEng ? ConsoleKey.Y : ConsoleKey.I) || a.Equals(ConsoleKey.N)));
             Console.WriteLine();
-            return a.Equals(MainEntry.data.isEng ? ConsoleKey.Y : ConsoleKey.I) ? true : false;
+            return a.Equals(AppData.isEng ? ConsoleKey.Y : ConsoleKey.I) ? true : false;
         }
         internal static void AreYouSure()
         {
@@ -46,6 +46,7 @@ namespace EnderCode.osu_backupAndRestore
                 Console.ReadKey();
                 return null;
             }
+            Console.Clear();
             return folderDialog.SelectedPath;
         }
     }
