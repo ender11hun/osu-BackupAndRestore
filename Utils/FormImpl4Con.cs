@@ -9,6 +9,21 @@ namespace EnderCode.Utils
 {
     public static class FormImpl4Con
     {
+        public sealed class Win32Window : IWin32Window
+        {
+            /// <summary>
+            /// Konzol ablak handle
+            /// </summary>
+            public IntPtr Handle { get; private set; }
+
+            /// <exception cref="NullReferenceException"></exception>
+            public Win32Window(IntPtr handle)
+            {
+                if (handle.Equals(IntPtr.Zero))
+                    throw new NullReferenceException("The pointer does not point to a valid handle.");
+                Handle = handle;
+            }
+        }
         /// <summary>
         /// Könyvtár tallózó készítése konzolhoz beállítva
         /// </summary>

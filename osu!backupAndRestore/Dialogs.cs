@@ -5,6 +5,11 @@ namespace EnderCode.osu_backupAndRestore
 {
     static class Dialogs
     {
+        /// <summary>
+        /// Win32 ablak handle
+        /// </summary>
+        /// <remarks>Szükséges, hogy a konzol ablakot blokkolja a könyvtár böngésző</remarks>
+        internal static System.Windows.Forms.IWin32Window Win32ConHandle;
         internal static bool GeneralAskDialog(in UIElements element)
         {
             ConsoleKey a;
@@ -38,7 +43,7 @@ namespace EnderCode.osu_backupAndRestore
             Console.WriteLine(MainEntry.langDict[UIElements.FolderBrowsing]);
             System.Threading.Thread.Sleep(2000);
             var folderDialog = FormImpl4Con.CreateFolderBrowser(MainEntry.langDict[UIElements.BrowseFolder]);
-            var dialogResult = folderDialog.ShowDialog();
+            var dialogResult = folderDialog.ShowDialog(Win32ConHandle);
             if (dialogResult == System.Windows.Forms.DialogResult.Abort || dialogResult == System.Windows.Forms.DialogResult.Cancel)
             {
                 Console.WriteLine(MainEntry.langDict[UIElements.BrowseAbort]);

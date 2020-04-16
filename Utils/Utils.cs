@@ -1,21 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// This class lib is not only for the osu! backup tool
+
+using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
 using System.Threading;
+using System.Diagnostics;
+using System.Reflection;
 #pragma warning disable CS1998
 
 namespace EnderCode.Utils
 {
     public static class Util
     {
+        private static string LogFile
+        {
+            get
+            {
+                return $"<name>-{DateTime.Today.Year}{DateTime.Today.Month}{DateTime.Today.Day}{DateTime.Today.Hour}{DateTime.Today.Minute}{DateTime.Today.Second}.log";
+            }
+        }
         public static string GetVersion
         {
             get
             {
-                return System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).FileVersion;
+                return FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion;
             }
         }
         public static string SizeSuffixer(long bytes)
@@ -97,13 +107,22 @@ namespace EnderCode.Utils
             Interop.ShowWindow(hwnd, hide ? ShowWindowEnum.Hide : ShowWindowEnum.Restore);
             if (!hide) Interop.SetForegroundWindow(hwnd);
         }
-        public static bool Switch(ref this bool value)
-        {
-            return (value = !value);
-        }
         public static T GetEnum<T>(this string name) where T : Enum
         {
             return (T)Enum.Parse(typeof(T), name);
+        }
+        public static string Logger<T>(T e, string logType) where T : Exception
+        {
+            string[] content = {
+                                    e.Message,
+                                    e.Source,
+                                    e.StackTrace
+                                    };
+            if (typeof(T).Equals(typeof(System.Runtime.InteropServices.ExternalException)))
+                content.Append((e as System.Runtime.InteropServices.ExternalException).ErrorCode.ToString());
+            string logname = LogFile.Replace("<name>", logType);
+            System.IO.File.WriteAllLines(logname, content);
+            return logname;
         }
     }
 }

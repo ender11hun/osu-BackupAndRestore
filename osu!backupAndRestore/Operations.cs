@@ -76,7 +76,7 @@ namespace EnderCode.osu_backupAndRestore
                     destFile = Path.Combine(dst, item.Name);
                     File.Copy(Path.Combine(src, item.Name), destFile, true);
                 }
-                IO.SettingsSaver(isBackup, false);
+                AppData.SettingsSaver(isBackup, false);
                 Console.WriteLine(MainEntry.langDict[UIElements.Done]);
                 DirectoryInfo dest = new DirectoryInfo(dst);
                 FileInfo[] destFiles = dest.GetFiles("*.db", SearchOption.TopDirectoryOnly);
@@ -118,14 +118,14 @@ namespace EnderCode.osu_backupAndRestore
             {
                 process = Process.Start(Environment.ExpandEnvironmentVariables($@"{AppData.installPath}\osu!.exe"));
                 Safeguard();
-                Util.HideCurrentWindow(MainEntry.WindowHidden.Switch(), MainEntry.WindowHandle);
+                Util.HideCurrentWindow(MainEntry.WindowHidden = true, MainEntry.WindowHandle);
                 for (byte i =  0; i < 4; i++)
                 {
                     Interop.SetForegroundWindow(process.MainWindowHandle);
                     Thread.Sleep(1000);
                 }
                 process.WaitForExit();
-                Util.HideCurrentWindow(MainEntry.WindowHidden.Switch(), MainEntry.WindowHandle);
+                Util.HideCurrentWindow(MainEntry.WindowHidden = false, MainEntry.WindowHandle);
                 await Util.BringWindowToFront(MainEntry.WindowHandle);
             }
             catch (FileNotFoundException e)

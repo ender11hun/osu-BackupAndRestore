@@ -79,6 +79,24 @@ namespace EnderCode.osu_backupAndRestore {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Folder browsing aborted or the given path does not contain the game!\nExting now....
+        /// </summary>
+        internal static string AbortedOrNotFoundEng {
+            get {
+                return ResourceManager.GetString("AbortedOrNotFoundEng", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mappatallózás elvetve vagy a megadott útvonal nem tartalamazza játékot!\nA progrtam kilép....
+        /// </summary>
+        internal static string AbortedOrNotFoundHun {
+            get {
+                return ResourceManager.GetString("AbortedOrNotFoundHun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Press a key to continue....
         /// </summary>
         internal static string AwaitKeyToastEng {
@@ -115,7 +133,7 @@ namespace EnderCode.osu_backupAndRestore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Browsing aborted by user! I won&apos;t work without osu! installed.\nExiting now....
+        ///   Looks up a localized string similar to Browsing aborted by user! I won&apos;t work without osu! installed.\nRelaunch to find it again.\nExiting now....
         /// </summary>
         internal static string BrowseAbortEng {
             get {
@@ -124,7 +142,7 @@ namespace EnderCode.osu_backupAndRestore {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tallózást a felhasználó megszakította! Az osu! nélkül én nem tudok működni!\nAz alkalmazás bezáródik....
+        ///   Looks up a localized string similar to Tallózást a felhasználó megszakította! Az osu! nélkül én nem tudok működni!\nIndíts újra, hogy megtaláld.\nAz alkalmazás bezáródik....
         /// </summary>
         internal static string BrowseAbortHun {
             get {
@@ -327,6 +345,24 @@ namespace EnderCode.osu_backupAndRestore {
         internal static string DoneHun {
             get {
                 return ResourceManager.GetString("DoneHun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The program ran into an init-time exception!\nDetails in the &lt;file&gt; file..
+        /// </summary>
+        internal static string EarlyExceptionEng {
+            get {
+                return ResourceManager.GetString("EarlyExceptionEng", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A program egy kivételt talált inícializálás közben!\nRészletek a &lt;file&gt; fájlban..
+        /// </summary>
+        internal static string EarlyExceptionHun {
+            get {
+                return ResourceManager.GetString("EarlyExceptionHun", resourceCulture);
             }
         }
         

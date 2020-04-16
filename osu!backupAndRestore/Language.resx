@@ -434,10 +434,10 @@
     <value>Segéd könyvtár verzió: </value>
   </data>
   <data name="BrowseAbortEng" xml:space="preserve">
-    <value>Browsing aborted by user! I won't work without osu! installed.\nExiting now...</value>
+    <value>Browsing aborted by user! I won't work without osu! installed.\nRelaunch to find it again.\nExiting now...</value>
   </data>
   <data name="BrowseAbortHun" xml:space="preserve">
-    <value>Tallózást a felhasználó megszakította! Az osu! nélkül én nem tudok működni!\nAz alkalmazás bezáródik...</value>
+    <value>Tallózást a felhasználó megszakította! Az osu! nélkül én nem tudok működni!\nIndíts újra, hogy megtaláld.\nAz alkalmazás bezáródik...</value>
   </data>
   <data name="FolderBrowsingEng" xml:space="preserve">
     <value>Game not found. A window will open to help you find where it is installed...</value>
@@ -474,5 +474,17 @@
   </data>
   <data name="BrowseBackupHun" xml:space="preserve">
     <value>Megnyitok egy ablakot, ami segít majd megtalálni a kívánt könyvtárad...</value>
+  </data>
+  <data name="AbortedOrNotFoundEng" xml:space="preserve">
+    <value>Folder browsing aborted or the given path does not contain the game!\nExting now...</value>
+  </data>
+  <data name="AbortedOrNotFoundHun" xml:space="preserve">
+    <value>Mappatallózás elvetve vagy a megadott útvonal nem tartalamazza játékot!\nA progrtam kilép...</value>
+  </data>
+  <data name="EarlyExceptionEng" xml:space="preserve">
+    <value>The program ran into an init-time exception!\nDetails in the &lt;file&gt; file.</value>
+  </data>
+  <data name="EarlyExceptionHun" xml:space="preserve">
+    <value>A program egy kivételt talált inícializálás közben!\nRészletek a &lt;file&gt; fájlban.</value>
   </data>
 </root>

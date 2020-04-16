@@ -4,6 +4,8 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using EnderCode.Utils;
+using System.Reflection;
+using System.Linq;
 
 
 namespace EnderCode.osu_backupAndRestore
@@ -17,12 +19,13 @@ namespace EnderCode.osu_backupAndRestore
         internal static int cursorTop;
         internal static string GetVersion
         {
-            get => System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).FileVersion;
+            get => System.Diagnostics.FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion;
         }
         internal static IntPtr WindowHandle => Interop.GetConsoleWindow();
         internal static bool WindowHidden = false;
         internal static Thread thread;
 
+        [STAThread]
         static void Main(string[] args)
         {
             Init();
@@ -41,26 +44,41 @@ namespace EnderCode.osu_backupAndRestore
             }
             do
             {
-                IO.LastRunReader(out bool settingsFound);
+                AppData.LastRunReader(out bool settingsFound);
+#if !DEBUG
                 try
                 {
-                    
+#endif           
                     if (AppData.lastRunContent[3] != "eng")
                     {
                         AppData.isEng = false;
                         LangInit();
                     }
-                    if (!System.IO.File.Exists(System.IO.Path.Combine(AppData.installPath,"osu!.exe")))
+                    string execPath = System.IO.Path.Combine(AppData.installPath, "osu!.exe");
+                    if (!System.IO.File.Exists(execPath))
                     {
                         AppData.installPath = Dialogs.InstallNotFound();
-                        if (AppData.installPath == null)
+                        if (AppData.installPath == null || execPath.Contains(AppData.installPath) || !System.IO.File.Exists(System.IO.Path.Combine(AppData.installPath, "osu!.exe")))
+                        {
+                            Console.WriteLine(langDict[UIElements.AbortedOrNotFound]);
+                            Thread.Sleep(3000);
                             goto Exit;
+                        }
+                        else
+                        {
+                            AppData.SettingsSaver(false, true);
+                        }
                     }
+#if !DEBUG
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    Console.WriteLine(langDict[UIElements.EarlyException].Replace("<file>", Util.Logger(e, "exception")));
+                    Console.WriteLine(langDict[UIElements.AwaitKeyToast]);
+                    Console.ReadKey();
+                    goto Exit;
                 }
-
+#endif
                 Version();
 
                 Console.Title = langDict[UIElements.WindowTitle];
@@ -144,7 +162,7 @@ namespace EnderCode.osu_backupAndRestore
                     case ConsoleKey.F1:
                         AppData.isEng = !AppData.isEng;
                         LangInit();
-                        IO.SettingsSaver(AppData.lastRunContent[0].Equals("backup"), true);
+                        AppData.SettingsSaver(AppData.lastRunContent[0].Equals("backup"), true);
                         break;
                     case ConsoleKey.D:
                         if (input.Modifiers.HasFlag(ConsoleModifiers.Alt) && safeguardFound)
@@ -439,10 +457,9 @@ namespace EnderCode.osu_backupAndRestore
         /// <summary>
         /// Programkezdeti inícializálás
         /// </summary>
-        [STAThread]
         static void Init()
         {
-
+            Dialogs.Win32ConHandle = new FormImpl4Con.Win32Window(WindowHandle);
             if (!Environment.OSVersion.Platform.Equals(PlatformID.Win32NT))
             {
                 throw new PlatformNotSupportedException("Only Windows NT or later supported");
@@ -472,7 +489,7 @@ namespace EnderCode.osu_backupAndRestore
                     item.GetEnum<UIElements>(),
                     ((string)typeof(Language).GetProperty(
                         item+lang,
-                        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public
+                        BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Public
                     ).GetValue(null,null)).Beautify()
                 );
             }
@@ -482,10 +499,10 @@ namespace EnderCode.osu_backupAndRestore
     /// <summary>
     /// Beállítások statikus osztálya
     /// </summary>
-    static class AppData
+    static partial class AppData
     {
         internal static string installPath = Environment.ExpandEnvironmentVariables(@"%userprofile%\AppData\Local\osu!");
-        internal static string lastRunInfo = $@"{Environment.CurrentDirectory}\settings.obr";
+        internal static string settingsFile = $@"{Environment.CurrentDirectory}\settings.obr";
         internal static string[] lastRunContent = { "backup", DateTime.MinValue.ToString(), null, "eng", "" };
         internal static string backupDir;
         internal static bool stay = true, qln = false, debug = false;
@@ -556,7 +573,9 @@ namespace EnderCode.osu_backupAndRestore
         BrowseFolder,
         BrowseSuccess,
         BrowseBackup,
-        BrowseBackupAbort
+        BrowseBackupAbort,
+        AbortedOrNotFound,
+        EarlyException
     }
 
 }

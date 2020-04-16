@@ -55,7 +55,7 @@ namespace EnderCode.osu_backupAndRestore
         }
         private void trayIcon_Click(object Sender, EventArgs e)
         {
-            Util.HideCurrentWindow(MainEntry.WindowHidden.Switch(), MainEntry.WindowHandle);
+            Util.HideCurrentWindow(MainEntry.WindowHidden = !MainEntry.WindowHidden, MainEntry.WindowHandle);
         }
     }
 }
