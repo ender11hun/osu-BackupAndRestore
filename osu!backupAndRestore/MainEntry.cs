@@ -7,8 +7,8 @@ using EnderCode.Utils;
 using System.Reflection;
 using System.Linq;
 
-
-namespace EnderCode.osu_backupAndRestore
+#pragma warning disable CA1307
+namespace EnderCode.osuBackupAndRestore
 {
     /// <summary>
     /// Application entrypoint
@@ -44,11 +44,12 @@ namespace EnderCode.osu_backupAndRestore
             }
             do
             {
-                AppData.LastRunReader(out bool settingsFound);
+                bool settingsFound;
 #if !DEBUG
                 try
                 {
 #endif           
+                    AppData.LastRunReader(out settingsFound);
                     if (AppData.lastRunContent[3] != "eng")
                     {
                         AppData.isEng = false;
@@ -71,7 +72,7 @@ namespace EnderCode.osu_backupAndRestore
                     }
 #if !DEBUG
                 }
-                catch (Exception e)
+                catch (System.IO.IOException e)
                 {
                     Console.WriteLine(langDict[UIElements.EarlyException].Replace("<file>", Util.Logger(e, "exception")));
                     Console.WriteLine(langDict[UIElements.AwaitKeyToast]);
@@ -97,7 +98,7 @@ namespace EnderCode.osu_backupAndRestore
                 }
 
                 Console.Write($"{langDict[UIElements.CurrentBackupDir]}: ");
-                Util.WriteColoredLine(AppData.backupDir.Equals(string.Empty) ? langDict[UIElements.NoBackupDir] : AppData.backupDir, ConsoleColor.Magenta);
+                Util.WriteColoredLine(string.IsNullOrEmpty(AppData.backupDir) ? langDict[UIElements.NoBackupDir] : AppData.backupDir, ConsoleColor.Magenta);
                 Util.WriteColorFormated(langDict[UIElements.Commands] + "\n", ConsoleColor.DarkCyan, null);
 
                 bool safeguardFound = System.IO.File.Exists($@"{AppData.installPath}\safeguard.lock");
@@ -506,7 +507,7 @@ namespace EnderCode.osu_backupAndRestore
         internal static string[] lastRunContent = { "backup", DateTime.MinValue.ToString(), null, "eng", "" };
         internal static string backupDir;
         internal static bool stay = true, qln = false, debug = false;
-        internal static readonly string debugMsg = "DEBUG MODE";
+        internal const string debugMsg = "DEBUG MODE";
         internal static bool isEng = true;
     }
 

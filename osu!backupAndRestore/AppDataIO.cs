@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Text;
 using System.IO;
-
-namespace EnderCode.osu_backupAndRestore
+#pragma warning disable CA1305
+namespace EnderCode.osuBackupAndRestore
 {
     static partial class AppData
     {
         internal static void SettingsSaver(bool isBackup, bool isUpdate)
         {
-            using (StreamWriter outFile = new StreamWriter(settingsFile, false, Encoding.UTF8))
-            {
-                outFile.WriteLine(isUpdate ? lastRunContent[0] : (isBackup ? "backup" : "restore"));
-                outFile.WriteLine(isUpdate ? lastRunContent[1] : DateTime.Now.ToString());
-                outFile.WriteLine(backupDir);
-                outFile.WriteLine(isEng ? "eng" : "hun");
-                outFile.WriteLine(installPath);
-            }
+            using StreamWriter outFile = new StreamWriter(settingsFile, false, Encoding.UTF8);
+            outFile.WriteLine(isUpdate ? lastRunContent[0] : (isBackup ? "backup" : "restore"));
+            outFile.WriteLine(isUpdate ? lastRunContent[1] : DateTime.Now.ToString());
+            outFile.WriteLine(backupDir);
+            outFile.WriteLine(isEng ? "eng" : "hun");
+            outFile.WriteLine(installPath);
         }
         internal static void LastRunReader(out bool exist)
         {

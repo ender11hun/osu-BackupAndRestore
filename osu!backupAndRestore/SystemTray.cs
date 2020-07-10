@@ -7,10 +7,11 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using System.Drawing;
 using EnderCode.Utils;
+using EnderCode.osuBackupAndRestore.Properties;
 
 #pragma warning disable IDE1006
 
-namespace EnderCode.osu_backupAndRestore
+namespace EnderCode.osuBackupAndRestore
 {
     class SystemTray : Form
     {
@@ -29,7 +30,7 @@ namespace EnderCode.osu_backupAndRestore
 
             trayIcon = new NotifyIcon(components)
             {
-                Icon = Properties.Resources.icon,
+                Icon = Resources.icon,
                 Text = System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).ProductName,
                 Visible = true
             };

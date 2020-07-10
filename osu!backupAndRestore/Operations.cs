@@ -8,7 +8,9 @@ using System.Text;
 using ThreadState = System.Threading.ThreadState;
 using EnderCode.Utils;
 
-namespace EnderCode.osu_backupAndRestore
+#pragma warning disable CA1031 // Do not catch general exception types
+
+namespace EnderCode.osuBackupAndRestore
 {
     sealed class KeyEventArgs
     {
@@ -36,7 +38,7 @@ namespace EnderCode.osu_backupAndRestore
                 Console.WriteLine(MainEntry.langDict[UIElements.BackupDirNotFound]);
                 ChangeBackupDir();
             }
-            string dst = "", src = "";
+            string dst, src;
             if (isBackup)
             {
                 src = AppData.installPath;
@@ -121,12 +123,12 @@ namespace EnderCode.osu_backupAndRestore
                 Util.HideCurrentWindow(MainEntry.WindowHidden = true, MainEntry.WindowHandle);
                 for (byte i =  0; i < 4; i++)
                 {
-                    Interop.SetForegroundWindow(process.MainWindowHandle);
+                    _ = Interop.SetForegroundWindow(process.MainWindowHandle);
                     Thread.Sleep(1000);
                 }
                 process.WaitForExit();
                 Util.HideCurrentWindow(MainEntry.WindowHidden = false, MainEntry.WindowHandle);
-                await Util.BringWindowToFront(MainEntry.WindowHandle);
+                _ = await Util.BringWindowToFront(MainEntry.WindowHandle).ConfigureAwait(false);
             }
             catch (FileNotFoundException e)
             {
@@ -250,6 +252,7 @@ namespace EnderCode.osu_backupAndRestore
                     Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Source);
                     Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
                 }
+                Util.Logger(e, "ProcessCatcher");
                 if (!isAutorun)
                 {
                     Console.Write(MainEntry.langDict[UIElements.AwaitKeyToast]);
@@ -280,6 +283,10 @@ namespace EnderCode.osu_backupAndRestore
                 catch (InvalidOperationException)
                 {
                     File.Delete($@"{AppData.installPath}\safeguard.lock");
+                }
+                finally
+                {
+                    process.Dispose();
                 }
             }
         }

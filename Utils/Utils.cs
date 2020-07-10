@@ -82,19 +82,19 @@ namespace EnderCode.Utils
         {
             if (hwnd == IntPtr.Zero)
             {
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 6; i++)
                 {
                     if (Interop.ShowWindow(hwnd, ShowWindowEnum.Restore))
                         return 0;
-                    Thread.Sleep(1000);
+                    Thread.Sleep(600);
                 }
             }
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 6; i++)
             {
                 if (Interop.SetForegroundWindow(hwnd) == 0)
                     return 0;
-                Thread.Sleep(1000);
+                Thread.Sleep(600);
             }
             return int.MaxValue;
         }
@@ -116,7 +116,8 @@ namespace EnderCode.Utils
             string[] content = {
                                     e.Message,
                                     e.Source,
-                                    e.StackTrace
+                                    e.StackTrace,
+                                    $"[HRESULT]: {e.HResult} (0x{e.HResult:X})"
                                     };
             if (typeof(T).Equals(typeof(System.Runtime.InteropServices.ExternalException)))
                 content.Append((e as System.Runtime.InteropServices.ExternalException).ErrorCode.ToString());
