@@ -1,13 +1,12 @@
 ﻿// This class lib is not only for the osu! backup tool
 
 using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Globalization;
-using System.Threading;
 using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 #pragma warning disable CS1998
 
 namespace EnderCode.Utils
@@ -49,7 +48,7 @@ namespace EnderCode.Utils
         }
         public static void WriteColoredLine(string text, ConsoleColor color)
         {
-            WriteColored(text+"\n", color);
+            WriteColored(text + "\n", color);
         }
         public static void WriteColoredLine(string text, ConsoleColor? font, ConsoleColor back)
         {
@@ -114,11 +113,11 @@ namespace EnderCode.Utils
         public static string Logger<T>(T e, string logType) where T : Exception
         {
             string[] content = {
-                                    e.Message,
-                                    e.Source,
-                                    e.StackTrace,
-                                    $"[HRESULT]: {e.HResult} (0x{e.HResult:X})"
-                                    };
+                                e.Message,
+                                e.Source,
+                                e.StackTrace,
+                                $"[HRESULT]: {e.HResult} (0x{e.HResult:X})"
+                                };
             if (typeof(T).Equals(typeof(System.Runtime.InteropServices.ExternalException)))
                 content.Append((e as System.Runtime.InteropServices.ExternalException).ErrorCode.ToString());
             string logname = LogFile.Replace("<name>", logType);

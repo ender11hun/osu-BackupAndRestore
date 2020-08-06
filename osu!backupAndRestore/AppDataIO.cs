@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Text;
 using System.IO;
+using System.Text;
 #pragma warning disable CA1305
 namespace EnderCode.osuBackupAndRestore
 {

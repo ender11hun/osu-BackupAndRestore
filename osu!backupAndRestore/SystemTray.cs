@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.ComponentModel;
-using System.Drawing;
+﻿using EnderCode.osuBackupAndRestore.Properties;
 using EnderCode.Utils;
-using EnderCode.osuBackupAndRestore.Properties;
+using System;
+using System.ComponentModel;
+using System.Windows.Forms;
 
-#pragma warning disable IDE1006
+#pragma warning disable IDE1006, CA2213 //<-- This sh*t pesters me to call dispose on components field... Take a look at my Dispose()
 
 namespace EnderCode.osuBackupAndRestore
 {
-    class SystemTray : Form
+    class SystemTray : Form, IDisposable
     {
         internal static SystemTray instance = new SystemTray();
         private NotifyIcon trayIcon;
@@ -50,6 +45,7 @@ namespace EnderCode.osuBackupAndRestore
             if (isDisposing)
             {
                 trayIcon.Dispose();
+                components.Dispose();
             }
 
             base.Dispose(isDisposing);

@@ -1,13 +1,11 @@
-﻿using System;
+﻿using EnderCode.Utils;
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using EnderCode.Utils;
-using System.Reflection;
-using System.Linq;
 
-#pragma warning disable CA1307
 namespace EnderCode.osuBackupAndRestore
 {
     /// <summary>
@@ -26,10 +24,11 @@ namespace EnderCode.osuBackupAndRestore
         internal static Thread thread;
 
         [STAThread]
-        static void Main(string[] args)
+        static void Main()
         {
             Init();
-            void Version()
+
+            static void Version()
             {
                 string versionStr = langDict[UIElements.VersionString];
                 string libVerSting = langDict[UIElements.LibVersion];
@@ -48,28 +47,28 @@ namespace EnderCode.osuBackupAndRestore
 #if !DEBUG
                 try
                 {
-#endif           
-                    AppData.LastRunReader(out settingsFound);
-                    if (AppData.lastRunContent[3] != "eng")
+#endif
+                AppData.LastRunReader(out settingsFound);
+                if (AppData.lastRunContent[3] != "eng")
+                {
+                    AppData.isEng = false;
+                    LangInit();
+                }
+                string execPath = System.IO.Path.Combine(AppData.installPath, "osu!.exe");
+                if (!System.IO.File.Exists(execPath))
+                {
+                    AppData.installPath = Dialogs.InstallNotFound();
+                    if (AppData.installPath == null || execPath.Contains(AppData.installPath) || !System.IO.File.Exists(System.IO.Path.Combine(AppData.installPath, "osu!.exe")))
                     {
-                        AppData.isEng = false;
-                        LangInit();
+                        Console.WriteLine(langDict[UIElements.AbortedOrNotFound]);
+                        Thread.Sleep(3000);
+                        goto Exit;
                     }
-                    string execPath = System.IO.Path.Combine(AppData.installPath, "osu!.exe");
-                    if (!System.IO.File.Exists(execPath))
+                    else
                     {
-                        AppData.installPath = Dialogs.InstallNotFound();
-                        if (AppData.installPath == null || execPath.Contains(AppData.installPath) || !System.IO.File.Exists(System.IO.Path.Combine(AppData.installPath, "osu!.exe")))
-                        {
-                            Console.WriteLine(langDict[UIElements.AbortedOrNotFound]);
-                            Thread.Sleep(3000);
-                            goto Exit;
-                        }
-                        else
-                        {
-                            AppData.SettingsSaver(false, true);
-                        }
+                        AppData.SettingsSaver(false, true);
                     }
+                }
 #if !DEBUG
                 }
                 catch (System.IO.IOException e)
@@ -129,6 +128,7 @@ namespace EnderCode.osuBackupAndRestore
                     case ConsoleKey.C:
                         Console.WriteLine('C');
                         Operations.ChangeBackupDir();
+                        AppData.SettingsSaver(false, false);
                         break;
                     case ConsoleKey.L:
                         if (input.Modifiers.HasFlag(ConsoleModifiers.Shift))
@@ -172,7 +172,8 @@ namespace EnderCode.osuBackupAndRestore
                             Operations.ConfirmDelete();
                         }
                         break;
-                    #region Unused      
+                    #region Unused keys
+                        /*
                     case ConsoleKey.V:
                         //Version();
                         break;
@@ -439,7 +440,7 @@ namespace EnderCode.osuBackupAndRestore
                     case ConsoleKey.Pa1:
                         break;
                     case ConsoleKey.OemClear:
-                        break;
+                        break;*/
                     #endregion
                     default:
                         break;
@@ -452,7 +453,7 @@ namespace EnderCode.osuBackupAndRestore
                 Thread.Sleep(1000);
             }
         Exit:
-        Application.Exit();
+            Application.Exit();
         }
 
         /// <summary>
@@ -489,13 +490,12 @@ namespace EnderCode.osuBackupAndRestore
                 langDict.Add(
                     item.GetEnum<UIElements>(),
                     ((string)typeof(Language).GetProperty(
-                        item+lang,
+                        item + lang,
                         BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Public
-                    ).GetValue(null,null)).Beautify()
+                    ).GetValue(null, null)).Beautify()
                 );
             }
         }
-
     }
     /// <summary>
     /// Beállítások statikus osztálya
@@ -504,7 +504,7 @@ namespace EnderCode.osuBackupAndRestore
     {
         internal static string installPath = Environment.ExpandEnvironmentVariables(@"%userprofile%\AppData\Local\osu!");
         internal static string settingsFile = $@"{Environment.CurrentDirectory}\settings.obr";
-        internal static string[] lastRunContent = { "backup", DateTime.MinValue.ToString(), null, "eng", "" };
+        internal static string[] lastRunContent = { "backup", DateTime.MinValue.ToString(System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat), null, "eng", "" };
         internal static string backupDir;
         internal static bool stay = true, qln = false, debug = false;
         internal const string debugMsg = "DEBUG MODE";

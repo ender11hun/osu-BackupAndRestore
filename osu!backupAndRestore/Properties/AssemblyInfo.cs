@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Resources;
 #pragma warning disable CS7035
 
 [assembly: AssemblyTitle("Tool for backing up and restoring the osu! database files")]
@@ -11,6 +12,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("No Copyright registered")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+[assembly: NeutralResourcesLanguage("en")]
+
 [assembly: ComVisible(false)]
 
 [assembly: Guid("c3f9fa01-d172-4f51-9804-52735796ae5a")]

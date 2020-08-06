@@ -1,14 +1,14 @@
-﻿using System;
+﻿using EnderCode.Utils;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Collections.Generic;
-using System.Threading;
 using System.Text;
+using System.Threading;
 using ThreadState = System.Threading.ThreadState;
-using EnderCode.Utils;
 
-#pragma warning disable CA1031 // Do not catch general exception types
+#pragma warning disable CA1031,CA2000 // Do not catch general exception types and don't pester me for you being blind to not see I properly disposed my Proccess objects.
 
 namespace EnderCode.osuBackupAndRestore
 {
@@ -17,7 +17,7 @@ namespace EnderCode.osuBackupAndRestore
         internal ConsoleKeyInfo ConsoleKey { get; }
         internal KeyEventArgs(ConsoleKeyInfo consoleKey)
         {
-            this.ConsoleKey = consoleKey;
+            ConsoleKey = consoleKey;
         }
     }
 
@@ -31,27 +31,26 @@ namespace EnderCode.osuBackupAndRestore
         internal static void BackupAndRestore(bool isBackup, in bool exist)
         {
             DirectoryInfo destDir;
-            string fileName, destFile;
             Console.Clear();
             if (!exist)
             {
                 Console.WriteLine(MainEntry.langDict[UIElements.BackupDirNotFound]);
                 ChangeBackupDir();
             }
-            string dst, src;
+            string destination, source;
             if (isBackup)
             {
-                src = AppData.installPath;
-                dst = AppData.lastRunContent[2];
+                source = AppData.installPath;
+                destination = AppData.lastRunContent[2];
             }
             else
             {
-                src = AppData.lastRunContent[2];
-                dst = AppData.installPath;
+                source = AppData.lastRunContent[2];
+                destination = AppData.installPath;
             }
 
             Console.WriteLine($"{MainEntry.langDict[UIElements.GettingFiles]}");
-            if (!Directory.Exists(src))
+            if (!Directory.Exists(source))
             {
                 Util.WriteColored(errorPrefix, ConsoleColor.Red);
                 Console.WriteLine(MainEntry.langDict[UIElements.NoSourceFound]);
@@ -59,28 +58,26 @@ namespace EnderCode.osuBackupAndRestore
             }
             else
             {
-                destDir = new DirectoryInfo(src);
+                destDir = new DirectoryInfo(source);
                 FileInfo[] files = destDir.GetFiles("*.db", SearchOption.TopDirectoryOnly);
                 foreach (FileInfo item in files)
                 {
-                    fileName = item.Name;
                     Console.Write($"{MainEntry.langDict[UIElements.FileInfoPart1]} ");
-                    Util.WriteColored(fileName, ConsoleColor.Cyan);
+                    Util.WriteColored(item.Name, ConsoleColor.Cyan);
                     Console.Write($" {MainEntry.langDict[UIElements.FileInfoPart2]} ");
-                    Util.WriteColored(src, ConsoleColor.Cyan);
+                    Util.WriteColored(source, ConsoleColor.Cyan);
                     Console.Write($" {MainEntry.langDict[UIElements.FileInfoPart3]} ");
                     Util.WriteColored(Util.SizeSuffixer(item.Length), ConsoleColor.Green);
                     Console.WriteLine($" {MainEntry.langDict[UIElements.FileInfoPart4]}...");
                 }
-                Console.Write($"{MainEntry.langDict[UIElements.CopyToast].Replace(@"%d", dst)}");
+                Console.Write($"{MainEntry.langDict[UIElements.CopyToast].Replace(@"%d", destination)}");
                 foreach (FileInfo item in files)
                 {
-                    destFile = Path.Combine(dst, item.Name);
-                    File.Copy(Path.Combine(src, item.Name), destFile, true);
+                    File.Copy(Path.Combine(source, item.Name), Path.Combine(destination, item.Name), true);
                 }
                 AppData.SettingsSaver(isBackup, false);
                 Console.WriteLine(MainEntry.langDict[UIElements.Done]);
-                DirectoryInfo dest = new DirectoryInfo(dst);
+                DirectoryInfo dest = new DirectoryInfo(destination);
                 FileInfo[] destFiles = dest.GetFiles("*.db", SearchOption.TopDirectoryOnly);
                 long sizeFinal = 0;
                 foreach (FileInfo item in destFiles)
@@ -121,7 +118,7 @@ namespace EnderCode.osuBackupAndRestore
                 process = Process.Start(Environment.ExpandEnvironmentVariables($@"{AppData.installPath}\osu!.exe"));
                 Safeguard();
                 Util.HideCurrentWindow(MainEntry.WindowHidden = true, MainEntry.WindowHandle);
-                for (byte i =  0; i < 4; i++)
+                for (byte i = 0; i < 4; i++)
                 {
                     _ = Interop.SetForegroundWindow(process.MainWindowHandle);
                     Thread.Sleep(1000);
@@ -141,7 +138,7 @@ namespace EnderCode.osuBackupAndRestore
                 Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(MainEntry.langDict[UIElements.Win32Ex]);
                 ErrorMsg(e);
                 error = true;
-                
+
             }
             catch (Exception e)
             {
@@ -209,12 +206,12 @@ namespace EnderCode.osuBackupAndRestore
         internal static void ChangeBackupDir()
         {
             Console.WriteLine(MainEntry.langDict[UIElements.BrowseBackup]);
-            var dialog = FormImpl4Con.CreateFolderBrowser(MainEntry.langDict[UIElements.BrowseFolder]);
+            using var dialog = FormImpl4Con.CreateFolderBrowser(MainEntry.langDict[UIElements.BrowseFolder]);
             Thread.Sleep(3000);
             if (dialog.ShowDialog() == (System.Windows.Forms.DialogResult.Abort | System.Windows.Forms.DialogResult.Cancel))
             {
                 Console.WriteLine(MainEntry.langDict[UIElements.BrowseBackupAbort]);
-                object a = Console.ReadKey();
+                _ = Console.ReadKey();
                 return;
             }
             AppData.backupDir = dialog.SelectedPath;
@@ -252,7 +249,7 @@ namespace EnderCode.osuBackupAndRestore
                     Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Source);
                     Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
                 }
-                Util.Logger(e, "ProcessCatcher");
+                Util.WriteColoredLine("Log file saved as: " + Util.Logger(e, "ProcessCatcher"), ConsoleColor.Yellow);
                 if (!isAutorun)
                 {
                     Console.Write(MainEntry.langDict[UIElements.AwaitKeyToast]);
@@ -270,23 +267,33 @@ namespace EnderCode.osuBackupAndRestore
                     Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
                 }
             }
-
-            if (noError)
+            finally
             {
-                Console.WriteLine(MainEntry.langDict[UIElements.ProcessCaught]);
-                process.WaitForExit();
-                try
+                if (noError)
                 {
-                    if (process.ExitCode == 0)
+                    Console.WriteLine(MainEntry.langDict[UIElements.ProcessCaught]);
+                    process.WaitForExit();
+                    try
+                    {
+                        if (process.ExitCode == 0)
+                            File.Delete($@"{AppData.installPath}\safeguard.lock");
+                    }
+                    catch (InvalidOperationException)
+                    {
                         File.Delete($@"{AppData.installPath}\safeguard.lock");
-                }
-                catch (InvalidOperationException)
-                {
-                    File.Delete($@"{AppData.installPath}\safeguard.lock");
-                }
-                finally
-                {
-                    process.Dispose();
+                    }
+                    catch (IOException ioEx)
+                    {
+                        Util.WriteColoredLine("Log file saved as: " + Util.Logger(ioEx, "SafeguardIO"), ConsoleColor.Yellow);
+                    }
+                    catch (UnauthorizedAccessException authEx)
+                    {
+                        Util.WriteColoredLine("Log file saved as: " + Util.Logger(authEx, "SafeguardAuth"), ConsoleColor.Yellow);
+                    }
+                    finally
+                    {
+                        process.Dispose();
+                    }
                 }
             }
         }

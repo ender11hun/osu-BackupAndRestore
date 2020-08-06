@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace EnderCode.Utils
@@ -17,10 +13,11 @@ namespace EnderCode.Utils
             public IntPtr Handle { get; private set; }
 
             /// <exception cref="NullReferenceException"></exception>
+            /// <exception cref="NullReferenceException"></exception>
             public Win32Window(IntPtr handle)
             {
                 if (handle.Equals(IntPtr.Zero))
-                    throw new NullReferenceException("The pointer does not point to a valid handle.");
+                    throw new NullReferenceException("The handle's pointer does not point to a valid handle.");
                 Handle = handle;
             }
         }
