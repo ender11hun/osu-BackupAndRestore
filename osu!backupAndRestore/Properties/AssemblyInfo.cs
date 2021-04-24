@@ -20,7 +20,7 @@ using System.Resources;
 [assembly: Guid("c3f9fa01-d172-4f51-9804-52735796ae5a")]
 
 [assembly: AssemblyVersion("1.11.0.0")]
-[assembly: AssemblyFileVersion("1.11.1.0")]
+[assembly: AssemblyFileVersion("1.11.0.0")]
 // Suffixes
 // T - Test version*
 // A - Alpha
