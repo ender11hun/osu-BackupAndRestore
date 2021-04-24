@@ -2,6 +2,7 @@
 ## Multitool for the game osu!
 
 ### The game "osu!" is a free-to-play 2D rythm game developed by __ppy__. The name "osu!" belongs to the copyright owner, ppy Pty Ltd.
+osu! stores user and beatmap data in .db files. But these files are very prone to corupption if the game is suddely stopped mid-execution. That is why I made this, to backup before launch and restore if needed without doing this myself by hand.
 
 > osu!'s licence header:
 >> Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
