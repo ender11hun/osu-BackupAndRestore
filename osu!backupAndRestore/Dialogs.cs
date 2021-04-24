@@ -31,7 +31,7 @@ namespace EnderCode.osuBackupAndRestore
             }
             else
             {
-                Util.WriteColoredLine(MainEntry.langDict[UIElements.Aborted], ConsoleColor.Red);
+                Util.WriteColored(MainEntry.langDict[UIElements.Aborted], true, ConsoleColor.Red);
             }
         }
         internal static string InstallNotFound()

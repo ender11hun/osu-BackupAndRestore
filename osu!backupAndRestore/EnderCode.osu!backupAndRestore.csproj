@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <OutputType>Exe</OutputType>
@@ -14,24 +14,38 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.11.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <UseWindowsForms>true</UseWindowsForms>
+    <UseWindowsForms>false</UseWindowsForms>
+	<PublishSingleFile>true</PublishSingleFile>
+	<PublishTrimmed>true</PublishTrimmed>
+	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	<Platforms>AnyCPU</Platforms>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>Default</LangVersion>
     <NoWarn>1701;1702;CA1303;CA1307</NoWarn>
+    <PlatformTarget>x64</PlatformTarget>
+    <DefineConstants>DEBUG</DefineConstants>
+    <Prefer32Bit>true</Prefer32Bit>
+    <OutputPath>bin/Debug</OutputPath>
+    <DebugType>embedded</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>Default</LangVersion>
     <DebugSymbols>false</DebugSymbols>
-    <NoWarn>1701;1702;CA1303;CA1305;CA1307</NoWarn>
+    <NoWarn>1701;1702;CA1303;CA1307</NoWarn>
     <DebugType>none</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DefineConstants>TRACE</DefineConstants>
+    <Prefer32Bit>true</Prefer32Bit>
+    <OutputPath>bin/Release</OutputPath>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
@@ -42,6 +56,7 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AssemblyName>osu!BackupAndRestore</AssemblyName>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utils\EnderCode.Utils.csproj" />
@@ -75,7 +90,6 @@
     <PackageReference Include="Microsoft.CodeQuality.Analyzers" Version="2.9.6" />
     <PackageReference Include="Microsoft.NetCore.Analyzers" Version="2.9.6" />
     <PackageReference Include="Microsoft.NetFramework.Analyzers" Version="2.9.6" />
-    <PackageReference Include="System.ComponentModel.Composition" Version="4.7.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Language.Designer.cs">

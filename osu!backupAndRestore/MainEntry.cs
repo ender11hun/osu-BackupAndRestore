@@ -15,13 +15,9 @@ namespace EnderCode.osuBackupAndRestore
     {
         internal static Dictionary<UIElements, string> langDict = new Dictionary<UIElements, string>();
         internal static int cursorTop;
-        internal static string GetVersion
-        {
-            get => System.Diagnostics.FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion;
-        }
         internal static IntPtr WindowHandle => Interop.GetConsoleWindow();
         internal static bool WindowHidden = false;
-        internal static Thread thread;
+        internal static Thread trayiconThread;
 
         [STAThread]
         static void Main()
@@ -33,17 +29,19 @@ namespace EnderCode.osuBackupAndRestore
                 string versionStr = langDict[UIElements.VersionString];
                 string libVerSting = langDict[UIElements.LibVersion];
                 cursorTop = Console.CursorTop;
-                Console.SetCursorPosition(Console.WindowWidth - versionStr.Length - GetVersion.Length - 1, 0);
+                Console.SetCursorPosition(Console.WindowWidth - versionStr.Length - CoreAssembly.Version.ToString().Length - 1, 0); ;
                 Console.Write(langDict[UIElements.VersionString]);
-                Util.WriteColored(GetVersion, ConsoleColor.Green);
-                Console.SetCursorPosition(Console.WindowWidth - libVerSting.Length - Util.GetVersion.Length - 1, 1);
+                Util.WriteColored(CoreAssembly.Version.ToString(), true, ConsoleColor.Green);
+                Console.SetCursorPosition(Console.WindowWidth - libVerSting.Length - Util.CoreAssembly.Version.ToString().Length - 1, 1);
                 Console.Write(langDict[UIElements.LibVersion]);
-                Util.WriteColored(Util.GetVersion, ConsoleColor.Green);
+                Util.WriteColored(Util.CoreAssembly.Version.ToString(), true, ConsoleColor.Green);
                 Console.SetCursorPosition(0, cursorTop);
             }
             do
             {
+#pragma warning disable IDE0018 // Inline variable declaration
                 bool settingsFound;
+#pragma warning restore IDE0018
 #if !DEBUG
                 try
                 {
@@ -87,9 +85,9 @@ namespace EnderCode.osuBackupAndRestore
                 if (settingsFound)
                 {
                     Console.Write($"{langDict[UIElements.LastOp]}: ");
-                    Util.WriteColored(AppData.lastRunContent[0], ConsoleColor.Cyan);
+                    Util.WriteColored(AppData.lastRunContent[0],false, ConsoleColor.Cyan);
                     Console.Write($" {langDict[UIElements.LastOpTime]}: ");
-                    Util.WriteColoredLine(AppData.lastRunContent[1], ConsoleColor.Cyan);
+                    Util.WriteColored(AppData.lastRunContent[1],false, ConsoleColor.Cyan);
                 }
                 else
                 {
@@ -97,14 +95,14 @@ namespace EnderCode.osuBackupAndRestore
                 }
 
                 Console.Write($"{langDict[UIElements.CurrentBackupDir]}: ");
-                Util.WriteColoredLine(string.IsNullOrEmpty(AppData.backupDir) ? langDict[UIElements.NoBackupDir] : AppData.backupDir, ConsoleColor.Magenta);
+                Util.WriteColored(string.IsNullOrEmpty(AppData.backupDir) ? langDict[UIElements.NoBackupDir] : AppData.backupDir,true, ConsoleColor.Magenta);
                 Util.WriteColorFormated(langDict[UIElements.Commands] + "\n", ConsoleColor.DarkCyan, null);
 
                 bool safeguardFound = System.IO.File.Exists($@"{AppData.installPath}\safeguard.lock");
                 if (safeguardFound)
                 {
                     Console.WriteLine(langDict[UIElements.SafeguardDeleteCmd]);
-                    Util.WriteColoredLine(langDict[UIElements.SafeguardFound], ConsoleColor.Red);
+                    Util.WriteColored(langDict[UIElements.SafeguardFound],true, ConsoleColor.Red);
                 }
 
                 Console.Write($@"{langDict[UIElements.Prompt]}> ");
@@ -456,9 +454,11 @@ namespace EnderCode.osuBackupAndRestore
             Application.Exit();
         }
 
+
         /// <summary>
         /// Programkezdeti inícializálás
         /// </summary>
+        /// <remarks><b>Megjegyzés:</b><br/>Mivel nem Forms app vagyunk, igy egy külön szálat (Thread) kell inditani a <see cref="SystemTray"/> komponenshez</remarks>
         static void Init()
         {
             Dialogs.Win32ConHandle = new FormImpl4Con.Win32Window(WindowHandle);
@@ -466,8 +466,8 @@ namespace EnderCode.osuBackupAndRestore
             {
                 throw new PlatformNotSupportedException("Only Windows NT or later supported");
             }
-            thread = new Thread(delegate () { Application.Run(SystemTray.instance); });
-            thread.Start();
+            trayiconThread = new Thread(delegate () { Application.Run(SystemTray.instance); });
+            trayiconThread.Start();
             Console.OutputEncoding = Encoding.UTF8;
             Console.TreatControlCAsInput = true;
             Console.SetWindowSize(95, 24);
@@ -497,86 +497,4 @@ namespace EnderCode.osuBackupAndRestore
             }
         }
     }
-    /// <summary>
-    /// Beállítások statikus osztálya
-    /// </summary>
-    static partial class AppData
-    {
-        internal static string installPath = Environment.ExpandEnvironmentVariables(@"%userprofile%\AppData\Local\osu!");
-        internal static string settingsFile = $@"{Environment.CurrentDirectory}\settings.obr";
-        internal static string[] lastRunContent = { "backup", DateTime.MinValue.ToString(System.Globalization.CultureInfo.CurrentUICulture.DateTimeFormat), null, "eng", "" };
-        internal static string backupDir;
-        internal static bool stay = true, qln = false, debug = false;
-        internal const string debugMsg = "DEBUG MODE";
-        internal static bool isEng = true;
-    }
-
-    /// <summary>
-    /// Enum a nyelvi szövegek lekéréséhez
-    /// </summary>
-    enum UIElements : byte
-    {
-        WindowTitle,
-        HeadLine,
-        CurrentBackupDir,
-        BackupDirNotFound,
-        NoBackupDir,
-        NoSourceFound,
-        Commands,
-        LastOp,
-        LastOpTime,
-        MissingLastRunInfo,
-        SafeguardFound,
-        Prompt,
-        SeeYa,
-        ErrorPrefix,
-        GettingFiles,
-        LaunchToast,
-        AwaitKeyToast,
-        RepairToast,
-        CopyToast,
-        FileNotFoundEx,
-        Win32Ex,
-        ProcessEnded,
-        FileInfoPart1,
-        FileInfoPart2,
-        FileInfoPart3,
-        FileInfoPart4,
-        FinalSizePart1,
-        FinalSizePart2,
-        FinalSizePart3,
-        ErrorDetails,
-        NoCurrentBackupDir,
-        NewDir,
-        CorrectQuestionStr,
-        CreateNew,
-        WarnPrefix,
-        QueryProcess,
-        MultiProcessWeirdness,
-        NoProcess,
-        WhatTheFuckWasThat,
-        ProcessCaught,
-        PartialDownloadedMaps,
-        PartialNewMaps,
-        QuestionLaunch,
-        QuestionSure,
-        Done,
-        Aborted,
-        QuestionDelete,
-        SafeguardDeleteCmd,
-        VersionString,
-        LibVersion,
-        MapIDCollusion,
-        CollusionDialog,
-        FolderBrowsing,
-        InstallNotFound,
-        BrowseAbort,
-        BrowseFolder,
-        BrowseSuccess,
-        BrowseBackup,
-        BrowseBackupAbort,
-        AbortedOrNotFound,
-        EarlyException
-    }
-
 }

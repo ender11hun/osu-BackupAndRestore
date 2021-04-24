@@ -1,0 +1,228 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EnderCode.Utils</name>
+    </assembly>
+    <members>
+        <member name="T:EnderCode.Utils.FormImpl4Con">
+            <summary>
+                Form tricks for Console applications
+            </summary>
+        </member>
+        <member name="T:EnderCode.Utils.FormImpl4Con.Win32Window">
+            <summary>
+                Class implementing <see langword="interface"/> <see cref="T:System.Windows.Forms.IWin32Window"/>. This class cannot be inherited.
+            </summary>
+        </member>
+        <member name="P:EnderCode.Utils.FormImpl4Con.Win32Window.Handle">
+            <summary>
+            Konzol ablak handle
+            </summary>
+        </member>
+        <member name="M:EnderCode.Utils.FormImpl4Con.Win32Window.#ctor(System.IntPtr)">
+            <exception cref="T:System.NullReferenceException"></exception>
+        </member>
+        <member name="M:EnderCode.Utils.FormImpl4Con.CreateFolderBrowser(System.String)">
+            <summary>
+            Könyvtár tallózó készítése konzolhoz beállítva
+            </summary>
+            <param name="dialogTitle">Párbeszéd ablak címe</param>
+            <returns>Visszaad egy <see cref="T:System.Windows.Forms.FolderBrowserDialog"/> objektumot, amit újra fel lehet használni</returns>
+        </member>
+        <member name="T:EnderCode.Utils.Interop">
+            <summary>
+            Static p/invoke class for unmanaged dll calls
+            </summary>
+        </member>
+        <member name="T:EnderCode.Utils.Interop.ENUMS">
+            <summary>
+            Static class for interop enums
+            </summary>
+        </member>
+        <member name="T:EnderCode.Utils.Interop.ENUMS.ShowWindowEnum">
+            <summary>
+            Win32 kernel32 - Window state enum commands
+            </summary>
+        </member>
+        <member name="F:EnderCode.Utils.Interop.ENUMS.ShowWindowEnum.SW_HIDE">
+            <summary>
+                Hides the window and activates another window.
+            </summary>
+        </member>
+        <member name="F:EnderCode.Utils.Interop.ENUMS.ShowWindowEnum.SW_SHOWNORMAL">
+            <summary>
+                Activates and displays a window. If the window is minimized or maximized, the system restores it to its original size and position. An application should specify this flag when displaying the window for the first time.
+            </summary>
+        </member>
+        <member name="F:EnderCode.Utils.Interop.ENUMS.ShowWindowEnum.SW_NORMAL">
+            <summary>
+                Activates and displays a window. If the window is minimized or maximized, the system restores it to its original size and position. An application should specify this flag when displaying the window for the first time.
+            </summary>
+        </member>
+        <member name="F:EnderCode.Utils.Interop.ENUMS.ShowWindowEnum.SW_SHOWMINIMIZED">
+            <summary>
+                Activates the window and displays it as a minimized window.
+            </summary>
+        </member>
+        <member name="F:EnderCode.Utils.Interop.ENUMS.ShowWindowEnum.SW_SHOWMAXIMIZED">
+            <summary>
+                Activates the window and displays it as a maximized window.
+            </summary>
+        </member>
+        <member name="F:EnderCode.Utils.Interop.ENUMS.ShowWindowEnum.SW_MAXIMIZE">
+            <summary>
+                Maximizes the specified window.
+            </summary>
+        </member>
+        <member name="F:EnderCode.Utils.Interop.ENUMS.ShowWindowEnum.SW_SHOWNOACTIVATE">
+            <summary>
+                Displays a window in its most recent size and position. This value is similar to <c><see cref="F:EnderCode.Utils.Interop.ENUMS.ShowWindowEnum.SW_SHOWNORMAL"/></c>, except the window is not activated.
+            </summary>
+        </member>
+        <member name="F:EnderCode.Utils.Interop.ENUMS.ShowWindowEnum.SW_SHOW">
+            <summary>
+                Activates the window and displays it in its current size and position.
+            </summary>
+        </member>
+        <member name="F:EnderCode.Utils.Interop.ENUMS.ShowWindowEnum.SW_MINIMIZE">
+            <summary>
+                Minimizes the specified window and activates the next top-level window in the z-order.
+            </summary>
+        </member>
+        <member name="F:EnderCode.Utils.Interop.ENUMS.ShowWindowEnum.SW_SHOWMINNOACTIVE">
+            <summary>
+                Displays the window as a minimized window. This value is similar to <c><see cref="F:EnderCode.Utils.Interop.ENUMS.ShowWindowEnum.SW_SHOWMINIMIZED"/></c>, except the window is not activated.
+            </summary>
+        </member>
+        <member name="F:EnderCode.Utils.Interop.ENUMS.ShowWindowEnum.SW_SHOWNA">
+            <summary>
+                Displays the window in its current size and position. This value is similar to <c><see cref="F:EnderCode.Utils.Interop.ENUMS.ShowWindowEnum.SW_SHOW"/></c>, except the window is not activated.
+            </summary>
+        </member>
+        <member name="F:EnderCode.Utils.Interop.ENUMS.ShowWindowEnum.SW_RESTORE">
+            <summary>
+                Activates and displays the window. If the window is minimized or maximized, the system restores it to its original size and position. An application should specify this flag when restoring a minimized window.
+            </summary>
+        </member>
+        <member name="F:EnderCode.Utils.Interop.ENUMS.ShowWindowEnum.SW_SHOWDEFAULT">
+            <summary>
+                Makes sure the window is restored prior to showing, then activating.
+            </summary>
+        </member>
+        <member name="F:EnderCode.Utils.Interop.ENUMS.ShowWindowEnum.SW_FORCEMINIMIZE">
+            <summary>
+            Tries to coerce a window to minimized or maximized.
+            </summary>
+        </member>
+        <member name="F:EnderCode.Utils.Interop.ENUMS.ShowWindowEnum.SW_MAX">
+            <inheritdoc cref="F:EnderCode.Utils.Interop.ENUMS.ShowWindowEnum.SW_FORCEMINIMIZE"/>
+        </member>
+        <member name="T:EnderCode.Utils.Interop.ENUMS.EXECUTION_STATE">
+            <summary>
+            Win32 API kernel32 - <c><see cref="T:EnderCode.Utils.Interop.ENUMS.EXECUTION_STATE"/></c> enum flags for the <c><see cref="M:EnderCode.Utils.Interop.SetThreadExecutionState(EnderCode.Utils.Interop.ENUMS.EXECUTION_STATE)"/></c> method
+            </summary>
+        </member>
+        <member name="F:EnderCode.Utils.Interop.ENUMS.EXECUTION_STATE.ES_AWAYMODE_REQUIRED">
+            <summary>
+            Set the execution state to Away mode
+            <para>Note: the mode must be explicitly allowed by the current power policy</para>
+            </summary>
+        </member>
+        <member name="F:EnderCode.Utils.Interop.ENUMS.EXECUTION_STATE.ES_CONTINUOUS">
+            <summary>
+            Set the execution state to Continuous
+            <para>Using this flag makes the other flags' effect to last indefinitely</para>
+            </summary>
+        </member>
+        <member name="F:EnderCode.Utils.Interop.ENUMS.EXECUTION_STATE.ES_DISPLAY_REQUIRED">
+            <summary>
+            Set the executions state to Display Required
+            <para>If this flag is set, the display won't turn off</para>
+            </summary>
+        </member>
+        <member name="F:EnderCode.Utils.Interop.ENUMS.EXECUTION_STATE.ES_SYSTEM_REQUIRED">
+            <summary>
+            Set the executions state to System Required
+            <para>This will prevent the system from Idle-to-Sleep</para>
+            </summary>
+        </member>
+        <member name="F:EnderCode.Utils.Interop.ENUMS.EXECUTION_STATE.ES_USER_PRESENT">
+            <summary>
+             Legacy flag (DO NOT USE!)
+             <para>Original value: 0x00000004</para>
+            </summary>
+        </member>
+        <member name="M:EnderCode.Utils.Interop.ShowWindow(System.IntPtr,EnderCode.Utils.Interop.ENUMS.ShowWindowEnum)">
+            <summary>
+            Win32 API user32 - Set window's state to one of the <c><see cref="T:EnderCode.Utils.Interop.ENUMS.ShowWindowEnum"/></c>'s values
+            </summary>
+            <param name="hWnd">The handle to the window</param>
+            <param name="flag">Flag to be applied to the window</param>
+            <returns></returns>
+        </member>
+        <member name="M:EnderCode.Utils.Interop.SetForegroundWindow(System.IntPtr)">
+            <summary>
+            Win32 API user32 - Set a window to active foreground
+            </summary>
+            <param name="hwnd">Handle to the window</param>
+            <returns>The HRESULT of the operation marshaled as <c><see cref="T:System.Int32"/></c></returns>
+        </member>
+        <member name="M:EnderCode.Utils.Interop.GetConsoleWindow">
+            <summary>
+            Win32 API kernel32 - Get the current thread/process' handle to its console window
+            </summary>
+            <returns>Window handle to the current console window</returns>
+        </member>
+        <member name="M:EnderCode.Utils.Interop.SetThreadExecutionState(EnderCode.Utils.Interop.ENUMS.EXECUTION_STATE)">
+            <summary>
+            Win32 API kernel32 - Set the current thread's execution state to one or a combination of <c><see cref="T:EnderCode.Utils.Interop.ENUMS.EXECUTION_STATE"/></c> flag(s)
+            </summary>
+            <param name="esFlags">Flags to be applied</param>
+            <returns>The previous exec. state of thread</returns>
+        </member>
+        <member name="P:EnderCode.Utils.Util.LogFile">
+            <summary>
+            A Log fájl nevét építi fel
+            </summary>
+        </member>
+        <member name="M:EnderCode.Utils.Util.SizeSuffixer(System.Int64)">
+            <summary>
+            Önmagyarázó, a megfelelő suffixel lát el egy méretet
+            </summary>
+            <param name="bytes">Méret</param>
+            <returns>Suffixelt méret <see cref="T:System.String"/>ként</returns>
+        </member>
+        <member name="M:EnderCode.Utils.Util.GetEnum``1(System.String)">
+            <summary>
+            Generikus "hack" <see cref="T:System.String"/>ből <see langword="enum"/> parse
+            </summary>
+            <typeparam name="T">Cél típus (<see langword="where"/> T <see langword="extends"/> <see cref="T:System.Enum"/>)</typeparam>
+            <param name="name">a bővített <see cref="T:System.String"/> objektum</param>
+            <returns>T típusú <see cref="T:System.Enum"/>ot</returns>
+        </member>
+        <member name="M:EnderCode.Utils.Util.Logger``1(``0,System.String)">
+            <summary>
+            Generikus logger
+            </summary>
+            <typeparam name="T">Forrás kivétel típusa</typeparam>
+            <param name="e">Kivétel objektum</param>
+            <param name="logType">Log típusa</param>
+            <returns>Az elkészített log fájl nevét tartalmazó <see cref="T:System.String"/>et</returns>
+        </member>
+        <member name="T:EnderCode.Utils.Util.CoreAssembly">
+            <summary>
+            <see cref="T:System.Reflection.Assembly"/> "hack" a DLL fájl verizójának visszakéréséhez
+            </summary>
+        </member>
+        <member name="F:EnderCode.Utils.Util.CoreAssembly.Reference">
+            <summary>
+            A jelenlegi <see cref="T:System.Reflection.Assembly"/> hivatkozása
+            </summary>
+        </member>
+        <member name="F:EnderCode.Utils.Util.CoreAssembly.Version">
+            <summary>
+            <see cref="T:System.Reflection.Assembly"/> verziója
+            </summary>
+        </member>
+    </members>
+</doc>

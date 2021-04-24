@@ -12,21 +12,9 @@ using ThreadState = System.Threading.ThreadState;
 
 namespace EnderCode.osuBackupAndRestore
 {
-    sealed class KeyEventArgs
-    {
-        internal ConsoleKeyInfo ConsoleKey { get; }
-        internal KeyEventArgs(ConsoleKeyInfo consoleKey)
-        {
-            ConsoleKey = consoleKey;
-        }
-    }
 
     static class Operations
     {
-        #region eventDeclaration
-        internal delegate void KeyEventHandler(KeyEventArgs e);
-        internal static event KeyEventHandler KeyEvent;
-        #endregion
         private static readonly string errorPrefix = $"{MainEntry.langDict[UIElements.ErrorPrefix]} ";
         internal static void BackupAndRestore(bool isBackup, in bool exist)
         {
@@ -52,7 +40,7 @@ namespace EnderCode.osuBackupAndRestore
             Console.WriteLine($"{MainEntry.langDict[UIElements.GettingFiles]}");
             if (!Directory.Exists(source))
             {
-                Util.WriteColored(errorPrefix, ConsoleColor.Red);
+                Util.WriteColored(errorPrefix, false, ConsoleColor.Red);
                 Console.WriteLine(MainEntry.langDict[UIElements.NoSourceFound]);
                 Console.ReadKey();
             }
@@ -63,11 +51,11 @@ namespace EnderCode.osuBackupAndRestore
                 foreach (FileInfo item in files)
                 {
                     Console.Write($"{MainEntry.langDict[UIElements.FileInfoPart1]} ");
-                    Util.WriteColored(item.Name, ConsoleColor.Cyan);
+                    Util.WriteColored(item.Name, false, ConsoleColor.Cyan);
                     Console.Write($" {MainEntry.langDict[UIElements.FileInfoPart2]} ");
-                    Util.WriteColored(source, ConsoleColor.Cyan);
+                    Util.WriteColored(source, false, ConsoleColor.Cyan);
                     Console.Write($" {MainEntry.langDict[UIElements.FileInfoPart3]} ");
-                    Util.WriteColored(Util.SizeSuffixer(item.Length), ConsoleColor.Green);
+                    Util.WriteColored(Util.SizeSuffixer(item.Length), false, ConsoleColor.Green);
                     Console.WriteLine($" {MainEntry.langDict[UIElements.FileInfoPart4]}...");
                 }
                 Console.Write($"{MainEntry.langDict[UIElements.CopyToast].Replace(@"%d", destination)}");
@@ -85,7 +73,7 @@ namespace EnderCode.osuBackupAndRestore
                     sizeFinal += item.Length;
                 }
                 Console.Write($"{MainEntry.langDict[UIElements.FinalSizePart1]}: ");
-                Util.WriteColored(Util.SizeSuffixer(sizeFinal) + " ", ConsoleColor.Green);
+                Util.WriteColored(Util.SizeSuffixer(sizeFinal) + " ", false, ConsoleColor.Green);
                 Console.WriteLine($"{MainEntry.langDict[UIElements.FinalSizePart2]}{destFiles.Length} {MainEntry.langDict[UIElements.FinalSizePart3]}");
                 if (File.Exists(AppData.installPath + @"\safeguard.lock"))
                     File.Delete(AppData.installPath + @"\safeguard.lock");
@@ -106,9 +94,8 @@ namespace EnderCode.osuBackupAndRestore
             bool error = false;
             #region eventInit
             int threadCounter = 0;
-            Thread thread = new Thread(RaiseKeyEvent);
-            void @delegate(KeyEventArgs e) { thread.Abort(); }
-            KeyEvent += @delegate;
+            Thread captureKeyThread = new Thread(RaiseKeyEvent);
+            captureKeyThread.IsBackground = true;
             #endregion
 
             Console.WriteLine($"{MainEntry.langDict[UIElements.LaunchToast]}");
@@ -129,13 +116,13 @@ namespace EnderCode.osuBackupAndRestore
             }
             catch (FileNotFoundException e)
             {
-                Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(MainEntry.langDict[UIElements.FileNotFoundEx] + (AppData.debug ? $"\n{MainEntry.langDict[UIElements.ErrorDetails]}:" : string.Empty));
+                Util.WriteColored(errorPrefix, false, ConsoleColor.Red); Console.WriteLine(MainEntry.langDict[UIElements.FileNotFoundEx] + (AppData.debug ? $"\n{MainEntry.langDict[UIElements.ErrorDetails]}:" : string.Empty));
                 ErrorMsg(e);
                 error = true;
             }
             catch (Win32Exception e)
             {
-                Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(MainEntry.langDict[UIElements.Win32Ex]);
+                Util.WriteColored(errorPrefix, false, ConsoleColor.Red); Console.WriteLine(MainEntry.langDict[UIElements.Win32Ex]);
                 ErrorMsg(e);
                 error = true;
 
@@ -152,18 +139,13 @@ namespace EnderCode.osuBackupAndRestore
             if (!error)
             {
                 Console.WriteLine(MainEntry.langDict[UIElements.ProcessEnded]);
-                thread.Start();
+                captureKeyThread.Start();
                 for (threadCounter = 0; threadCounter < 12; threadCounter++)
                 {
                     CatchGameProcess(true);
-                    if (thread.ThreadState == ThreadState.Aborted || thread.ThreadState == ThreadState.Stopped)
+                    if (captureKeyThread.ThreadState == ThreadState.Aborted || captureKeyThread.ThreadState == ThreadState.Stopped)
                         break;
                     Thread.Sleep(500);
-                }
-                if (thread.ThreadState != ThreadState.Aborted || thread.ThreadState != ThreadState.Stopped)
-                {
-                    thread.Abort();
-                    KeyEvent -= @delegate;
                 }
             }
 
@@ -201,7 +183,6 @@ namespace EnderCode.osuBackupAndRestore
         internal static void RaiseKeyEvent()
         {
             ConsoleKeyInfo keyInfo = Console.ReadKey();
-            KeyEvent?.Invoke(new KeyEventArgs(keyInfo));
         }
         internal static void ChangeBackupDir()
         {
@@ -228,7 +209,7 @@ namespace EnderCode.osuBackupAndRestore
                 Process[] processes = Process.GetProcessesByName("osu!");
                 if (processes.Length > 1)
                 {
-                    Util.WriteColored($"{MainEntry.langDict[UIElements.WarnPrefix]}: ", ConsoleColor.Yellow);
+                    Util.WriteColored($"{MainEntry.langDict[UIElements.WarnPrefix]}: ", false, ConsoleColor.Yellow);
                     Console.WriteLine(MainEntry.langDict[UIElements.MultiProcessWeirdness]);
                     Thread.Sleep(1500);
                 }
@@ -242,14 +223,17 @@ namespace EnderCode.osuBackupAndRestore
             {
                 noError = false;
                 if (!isAutorun)
-                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(MainEntry.langDict[UIElements.NoProcess]);
+                    Util.WriteColored(errorPrefix, false, ConsoleColor.Red); Console.WriteLine(MainEntry.langDict[UIElements.NoProcess]);
                 if (AppData.debug)
                 {
-                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Message);
-                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Source);
-                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
+                    Util.WriteColored(errorPrefix, false, ConsoleColor.Red); Console.WriteLine(e.Message);
+                    Util.WriteColored(errorPrefix, false, ConsoleColor.Red); Console.WriteLine(e.Source);
+                    Util.WriteColored(errorPrefix, false, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
                 }
-                Util.WriteColoredLine("Log file saved as: " + Util.Logger(e, "ProcessCatcher"), ConsoleColor.Yellow);
+#if DEBUG
+                throw;
+#endif
+                Util.WriteColored("Log file saved as: " + Util.Logger(e, "ProcessCatcher"), true, ConsoleColor.Yellow);
                 if (!isAutorun)
                 {
                     Console.Write(MainEntry.langDict[UIElements.AwaitKeyToast]);
@@ -259,12 +243,21 @@ namespace EnderCode.osuBackupAndRestore
             catch (Exception e)
             {
                 noError = false;
-                Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine($"{MainEntry.langDict[UIElements.WhatTheFuckWasThat]} {(!AppData.debug ? MainEntry.langDict[UIElements.ErrorDetails] : string.Empty)}");
+                Util.WriteColored(errorPrefix, false, ConsoleColor.Red); Console.WriteLine($"{MainEntry.langDict[UIElements.WhatTheFuckWasThat]} {(!AppData.debug ? MainEntry.langDict[UIElements.ErrorDetails] : string.Empty)}");
                 if (AppData.debug)
                 {
-                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Message);
-                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.Source);
-                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
+                    Util.WriteColored(errorPrefix, false, ConsoleColor.Red); Console.WriteLine(e.Message);
+                    Util.WriteColored(errorPrefix, false, ConsoleColor.Red); Console.WriteLine(e.Source);
+                    Util.WriteColored(errorPrefix, false, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
+                }
+#if DEBUG
+                throw;
+#endif
+                Util.WriteColored("Log file saved as: " + Util.Logger(e, "ProcessCatcher"), true, ConsoleColor.Yellow);
+                if (!isAutorun)
+                {
+                    Console.Write(MainEntry.langDict[UIElements.AwaitKeyToast]);
+                    Console.ReadKey();
                 }
             }
             finally
@@ -284,11 +277,11 @@ namespace EnderCode.osuBackupAndRestore
                     }
                     catch (IOException ioEx)
                     {
-                        Util.WriteColoredLine("Log file saved as: " + Util.Logger(ioEx, "SafeguardIO"), ConsoleColor.Yellow);
+                        Util.WriteColored("Log file saved as: " + Util.Logger(ioEx, "SafeguardIO"),true, ConsoleColor.Yellow);
                     }
                     catch (UnauthorizedAccessException authEx)
                     {
-                        Util.WriteColoredLine("Log file saved as: " + Util.Logger(authEx, "SafeguardAuth"), ConsoleColor.Yellow);
+                        Util.WriteColored("Log file saved as: " + Util.Logger(authEx, "SafeguardAuth"),true, ConsoleColor.Yellow);
                     }
                     finally
                     {
@@ -315,13 +308,13 @@ namespace EnderCode.osuBackupAndRestore
                 newMaps.Add(temp);
             }
             File.WriteAllLines($@"{AppData.backupDir}\mapdump.log", mapIDs.ToArray(), Encoding.UTF8);
-            Util.WriteColored($"{mapIDs.Count}", ConsoleColor.Blue);
+            Util.WriteColored($"{mapIDs.Count}", false, ConsoleColor.Blue);
             Console.WriteLine(" " + MainEntry.langDict[UIElements.PartialDownloadedMaps]);
-            Util.WriteColored($"{newMaps.Count}", ConsoleColor.Green);
+            Util.WriteColored($"{newMaps.Count}", false, ConsoleColor.Green);
             Console.WriteLine(" " + MainEntry.langDict[UIElements.PartialNewMaps]);
             if (collusions.Count != 0)
             {
-                Util.WriteColored($"{collusions} ", ConsoleColor.Blue);
+                Util.WriteColored($"{collusions} ", false, ConsoleColor.Blue);
                 Console.Write(MainEntry.langDict[UIElements.MapIDCollusion]);
                 if (Dialogs.GeneralAskDialog(UIElements.CollusionDialog))
                     foreach (var file in collusions)
@@ -342,17 +335,17 @@ namespace EnderCode.osuBackupAndRestore
             {
                 File.Delete($"{AppData.installPath}/safeguard.lock");
             }
-            else { Util.WriteColoredLine(MainEntry.langDict[UIElements.Aborted], ConsoleColor.Red); }
+            else { Util.WriteColored(MainEntry.langDict[UIElements.Aborted],true, ConsoleColor.Red); }
         }
         internal static void ErrorMsg<T>(T e) where T : Exception
         {
             if (AppData.debug)
             {
-                Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine((e as Exception).Message);
-                Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine((e as Exception).Source);
-                Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine((e as Exception).StackTrace);
+                Util.WriteColored(errorPrefix, false, ConsoleColor.Red); Console.WriteLine(e.Message);
+                Util.WriteColored(errorPrefix, false, ConsoleColor.Red); Console.WriteLine(e.Source);
+                Util.WriteColored(errorPrefix, false, ConsoleColor.Red); Console.WriteLine(e.StackTrace);
                 if (typeof(T) == typeof(Win32Exception))
-                    Util.WriteColored(errorPrefix, ConsoleColor.Red); Console.WriteLine("ErrorCode: " + (e as Win32Exception).ErrorCode);
+                    Util.WriteColored(errorPrefix, false, ConsoleColor.Red); Console.WriteLine("ErrorCode: " + (e as Win32Exception).ErrorCode);
             }
             Console.Write($"{MainEntry.langDict[UIElements.AwaitKeyToast]}");
             Console.ReadKey();
